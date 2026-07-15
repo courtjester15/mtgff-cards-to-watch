@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/ffw/schemas/cards-to-watch.schema.json",
+  "title": "FFW Episode Cards to Watch Summary",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "synthetic", "notice", "episode", "processing", "section", "recommendations"],
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0.0"},
+    "synthetic": {"type": "boolean"},
+    "notice": {"type": "string"},
+    "episode": {"$ref": "#/$defs/episode"},
+    "processing": {"$ref": "#/$defs/processing"},
+    "section": {"$ref": "#/$defs/section"},
+    "recommendations": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/recommendation"}
+    }
+  },
+  "$defs": {
+    "nullableString": {"type": ["string", "null"]},
+    "episode": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["guid", "episode_number", "title", "published_at", "audio_url", "episode_url", "duration_seconds", "hosts"],
+      "properties": {
+        "guid": {"type": "string", "minLength": 1},
+        "episode_number": {"type": "integer", "minimum": 0},
+        "title": {"type": "string", "minLength": 1},
+        "published_at": {"type": "string", "format": "date-time"},
+        "audio_url": {"type": "string"},
+        "episode_url": {"type": "string"},
+        "duration_seconds": {"type": ["integer", "null"], "minimum": 0},
+        "hosts": {"type": "array", "items": {"type": "string"}, "minItems": 1}
+      }
+    },
+    "processing": {
+      "type": "object",
+      "required": ["status", "pipeline_version", "schema_version", "transcription_model", "extraction_model", "prompt_version", "processed_at"],
+      "properties": {
+        "status": {"enum": ["detected", "downloading", "downloaded", "transcribing", "transcribed", "extracting", "extracted", "needs_review", "complete", "failed"]},
+        "review_state": {"type": "string"},
+        "review_reason": {"$ref": "#/$defs/nullableString"},
+        "pipeline_version": {"type": "string"},
+        "schema_version": {"type": "string"},
+        "transcription_model": {"type": "string"},
+        "extraction_model": {"type": "string"},
+        "prompt_version": {"type": "string"},
+        "processed_at": {"type": "string"},
+        "history": {"type": "array"},
+        "error": {"type": ["object", "null"]}
+      }
+    },
+    "section": {
+      "type": "object",
+      "required": ["located", "start_seconds", "end_seconds", "label"],
+      "properties": {
+        "located": {"type": "boolean"},
+        "start_seconds": {"type": ["integer", "null"], "minimum": 0},
+        "end_seconds": {"type": ["integer", "null"], "minimum": 0},
+        "label": {"type": "string"}
+      }
+    },
+    "target": {
+      "type": ["object", "null"],
+      "required": ["raw", "currency", "minimum", "maximum"],
+      "properties": {
+        "raw": {"type": "string", "minLength": 1},
+        "currency": {"type": ["string", "null"]},
+        "minimum": {"type": ["number", "null"]},
+        "maximum": {"type": ["number", "null"]}
+      }
+    },
+    "recommendation": {
+      "type": "object",
+      "required": ["id", "card", "printing", "printing_certainty", "hosts", "recommendation", "entry_target", "hold", "exit_target", "reasoning", "caveats", "confidence", "start_seconds", "end_seconds", "timestamp", "evidence_excerpt", "review_status", "listen_url"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^pick-[a-f0-9]{16}$"},
+        "card": {"type": "string", "minLength": 1},
+        "printing": {"$ref": "#/$defs/nullableString"},
+        "printing_certainty": {"enum": ["confirmed", "likely", "ambiguous", null]},
+        "hosts": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+        "recommendation": {"type": "string", "minLength": 1},
+        "entry_target": {"$ref": "#/$defs/target"},
+        "hold": {"$ref": "#/$defs/nullableString"},
+        "exit_target": {"$ref": "#/$defs/target"},
+        "reasoning": {"type": "array", "items": {"type": "string"}},
+        "caveats": {"type": "array", "items": {"type": "string"}},
+        "confidence": {"enum": ["low", "medium", "high", null]},
+        "start_seconds": {"type": ["integer", "null"], "minimum": 0},
+        "end_seconds": {"type": ["integer", "null"], "minimum": 0},
+        "timestamp": {"$ref": "#/$defs/nullableString"},
+        "evidence_excerpt": {"type": "string", "minLength": 1},
+        "review_status": {"enum": ["approved", "pending", "needs_review"]},
+        "listen_url": {"type": "string"}
+      }
+    }
+  }
+}

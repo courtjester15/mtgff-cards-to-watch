@@ -1,0 +1,243 @@
+{
+  "schema_version": "1.0.0",
+  "synthetic": true,
+  "notice": "Synthetic fixture output. Not real podcast commentary or financial advice.",
+  "episode": {
+    "guid": "ffw-synthetic-episode-905",
+    "episode_number": 905,
+    "title": "[SYNTHETIC] MTG Fast Finance Ep 905: Repeat Recommendation Test",
+    "published_at": "2026-06-05T12:00:00Z",
+    "audio_url": "https://example.invalid/ffw/episode-905.mp3",
+    "episode_url": "https://example.invalid/ffw/episode-905",
+    "duration_seconds": 3995,
+    "hosts": [
+      "Alex Example",
+      "Blair Example",
+      "Casey Example"
+    ]
+  },
+  "processing": {
+    "status": "complete",
+    "review_state": "approved",
+    "review_reason": null,
+    "pipeline_version": "0.1.0-mock",
+    "schema_version": "1.0.0",
+    "transcription_model": "mock-transcriber-v1",
+    "extraction_model": "mock-extractor-v1",
+    "prompt_version": "cards-to-watch-v1",
+    "processed_at": "2026-07-15T02:55:00Z",
+    "history": [
+      {
+        "status": "detected",
+        "timestamp": "2026-07-15T02:42:04Z"
+      },
+      {
+        "status": "downloading",
+        "timestamp": "2026-07-15T02:42:04Z"
+      },
+      {
+        "status": "downloaded",
+        "timestamp": "2026-07-15T02:42:04Z"
+      },
+      {
+        "status": "transcribing",
+        "timestamp": "2026-07-15T02:42:04Z"
+      },
+      {
+        "status": "transcribed",
+        "timestamp": "2026-07-15T02:42:05Z"
+      },
+      {
+        "status": "extracting",
+        "timestamp": "2026-07-15T02:42:05Z"
+      },
+      {
+        "status": "extracted",
+        "timestamp": "2026-07-15T02:42:05Z"
+      },
+      {
+        "status": "complete",
+        "timestamp": "2026-07-15T02:42:05Z"
+      },
+      {
+        "status": "detected",
+        "timestamp": "2026-07-15T02:52:08Z"
+      },
+      {
+        "status": "downloading",
+        "timestamp": "2026-07-15T02:52:08Z"
+      },
+      {
+        "status": "downloaded",
+        "timestamp": "2026-07-15T02:52:08Z"
+      },
+      {
+        "status": "transcribing",
+        "timestamp": "2026-07-15T02:52:09Z"
+      },
+      {
+        "status": "transcribed",
+        "timestamp": "2026-07-15T02:52:09Z"
+      },
+      {
+        "status": "extracting",
+        "timestamp": "2026-07-15T02:52:09Z"
+      },
+      {
+        "status": "extracted",
+        "timestamp": "2026-07-15T02:52:09Z"
+      },
+      {
+        "status": "complete",
+        "timestamp": "2026-07-15T02:52:09Z"
+      },
+      {
+        "status": "detected",
+        "timestamp": "2026-07-15T02:55:00Z"
+      },
+      {
+        "status": "downloading",
+        "timestamp": "2026-07-15T02:55:00Z"
+      },
+      {
+        "status": "downloaded",
+        "timestamp": "2026-07-15T02:55:00Z"
+      },
+      {
+        "status": "transcribing",
+        "timestamp": "2026-07-15T02:55:00Z"
+      },
+      {
+        "status": "transcribed",
+        "timestamp": "2026-07-15T02:55:00Z"
+      },
+      {
+        "status": "extracting",
+        "timestamp": "2026-07-15T02:55:00Z"
+      },
+      {
+        "status": "extracted",
+        "timestamp": "2026-07-15T02:55:00Z"
+      },
+      {
+        "status": "complete",
+        "timestamp": "2026-07-15T02:55:00Z"
+      }
+    ],
+    "error": null
+  },
+  "section": {
+    "located": true,
+    "start_seconds": 1844,
+    "end_seconds": 2094,
+    "label": "Cards to Watch"
+  },
+  "recommendations": [
+    {
+      "card": "Bloodstained Mire",
+      "printing": "Modern Horizons 3 regular nonfoil",
+      "printing_certainty": "confirmed",
+      "hosts": [
+        "Alex Example",
+        "Casey Example"
+      ],
+      "recommendation": "The earlier watch has reached its synthetic entry range; accumulate cautiously.",
+      "entry_target": {
+        "raw": "$14",
+        "currency": "USD",
+        "minimum": 14.0,
+        "maximum": 14.0
+      },
+      "hold": "Nine to twelve months",
+      "exit_target": {
+        "raw": "$23",
+        "currency": "USD",
+        "minimum": 23.0,
+        "maximum": 23.0
+      },
+      "reasoning": [
+        "This repeated recommendation tests cross-episode card history."
+      ],
+      "caveats": [
+        "This is a different printing from the earlier synthetic pick."
+      ],
+      "confidence": "medium",
+      "start_seconds": 1844,
+      "end_seconds": 1922,
+      "evidence_excerpt": "Synthetic quote: The regular copies are finally at fourteen, so I am starting slowly.",
+      "review_status": "approved",
+      "id": "pick-513bb0d226986fe6",
+      "timestamp": "00:30:44",
+      "listen_url": "https://example.invalid/ffw/episode-905.mp3#t=1844"
+    },
+    {
+      "card": "Rhystic Study",
+      "printing": "Wilds of Eldraine Enchanting Tales",
+      "printing_certainty": "confirmed",
+      "hosts": [
+        "Blair Example"
+      ],
+      "recommendation": "Continue watching; the prior synthetic entry has not been reached.",
+      "entry_target": {
+        "raw": "$22",
+        "currency": "USD",
+        "minimum": 22.0,
+        "maximum": 22.0
+      },
+      "hold": null,
+      "exit_target": {
+        "raw": "$38",
+        "currency": "USD",
+        "minimum": 38.0,
+        "maximum": 38.0
+      },
+      "reasoning": [
+        "This repeated recommendation verifies searchable history."
+      ],
+      "caveats": [
+        "No new purchase was recommended in this episode."
+      ],
+      "confidence": "medium",
+      "start_seconds": 1938,
+      "end_seconds": 2004,
+      "evidence_excerpt": "Synthetic quote: My numbers have not changed; this is still a watch, not a buy.",
+      "review_status": "approved",
+      "id": "pick-bf0af01c4cb25941",
+      "timestamp": "00:32:18",
+      "listen_url": "https://example.invalid/ffw/episode-905.mp3#t=1938"
+    },
+    {
+      "card": "Finale of Devastation",
+      "printing": "War of the Spark regular nonfoil",
+      "printing_certainty": "confirmed",
+      "hosts": [
+        "Alex Example",
+        "Blair Example",
+        "Casey Example"
+      ],
+      "recommendation": "Hold existing copies and reassess after the next Commander release.",
+      "entry_target": {
+        "raw": "$24 to $26",
+        "currency": "USD",
+        "minimum": 24.0,
+        "maximum": 26.0
+      },
+      "hold": "Through the next Commander release",
+      "exit_target": null,
+      "reasoning": [
+        "Synthetic demand remains strong but no clean exit was stated."
+      ],
+      "caveats": [
+        "Exit target is intentionally absent."
+      ],
+      "confidence": null,
+      "start_seconds": 2020,
+      "end_seconds": 2094,
+      "evidence_excerpt": "Synthetic quote: I like the mid-twenties, but I do not have an exit number yet.",
+      "review_status": "approved",
+      "id": "pick-888858225cf7677f",
+      "timestamp": "00:33:40",
+      "listen_url": "https://example.invalid/ffw/episode-905.mp3#t=2020"
+    }
+  ]
+}

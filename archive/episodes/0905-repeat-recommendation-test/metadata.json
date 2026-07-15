@@ -1,0 +1,134 @@
+{
+  "schema_version": "1.0.0",
+  "synthetic": true,
+  "notice": "Synthetic fixture metadata.",
+  "episode": {
+    "guid": "ffw-synthetic-episode-905",
+    "episode_number": 905,
+    "title": "[SYNTHETIC] MTG Fast Finance Ep 905: Repeat Recommendation Test",
+    "published_at": "2026-06-05T12:00:00Z",
+    "audio_url": "https://example.invalid/ffw/episode-905.mp3",
+    "episode_url": "https://example.invalid/ffw/episode-905",
+    "duration_seconds": 3995,
+    "hosts": [
+      "Alex Example",
+      "Blair Example",
+      "Casey Example"
+    ]
+  },
+  "processing": {
+    "status": "complete",
+    "review_state": "approved",
+    "review_reason": null,
+    "pipeline_version": "0.1.0-mock",
+    "schema_version": "1.0.0",
+    "transcription_model": "mock-transcriber-v1",
+    "extraction_model": "mock-extractor-v1",
+    "prompt_version": "cards-to-watch-v1",
+    "processed_at": "2026-07-15T02:55:00Z",
+    "history": [
+      {
+        "status": "detected",
+        "timestamp": "2026-07-15T02:42:04Z"
+      },
+      {
+        "status": "downloading",
+        "timestamp": "2026-07-15T02:42:04Z"
+      },
+      {
+        "status": "downloaded",
+        "timestamp": "2026-07-15T02:42:04Z"
+      },
+      {
+        "status": "transcribing",
+        "timestamp": "2026-07-15T02:42:04Z"
+      },
+      {
+        "status": "transcribed",
+        "timestamp": "2026-07-15T02:42:05Z"
+      },
+      {
+        "status": "extracting",
+        "timestamp": "2026-07-15T02:42:05Z"
+      },
+      {
+        "status": "extracted",
+        "timestamp": "2026-07-15T02:42:05Z"
+      },
+      {
+        "status": "complete",
+        "timestamp": "2026-07-15T02:42:05Z"
+      },
+      {
+        "status": "detected",
+        "timestamp": "2026-07-15T02:52:08Z"
+      },
+      {
+        "status": "downloading",
+        "timestamp": "2026-07-15T02:52:08Z"
+      },
+      {
+        "status": "downloaded",
+        "timestamp": "2026-07-15T02:52:08Z"
+      },
+      {
+        "status": "transcribing",
+        "timestamp": "2026-07-15T02:52:09Z"
+      },
+      {
+        "status": "transcribed",
+        "timestamp": "2026-07-15T02:52:09Z"
+      },
+      {
+        "status": "extracting",
+        "timestamp": "2026-07-15T02:52:09Z"
+      },
+      {
+        "status": "extracted",
+        "timestamp": "2026-07-15T02:52:09Z"
+      },
+      {
+        "status": "complete",
+        "timestamp": "2026-07-15T02:52:09Z"
+      },
+      {
+        "status": "detected",
+        "timestamp": "2026-07-15T02:55:00Z"
+      },
+      {
+        "status": "downloading",
+        "timestamp": "2026-07-15T02:55:00Z"
+      },
+      {
+        "status": "downloaded",
+        "timestamp": "2026-07-15T02:55:00Z"
+      },
+      {
+        "status": "transcribing",
+        "timestamp": "2026-07-15T02:55:00Z"
+      },
+      {
+        "status": "transcribed",
+        "timestamp": "2026-07-15T02:55:00Z"
+      },
+      {
+        "status": "extracting",
+        "timestamp": "2026-07-15T02:55:00Z"
+      },
+      {
+        "status": "extracted",
+        "timestamp": "2026-07-15T02:55:00Z"
+      },
+      {
+        "status": "complete",
+        "timestamp": "2026-07-15T02:55:00Z"
+      }
+    ],
+    "error": null
+  },
+  "outputs": {
+    "metadata": "episodes/0905-repeat-recommendation-test/metadata.json",
+    "summary_json": "episodes/0905-repeat-recommendation-test/summary.json",
+    "summary_markdown": "episodes/0905-repeat-recommendation-test/summary.md"
+  }
+}

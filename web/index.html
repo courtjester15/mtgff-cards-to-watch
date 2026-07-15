@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="FFW local Cards to Watch archive">
+    <title>FFW · Cards to Watch Archive</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <div class="shell">
+      <aside class="sidebar">
+        <a class="brand" href="#dashboard" aria-label="FFW dashboard">
+          <span class="brand-mark">FF</span>
+          <span><strong>FFW</strong><small>Cards to Watch</small></span>
+        </a>
+        <nav aria-label="Primary navigation">
+          <a href="#dashboard" data-route="dashboard"><span>◆</span> Dashboard</a>
+          <a href="#episodes" data-route="episodes"><span>▤</span> Episode Archive</a>
+          <a href="#picks" data-route="picks"><span>⌕</span> All Picks</a>
+          <a href="#status" data-route="status"><span>◉</span> Processing Status</a>
+          <a href="#about" data-route="about"><span>ⓘ</span> Settings / About</a>
+        </nav>
+        <div class="sidebar-foot">
+          <span class="live-dot"></span>
+          <span><strong>Local archive</strong><small id="side-version">Loading…</small></span>
+        </div>
+      </aside>
+
+      <main>
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">MTG Fast Finance · Personal Utility</p>
+            <h1 id="page-title">Dashboard</h1>
+          </div>
+          <div class="top-actions">
+            <span class="fixture-pill">Synthetic fixtures</span>
+            <button id="refresh-button" class="icon-button" type="button" title="Reload archive data" aria-label="Reload archive data">↻</button>
+          </div>
+        </header>
+
+        <div id="data-banner" class="banner">All visible recommendations are synthetic test fixtures, not real podcast commentary or financial advice.</div>
+        <div id="app" aria-live="polite">
+          <div class="loading"><span></span> Loading archive…</div>
+        </div>
+      </main>
+    </div>
+
+    <dialog id="pick-dialog" aria-labelledby="dialog-card">
+      <button class="dialog-close" type="button" aria-label="Close details">×</button>
+      <div id="dialog-content"></div>
+    </dialog>
+
+    <template id="empty-template">
+      <div class="empty-state"><strong>No matching records</strong><p>Try changing the search or status filter.</p></div>
+    </template>
+    <script src="app.js" defer></script>
+  </body>
+</html>

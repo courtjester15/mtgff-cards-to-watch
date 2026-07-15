@@ -1,0 +1,76 @@
+{
+  "schema_version": "1.0.0",
+  "synthetic": true,
+  "notice": "Synthetic fixture metadata.",
+  "episode": {
+    "guid": "ffw-synthetic-episode-904",
+    "episode_number": 904,
+    "title": "[SYNTHETIC] MTG Fast Finance Ep 904: Failed Download Fixture",
+    "published_at": "2026-05-29T12:00:00Z",
+    "audio_url": "https://example.invalid/ffw/episode-904.mp3",
+    "episode_url": "https://example.invalid/ffw/episode-904",
+    "duration_seconds": 0,
+    "hosts": [
+      "Alex Example"
+    ]
+  },
+  "processing": {
+    "status": "failed",
+    "review_state": "not_applicable",
+    "review_reason": null,
+    "pipeline_version": "0.1.0-mock",
+    "schema_version": "1.0.0",
+    "transcription_model": "mock-transcriber-v1",
+    "extraction_model": "mock-extractor-v1",
+    "prompt_version": "cards-to-watch-v1",
+    "processed_at": "2026-07-15T02:55:00Z",
+    "history": [
+      {
+        "status": "detected",
+        "timestamp": "2026-07-15T02:42:04Z"
+      },
+      {
+        "status": "downloading",
+        "timestamp": "2026-07-15T02:42:04Z"
+      },
+      {
+        "status": "failed",
+        "timestamp": "2026-07-15T02:42:04Z"
+      },
+      {
+        "status": "detected",
+        "timestamp": "2026-07-15T02:52:08Z"
+      },
+      {
+        "status": "downloading",
+        "timestamp": "2026-07-15T02:52:08Z"
+      },
+      {
+        "status": "failed",
+        "timestamp": "2026-07-15T02:52:08Z"
+      },
+      {
+        "status": "detected",
+        "timestamp": "2026-07-15T02:54:59Z"
+      },
+      {
+        "status": "downloading",
+        "timestamp": "2026-07-15T02:55:00Z"
+      },
+      {
+        "status": "failed",
+        "timestamp": "2026-07-15T02:55:00Z"
+      }
+    ],
+    "error": {
+      "stage": "downloading",
+      "message": "Synthetic downloader failure used to exercise error handling.",
+      "synthetic": true
+    }
+  },
+  "outputs": {
+    "metadata": "episodes/0904-failed-download-fixture/metadata.json",
+    "summary_json": null,
+    "summary_markdown": null
+  }
+}

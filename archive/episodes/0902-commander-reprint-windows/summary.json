@@ -1,0 +1,261 @@
+{
+  "schema_version": "1.0.0",
+  "synthetic": true,
+  "notice": "Synthetic fixture output. Not real podcast commentary or financial advice.",
+  "episode": {
+    "guid": "ffw-synthetic-episode-902",
+    "episode_number": 902,
+    "title": "[SYNTHETIC] MTG Fast Finance Ep 902: Commander Reprint Windows",
+    "published_at": "2026-05-15T12:00:00Z",
+    "audio_url": "https://example.invalid/ffw/episode-902.mp3",
+    "episode_url": "https://example.invalid/ffw/episode-902",
+    "duration_seconds": 4210,
+    "hosts": [
+      "Alex Example",
+      "Casey Example"
+    ]
+  },
+  "processing": {
+    "status": "complete",
+    "review_state": "approved",
+    "review_reason": null,
+    "pipeline_version": "0.1.0-mock",
+    "schema_version": "1.0.0",
+    "transcription_model": "mock-transcriber-v1",
+    "extraction_model": "mock-extractor-v1",
+    "prompt_version": "cards-to-watch-v1",
+    "processed_at": "2026-07-15T02:54:59Z",
+    "history": [
+      {
+        "status": "detected",
+        "timestamp": "2026-07-15T02:42:03Z"
+      },
+      {
+        "status": "downloading",
+        "timestamp": "2026-07-15T02:42:03Z"
+      },
+      {
+        "status": "downloaded",
+        "timestamp": "2026-07-15T02:42:03Z"
+      },
+      {
+        "status": "transcribing",
+        "timestamp": "2026-07-15T02:42:03Z"
+      },
+      {
+        "status": "transcribed",
+        "timestamp": "2026-07-15T02:42:03Z"
+      },
+      {
+        "status": "extracting",
+        "timestamp": "2026-07-15T02:42:03Z"
+      },
+      {
+        "status": "extracted",
+        "timestamp": "2026-07-15T02:42:03Z"
+      },
+      {
+        "status": "complete",
+        "timestamp": "2026-07-15T02:42:03Z"
+      },
+      {
+        "status": "detected",
+        "timestamp": "2026-07-15T02:52:07Z"
+      },
+      {
+        "status": "downloading",
+        "timestamp": "2026-07-15T02:52:07Z"
+      },
+      {
+        "status": "downloaded",
+        "timestamp": "2026-07-15T02:52:07Z"
+      },
+      {
+        "status": "transcribing",
+        "timestamp": "2026-07-15T02:52:07Z"
+      },
+      {
+        "status": "transcribed",
+        "timestamp": "2026-07-15T02:52:08Z"
+      },
+      {
+        "status": "extracting",
+        "timestamp": "2026-07-15T02:52:08Z"
+      },
+      {
+        "status": "extracted",
+        "timestamp": "2026-07-15T02:52:08Z"
+      },
+      {
+        "status": "complete",
+        "timestamp": "2026-07-15T02:52:08Z"
+      },
+      {
+        "status": "detected",
+        "timestamp": "2026-07-15T02:54:59Z"
+      },
+      {
+        "status": "downloading",
+        "timestamp": "2026-07-15T02:54:59Z"
+      },
+      {
+        "status": "downloaded",
+        "timestamp": "2026-07-15T02:54:59Z"
+      },
+      {
+        "status": "transcribing",
+        "timestamp": "2026-07-15T02:54:59Z"
+      },
+      {
+        "status": "transcribed",
+        "timestamp": "2026-07-15T02:54:59Z"
+      },
+      {
+        "status": "extracting",
+        "timestamp": "2026-07-15T02:54:59Z"
+      },
+      {
+        "status": "extracted",
+        "timestamp": "2026-07-15T02:54:59Z"
+      },
+      {
+        "status": "complete",
+        "timestamp": "2026-07-15T02:54:59Z"
+      }
+    ],
+    "error": null
+  },
+  "section": {
+    "located": true,
+    "start_seconds": 1731,
+    "end_seconds": 2070,
+    "label": "Cards to Watch"
+  },
+  "recommendations": [
+    {
+      "card": "Rhystic Study",
+      "printing": "Wilds of Eldraine Enchanting Tales",
+      "printing_certainty": "confirmed",
+      "hosts": [
+        "Casey Example"
+      ],
+      "recommendation": "Wait for the premium treatment to fall before considering an entry.",
+      "entry_target": {
+        "raw": "$22",
+        "currency": "USD",
+        "minimum": 22.0,
+        "maximum": 22.0
+      },
+      "hold": "Twelve months",
+      "exit_target": {
+        "raw": "$38",
+        "currency": "USD",
+        "minimum": 38.0,
+        "maximum": 38.0
+      },
+      "reasoning": [
+        "The synthetic thesis expects collector demand after initial supply clears."
+      ],
+      "caveats": [
+        "Another premium reprint could cap the exit."
+      ],
+      "confidence": "medium",
+      "start_seconds": 1731,
+      "end_seconds": 1810,
+      "evidence_excerpt": "Synthetic quote: Twenty-two is where the risk starts to look acceptable to me.",
+      "review_status": "approved",
+      "id": "pick-aada7a02a15bbf46",
+      "timestamp": "00:28:51",
+      "listen_url": "https://example.invalid/ffw/episode-902.mp3#t=1731"
+    },
+    {
+      "card": "Agatha's Soul Cauldron",
+      "printing": "Wilds of Eldraine regular nonfoil",
+      "printing_certainty": "confirmed",
+      "hosts": [
+        "Alex Example"
+      ],
+      "recommendation": "Take profit into strength rather than opening a new position.",
+      "entry_target": null,
+      "hold": null,
+      "exit_target": {
+        "raw": "$65 to $70",
+        "currency": "USD",
+        "minimum": 65.0,
+        "maximum": 70.0
+      },
+      "reasoning": [
+        "The fixture describes the price as having moved ahead of proven demand."
+      ],
+      "caveats": [
+        "A major tournament result could extend the move."
+      ],
+      "confidence": "high",
+      "start_seconds": 1825,
+      "end_seconds": 1902,
+      "evidence_excerpt": "Synthetic quote: I am a seller into sixty-five or seventy, not a buyer here.",
+      "review_status": "approved",
+      "id": "pick-83a47e6fd702f25b",
+      "timestamp": "00:30:25",
+      "listen_url": "https://example.invalid/ffw/episode-902.mp3#t=1825"
+    },
+    {
+      "card": "Roaming Throne",
+      "printing": "The Lost Caverns of Ixalan",
+      "printing_certainty": "confirmed",
+      "hosts": [
+        "Alex Example",
+        "Casey Example"
+      ],
+      "recommendation": "Accumulate slowly if copies reach the entry range.",
+      "entry_target": {
+        "raw": "$18 to $20",
+        "currency": "USD",
+        "minimum": 18.0,
+        "maximum": 20.0
+      },
+      "hold": "One year or longer",
+      "exit_target": null,
+      "reasoning": [
+        "Synthetic Commander demand is broad across creature types."
+      ],
+      "caveats": [
+        "No exit target was stated."
+      ],
+      "confidence": "medium",
+      "start_seconds": 1918,
+      "end_seconds": 1995,
+      "evidence_excerpt": "Synthetic quote: I can start buying at twenty, but this is not a quick flip.",
+      "review_status": "approved",
+      "id": "pick-83fd37beaf1791a1",
+      "timestamp": "00:31:58",
+      "listen_url": "https://example.invalid/ffw/episode-902.mp3#t=1918"
+    },
+    {
+      "card": "The One Ring",
+      "printing": null,
+      "printing_certainty": null,
+      "hosts": [
+        "Casey Example"
+      ],
+      "recommendation": "Avoid financial exposure until reprint policy is clearer.",
+      "entry_target": null,
+      "hold": null,
+      "exit_target": null,
+      "reasoning": [
+        "The synthetic discussion identifies reprint uncertainty as dominant."
+      ],
+      "caveats": [
+        "No particular printing was named."
+      ],
+      "confidence": "high",
+      "start_seconds": 2010,
+      "end_seconds": 2070,
+      "evidence_excerpt": "Synthetic quote: There is no number for me until we understand the reprint path.",
+      "review_status": "approved",
+      "id": "pick-7d3c620d7eeedf0d",
+      "timestamp": "00:33:30",
+      "listen_url": "https://example.invalid/ffw/episode-902.mp3#t=2010"
+    }
+  ]
+}

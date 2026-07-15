@@ -1,0 +1,270 @@
+{
+  "schema_version": "1.0.0",
+  "synthetic": true,
+  "notice": "Synthetic fixture output. Not real podcast commentary or financial advice.",
+  "episode": {
+    "guid": "ffw-synthetic-episode-901",
+    "episode_number": 901,
+    "title": "[SYNTHETIC] MTG Fast Finance Ep 901: Fetchland Signals",
+    "published_at": "2026-05-08T12:00:00Z",
+    "audio_url": "https://example.invalid/ffw/episode-901.mp3",
+    "episode_url": "https://example.invalid/ffw/episode-901",
+    "duration_seconds": 3870,
+    "hosts": [
+      "Alex Example",
+      "Blair Example"
+    ]
+  },
+  "processing": {
+    "status": "complete",
+    "review_state": "approved",
+    "review_reason": null,
+    "pipeline_version": "0.1.0-mock",
+    "schema_version": "1.0.0",
+    "transcription_model": "mock-transcriber-v1",
+    "extraction_model": "mock-extractor-v1",
+    "prompt_version": "cards-to-watch-v1",
+    "processed_at": "2026-07-15T02:54:59Z",
+    "history": [
+      {
+        "status": "detected",
+        "timestamp": "2026-07-15T02:42:01Z"
+      },
+      {
+        "status": "downloading",
+        "timestamp": "2026-07-15T02:42:01Z"
+      },
+      {
+        "status": "downloaded",
+        "timestamp": "2026-07-15T02:42:02Z"
+      },
+      {
+        "status": "transcribing",
+        "timestamp": "2026-07-15T02:42:02Z"
+      },
+      {
+        "status": "transcribed",
+        "timestamp": "2026-07-15T02:42:02Z"
+      },
+      {
+        "status": "extracting",
+        "timestamp": "2026-07-15T02:42:03Z"
+      },
+      {
+        "status": "extracted",
+        "timestamp": "2026-07-15T02:42:03Z"
+      },
+      {
+        "status": "complete",
+        "timestamp": "2026-07-15T02:42:03Z"
+      },
+      {
+        "status": "detected",
+        "timestamp": "2026-07-15T02:52:07Z"
+      },
+      {
+        "status": "downloading",
+        "timestamp": "2026-07-15T02:52:07Z"
+      },
+      {
+        "status": "downloaded",
+        "timestamp": "2026-07-15T02:52:07Z"
+      },
+      {
+        "status": "transcribing",
+        "timestamp": "2026-07-15T02:52:07Z"
+      },
+      {
+        "status": "transcribed",
+        "timestamp": "2026-07-15T02:52:07Z"
+      },
+      {
+        "status": "extracting",
+        "timestamp": "2026-07-15T02:52:07Z"
+      },
+      {
+        "status": "extracted",
+        "timestamp": "2026-07-15T02:52:07Z"
+      },
+      {
+        "status": "complete",
+        "timestamp": "2026-07-15T02:52:07Z"
+      },
+      {
+        "status": "detected",
+        "timestamp": "2026-07-15T02:54:58Z"
+      },
+      {
+        "status": "downloading",
+        "timestamp": "2026-07-15T02:54:58Z"
+      },
+      {
+        "status": "downloaded",
+        "timestamp": "2026-07-15T02:54:58Z"
+      },
+      {
+        "status": "transcribing",
+        "timestamp": "2026-07-15T02:54:58Z"
+      },
+      {
+        "status": "transcribed",
+        "timestamp": "2026-07-15T02:54:58Z"
+      },
+      {
+        "status": "extracting",
+        "timestamp": "2026-07-15T02:54:58Z"
+      },
+      {
+        "status": "extracted",
+        "timestamp": "2026-07-15T02:54:58Z"
+      },
+      {
+        "status": "complete",
+        "timestamp": "2026-07-15T02:54:59Z"
+      }
+    ],
+    "error": null
+  },
+  "section": {
+    "located": true,
+    "start_seconds": 1902,
+    "end_seconds": 2250,
+    "label": "Cards to Watch"
+  },
+  "recommendations": [
+    {
+      "card": "Bloodstained Mire",
+      "printing": "Modern Horizons 3 retro frame",
+      "printing_certainty": "confirmed",
+      "hosts": [
+        "Alex Example"
+      ],
+      "recommendation": "Watch nonfoil copies and consider entering only near the stated floor.",
+      "entry_target": {
+        "raw": "$13 to $15",
+        "currency": "USD",
+        "minimum": 13.0,
+        "maximum": 15.0
+      },
+      "hold": "Six to twelve months",
+      "exit_target": {
+        "raw": "$24 to $27",
+        "currency": "USD",
+        "minimum": 24.0,
+        "maximum": 27.0
+      },
+      "reasoning": [
+        "Synthetic supply is described as stabilizing.",
+        "The fixture assumes enduring demand from multiple formats."
+      ],
+      "caveats": [
+        "A broad fetchland reprint would undermine the thesis."
+      ],
+      "confidence": "medium",
+      "start_seconds": 1902,
+      "end_seconds": 1988,
+      "evidence_excerpt": "Synthetic quote: I only want these if they settle into that thirteen-to-fifteen range.",
+      "review_status": "approved",
+      "id": "pick-ee1977a41463746e",
+      "timestamp": "00:31:42",
+      "listen_url": "https://example.invalid/ffw/episode-901.mp3#t=1902"
+    },
+    {
+      "card": "Esper Sentinel",
+      "printing": "Modern Horizons 2 regular nonfoil",
+      "printing_certainty": "likely",
+      "hosts": [
+        "Blair Example"
+      ],
+      "recommendation": "Hold existing copies; do not chase a short-term increase.",
+      "entry_target": null,
+      "hold": "Until the next major reprint announcement",
+      "exit_target": {
+        "raw": "around $35",
+        "currency": "USD",
+        "minimum": 35.0,
+        "maximum": 35.0
+      },
+      "reasoning": [
+        "The fixture describes persistent Commander demand."
+      ],
+      "caveats": [
+        "Printing was inferred from context and should be reviewed."
+      ],
+      "confidence": "low",
+      "start_seconds": 2004,
+      "end_seconds": 2076,
+      "evidence_excerpt": "Synthetic quote: I am holding mine, but I would not buy this spike.",
+      "review_status": "approved",
+      "id": "pick-9d0d16e30175f372",
+      "timestamp": "00:33:24",
+      "listen_url": "https://example.invalid/ffw/episode-901.mp3#t=2004"
+    },
+    {
+      "card": "Ledger Shredder",
+      "printing": "Streets of New Capenna",
+      "printing_certainty": "confirmed",
+      "hosts": [
+        "Alex Example",
+        "Blair Example"
+      ],
+      "recommendation": "Avoid buying until tournament demand is visible again.",
+      "entry_target": {
+        "raw": "under $4",
+        "currency": "USD",
+        "minimum": null,
+        "maximum": 4.0
+      },
+      "hold": null,
+      "exit_target": null,
+      "reasoning": [
+        "The synthetic discussion says current demand is speculative rather than demonstrated."
+      ],
+      "caveats": [],
+      "confidence": null,
+      "start_seconds": 2090,
+      "end_seconds": 2152,
+      "evidence_excerpt": "Synthetic quote: Under four is interesting, but I need to see the deck first.",
+      "review_status": "approved",
+      "id": "pick-5d7912409882409d",
+      "timestamp": "00:34:50",
+      "listen_url": "https://example.invalid/ffw/episode-901.mp3#t=2090"
+    },
+    {
+      "card": "Urza's Saga",
+      "printing": "Modern Horizons 2 showcase sketch",
+      "printing_certainty": "ambiguous",
+      "hosts": [
+        "Blair Example"
+      ],
+      "recommendation": "Watch premium copies rather than treating every printing alike.",
+      "entry_target": {
+        "raw": "$28",
+        "currency": "USD",
+        "minimum": 28.0,
+        "maximum": 28.0
+      },
+      "hold": "Long term",
+      "exit_target": {
+        "raw": "$45",
+        "currency": "USD",
+        "minimum": 45.0,
+        "maximum": 45.0
+      },
+      "reasoning": [
+        "The synthetic thesis separates premium collector demand from regular copies."
+      ],
+      "caveats": [
+        "The exact showcase treatment is deliberately ambiguous in this fixture."
+      ],
+      "confidence": "medium",
+      "start_seconds": 2170,
+      "end_seconds": 2250,
+      "evidence_excerpt": "Synthetic quote: The special frame is the one I mean, but verify which version before acting.",
+      "review_status": "approved",
+      "id": "pick-56e60e33858b45a5",
+      "timestamp": "00:36:10",
+      "listen_url": "https://example.invalid/ffw/episode-901.mp3#t=2170"
+    }
+  ]
+}

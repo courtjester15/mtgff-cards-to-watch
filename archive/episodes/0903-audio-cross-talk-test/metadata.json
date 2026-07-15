@@ -1,0 +1,133 @@
+{
+  "schema_version": "1.0.0",
+  "synthetic": true,
+  "notice": "Synthetic fixture metadata.",
+  "episode": {
+    "guid": "ffw-synthetic-episode-903",
+    "episode_number": 903,
+    "title": "[SYNTHETIC] MTG Fast Finance Ep 903: Audio Cross-Talk Test",
+    "published_at": "2026-05-22T12:00:00Z",
+    "audio_url": "https://example.invalid/ffw/episode-903.mp3",
+    "episode_url": "https://example.invalid/ffw/episode-903",
+    "duration_seconds": 3615,
+    "hosts": [
+      "Blair Example",
+      "Casey Example"
+    ]
+  },
+  "processing": {
+    "status": "needs_review",
+    "review_state": "needs_review",
+    "review_reason": "Synthetic cross-talk makes two printing references and one price target ambiguous.",
+    "pipeline_version": "0.1.0-mock",
+    "schema_version": "1.0.0",
+    "transcription_model": "mock-transcriber-v1",
+    "extraction_model": "mock-extractor-v1",
+    "prompt_version": "cards-to-watch-v1",
+    "processed_at": "2026-07-15T02:54:59Z",
+    "history": [
+      {
+        "status": "detected",
+        "timestamp": "2026-07-15T02:42:04Z"
+      },
+      {
+        "status": "downloading",
+        "timestamp": "2026-07-15T02:42:04Z"
+      },
+      {
+        "status": "downloaded",
+        "timestamp": "2026-07-15T02:42:04Z"
+      },
+      {
+        "status": "transcribing",
+        "timestamp": "2026-07-15T02:42:04Z"
+      },
+      {
+        "status": "transcribed",
+        "timestamp": "2026-07-15T02:42:04Z"
+      },
+      {
+        "status": "extracting",
+        "timestamp": "2026-07-15T02:42:04Z"
+      },
+      {
+        "status": "extracted",
+        "timestamp": "2026-07-15T02:42:04Z"
+      },
+      {
+        "status": "needs_review",
+        "timestamp": "2026-07-15T02:42:04Z"
+      },
+      {
+        "status": "detected",
+        "timestamp": "2026-07-15T02:52:08Z"
+      },
+      {
+        "status": "downloading",
+        "timestamp": "2026-07-15T02:52:08Z"
+      },
+      {
+        "status": "downloaded",
+        "timestamp": "2026-07-15T02:52:08Z"
+      },
+      {
+        "status": "transcribing",
+        "timestamp": "2026-07-15T02:52:08Z"
+      },
+      {
+        "status": "transcribed",
+        "timestamp": "2026-07-15T02:52:08Z"
+      },
+      {
+        "status": "extracting",
+        "timestamp": "2026-07-15T02:52:08Z"
+      },
+      {
+        "status": "extracted",
+        "timestamp": "2026-07-15T02:52:08Z"
+      },
+      {
+        "status": "needs_review",
+        "timestamp": "2026-07-15T02:52:08Z"
+      },
+      {
+        "status": "detected",
+        "timestamp": "2026-07-15T02:54:59Z"
+      },
+      {
+        "status": "downloading",
+        "timestamp": "2026-07-15T02:54:59Z"
+      },
+      {
+        "status": "downloaded",
+        "timestamp": "2026-07-15T02:54:59Z"
+      },
+      {
+        "status": "transcribing",
+        "timestamp": "2026-07-15T02:54:59Z"
+      },
+      {
+        "status": "transcribed",
+        "timestamp": "2026-07-15T02:54:59Z"
+      },
+      {
+        "status": "extracting",
+        "timestamp": "2026-07-15T02:54:59Z"
+      },
+      {
+        "status": "extracted",
+        "timestamp": "2026-07-15T02:54:59Z"
+      },
+      {
+        "status": "needs_review",
+        "timestamp": "2026-07-15T02:54:59Z"
+      }
+    ],
+    "error": null
+  },
+  "outputs": {
+    "metadata": "episodes/0903-audio-cross-talk-test/metadata.json",
+    "summary_json": "episodes/0903-audio-cross-talk-test/summary.json",
+    "summary_markdown": "episodes/0903-audio-cross-talk-test/summary.md"
+  }
+}
