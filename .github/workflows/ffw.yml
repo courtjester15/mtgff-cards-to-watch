@@ -41,6 +41,9 @@ permissions:
 
 env:
   FFW_MODE: live
+  FFW_AI_PROVIDER: gemini
+  FFW_TRANSCRIPTION_MODEL: gemini-2.5-flash
+  FFW_EXTRACTION_MODEL: gemini-2.5-flash
   PYTHONUNBUFFERED: "1"
 
 jobs:
@@ -73,6 +76,7 @@ jobs:
       - name: Process live feed
         id: pipeline
         env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           INPUT_MODE: ${{ inputs.mode || 'normal' }}
           INPUT_LIMIT: ${{ inputs.episode_limit || '0' }}

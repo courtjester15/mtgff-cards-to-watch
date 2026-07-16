@@ -23,6 +23,7 @@ class Settings:
     state_file: Path
     work_dir: Path
     mode: str = "mock"
+    ai_provider: str = "openai"
     feed_url: str = "https://feeds.soundcloud.com/users/soundcloud:users:201003125/sounds.rss"
     feed_name: str = "MTG Fast Finance"
     max_audio_bytes: int = 250_000_000
@@ -44,6 +45,7 @@ class Settings:
             state_file=state,
             work_dir=root / ".ffw-work",
             mode=os.getenv("FFW_MODE", "mock"),
+            ai_provider=os.getenv("FFW_AI_PROVIDER", "openai").lower(),
             feed_url=os.getenv("FFW_FEED_URL", "https://feeds.soundcloud.com/users/soundcloud:users:201003125/sounds.rss"),
             feed_name=os.getenv("FFW_FEED_NAME", "MTG Fast Finance"),
             max_audio_bytes=int(os.getenv("FFW_MAX_AUDIO_BYTES", "250000000")),

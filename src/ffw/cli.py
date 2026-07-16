@@ -18,7 +18,7 @@ def _parser() -> argparse.ArgumentParser:
     subparsers = parser.add_subparsers(dest="command", required=True)
     run = subparsers.add_parser("run", help="Run the idempotent pipeline")
     run.add_argument("--force", action="store_true", help="Regenerate terminal fixture episodes")
-    run.add_argument("--live", action="store_true", help="Use the live feed and OpenAI production adapters")
+    run.add_argument("--live", action="store_true", help="Use the live feed and configured production adapters")
     run.add_argument("--limit", type=int, help="Limit processing to the newest N feed entries")
     run.add_argument("--retry-failed", action="store_true", help="Retry failed live episodes")
     run.add_argument("--force-guid", help="Process only this episode GUID")

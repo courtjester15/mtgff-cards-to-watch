@@ -54,8 +54,14 @@ class Pipeline:
             return cls.mock(settings)
         if settings.mode != "live":
             raise ValueError("FFW_MODE must be 'mock' or 'live'.")
-        if not os.getenv("OPENAI_API_KEY"):
-            raise RuntimeError("OPENAI_API_KEY is required before a live pipeline run can start.")
+        if settings.ai_provider == "gemini":
+            if not (os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")):
+                raise RuntimeError("GEMINI_API_KEY is required before a Gemini live pipeline run can start.")
+        elif settings.ai_provider == "openai":
+            if not os.getenv("OPENAI_API_KEY"):
+                raise RuntimeError("OPENAI_API_KEY is required before an OpenAI live pipeline run can start.")
+        else:
+            raise ValueError("FFW_AI_PROVIDER must be 'openai' or 'gemini'.")
         feed, downloader, audio, transcriber, extractor = production_adapters(settings)
         return cls(settings, feed, downloader, audio, transcriber, extractor, JsonStateStore(settings.state_file))
 

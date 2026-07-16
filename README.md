@@ -9,7 +9,7 @@ The current implementation remains deliberately scoped to MTG Fast Finance and i
 1. A Python automation pipeline that turns podcast episodes into validated, versioned JSON and Markdown.
 2. A static vanilla JavaScript archive that reads only the generated JSON.
 
-Version 0.2 retains a fully runnable credential-free mock mode and adds live RSS, temporary audio preparation, OpenAI transcription/extraction, daily GitHub Actions processing, and GitHub Pages publication.
+Version 0.2 retains a fully runnable credential-free mock mode and adds live RSS, temporary audio preparation, swappable AI transcription/extraction, daily GitHub Actions processing, and GitHub Pages publication.
 
 ## Normal user workflow
 
@@ -21,7 +21,7 @@ The repository starts with synthetic fixtures. The deployed production catalog e
 
 ## Developer quick start
 
-Python 3.11 or newer is required. Mock processing needs no credentials or external media tools. Live processing additionally requires `ffmpeg`, network access, and `OPENAI_API_KEY`.
+Python 3.11 or newer is required. Mock processing needs no credentials or external media tools. Live processing additionally requires `ffmpeg`, network access, and either `GEMINI_API_KEY` or `OPENAI_API_KEY` depending on `FFW_AI_PROVIDER`.
 
 ```powershell
 py -m venv .venv
@@ -43,7 +43,7 @@ For development without installing the package, set `PYTHONPATH=src` before invo
 | Command | Purpose |
 |---|---|
 | `python -m ffw run` | Process unprocessed mock episodes and skip terminal records idempotently. |
-| `python -m ffw run --live` | Process the configured live feed with production adapters. |
+| `python -m ffw run --live` | Process the configured live feed with the selected production adapters. |
 | `python -m ffw validate` | Validate identity, states, evidence, outputs, catalogs, and deterministic Markdown. |
 | `python -m ffw render` | Re-render Markdown from JSON and rebuild `index.json` and `cards.json`. |
 | `python -m ffw serve` | Serve the repository and local archive on port 8765. |
@@ -99,7 +99,7 @@ Implemented foundation:
 - Protocols for feed, downloader, audio, transcription, extraction, and state adapters.
 - Idempotent terminal-state handling and auditable processing histories.
 - Versioned JSON Schema and pipeline metadata.
-- Opt-in live RSS, guarded audio download, `ffmpeg` preparation, OpenAI transcription/extraction, and a scheduled GitHub Actions/Pages workflow.
+- Opt-in live RSS, guarded audio download, `ffmpeg` preparation, Gemini/OpenAI transcription and extraction adapters, and a scheduled GitHub Actions/Pages workflow.
 
 Still intentionally outside the current product:
 

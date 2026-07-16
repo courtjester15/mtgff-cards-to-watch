@@ -2,17 +2,19 @@ from __future__ import annotations
 
 import hashlib
 import io
+import os
 import unittest
 import uuid
 from email.message import Message
 from pathlib import Path
+from unittest.mock import patch
 
 from ffw.archive import rebuild_catalog
 from ffw.detection import locate_cards_to_watch
 from ffw.models import EpisodeCandidate
 from ffw.config import Settings
 from ffw.pipeline import Pipeline
-from ffw.production import StreamingDownloader, parse_episode_number, parse_rss
+from ffw.production import GeminiExtractor, GeminiTranscriber, OpenAIExtractor, OpenAITranscriber, StreamingDownloader, parse_episode_number, parse_rss, production_adapters
 from ffw.state import JsonStateStore
 from ffw.utils import atomic_write_json, load_json
 
@@ -153,6 +155,26 @@ class FrontendContractTests(unittest.TestCase):
 
 
 class ProductionPipelineTests(unittest.TestCase):
+    def test_live_provider_selection_is_swappable(self) -> None:
+        root = workspace_temp()
+        base = {
+            "root": root,
+            "archive_dir": root / "archive",
+            "state_file": root / "state/episodes.json",
+            "work_dir": root / ".ffw-work",
+            "mode": "live",
+        }
+        with patch.dict(os.environ, {"GEMINI_API_KEY": "test"}, clear=False):
+            settings = Settings(**base, ai_provider="gemini", transcription_model="gemini-t", extraction_model="gemini-e")
+            _, _, _, transcriber, extractor = production_adapters(settings)
+            self.assertIsInstance(transcriber, GeminiTranscriber)
+            self.assertIsInstance(extractor, GeminiExtractor)
+            self.assertEqual(("gemini-t", "gemini-e"), (transcriber.model_name, extractor.model_name))
+        settings = Settings(**base, ai_provider="openai", transcription_model="openai-t", extraction_model="openai-e")
+        _, _, _, transcriber, extractor = production_adapters(settings)
+        self.assertIsInstance(transcriber, OpenAITranscriber)
+        self.assertIsInstance(extractor, OpenAIExtractor)
+
     def test_real_five_pick_publication_cleanup_and_idempotent_skip(self) -> None:
         root = workspace_temp()
         settings = Settings(root, root / "archive", root / "state/episodes.json", root / ".ffw-work", mode="live")

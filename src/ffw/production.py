@@ -9,6 +9,7 @@ import subprocess
 import urllib.request
 import xml.etree.ElementTree as ET
 from datetime import timezone
+from copy import deepcopy
 from email.utils import parsedate_to_datetime
 from pathlib import Path
 from typing import Any, Callable
@@ -223,6 +224,147 @@ class OpenAITranscriber:
         }
 
 
+TRANSCRIPT_SCHEMA: dict[str, Any] = {
+    "type": "object",
+    "additionalProperties": False,
+    "required": ["text", "segments"],
+    "properties": {
+        "text": {"type": "string"},
+        "segments": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "additionalProperties": False,
+                "required": ["start", "end", "text", "speaker"],
+                "properties": {
+                    "start": {"type": "number"},
+                    "end": {"type": "number"},
+                    "text": {"type": "string"},
+                    "speaker": {"type": ["string", "null"]},
+                },
+            },
+        },
+    },
+}
+
+
+def _json_from_model_text(text: str) -> dict[str, Any]:
+    cleaned = text.strip()
+    if cleaned.startswith("```"):
+        cleaned = re.sub(r"^```(?:json)?\s*", "", cleaned, flags=re.IGNORECASE)
+        cleaned = re.sub(r"\s*```$", "", cleaned)
+    return json.loads(cleaned)
+
+
+def _inline_json_schema_refs(schema: dict[str, Any]) -> dict[str, Any]:
+    """Inline local $defs references for Gemini's narrower structured-output support."""
+    copied = deepcopy(schema)
+    defs = copied.pop("$defs", {})
+
+    def visit(value: Any) -> Any:
+        if isinstance(value, dict):
+            ref = value.get("$ref")
+            if isinstance(ref, str) and ref.startswith("#/$defs/"):
+                name = ref.removeprefix("#/$defs/")
+                return visit(deepcopy(defs[name]))
+            return {key: visit(item) for key, item in value.items()}
+        if isinstance(value, list):
+            return [visit(item) for item in value]
+        return value
+
+    return visit(copied)
+
+
+def _is_gemini_schema_error(exc: Exception) -> bool:
+    text = str(exc).lower()
+    return any(token in text for token in ("schema", "response_json_schema", "response_schema", "json", "invalid_argument"))
+
+
+def _gemini_generate_json(client: Any, types: Any, *, model: str, contents: list[Any], schema: dict[str, Any]) -> dict[str, Any]:
+    attempts = [
+        {"response_mime_type": "application/json", "response_json_schema": schema},
+        {"response_mime_type": "application/json", "response_schema": schema},
+        {"response_mime_type": "application/json"},
+    ]
+    last_error: Exception | None = None
+    for config_kwargs in attempts:
+        request_contents = contents
+        if config_kwargs == attempts[-1]:
+            request_contents = [*contents, "Required JSON schema:\n" + json.dumps(schema, ensure_ascii=False)]
+        try:
+            response = client.models.generate_content(
+                model=model,
+                contents=request_contents,
+                config=types.GenerateContentConfig(**config_kwargs),
+            )
+            payload = _json_from_model_text(getattr(response, "text", "") or "{}")
+            usage = getattr(response, "usage_metadata", None)
+            payload["_usage"] = usage.model_dump() if hasattr(usage, "model_dump") else (dict(usage) if usage else None)
+            return payload
+        except Exception as exc:
+            if not _is_gemini_schema_error(exc) or config_kwargs == attempts[-1]:
+                raise
+            last_error = exc
+    raise RuntimeError(f"Gemini JSON generation failed: {last_error}")
+
+
+class GeminiTranscriber:
+    def __init__(self, model_name: str, chunk_seconds: int) -> None:
+        self.model_name = model_name
+        self.chunk_seconds = chunk_seconds
+
+    def transcribe(self, episode: EpisodeCandidate, audio_files: list[Path]) -> dict[str, Any]:
+        api_key = os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
+        if not api_key:
+            raise RuntimeError("GEMINI_API_KEY is required for Gemini live transcription.")
+        from google import genai
+        from google.genai import types
+
+        client = genai.Client(api_key=api_key)
+        segments: list[dict[str, Any]] = []
+        texts: list[str] = []
+        usage: list[dict[str, Any]] = []
+        prompt = (
+            "Transcribe this MTG Fast Finance podcast audio chunk. Return JSON only. "
+            "Use seconds relative to the start of this chunk for start and end. "
+            "Include speaker labels when they are obvious; otherwise use null. "
+            "Keep card names and price phrases as spoken."
+        )
+        for index, path in enumerate(audio_files):
+            payload = _gemini_generate_json(
+                client,
+                types,
+                model=self.model_name,
+                contents=[
+                    prompt,
+                    types.Part.from_bytes(data=path.read_bytes(), mime_type="audio/mpeg"),
+                ],
+                schema=TRANSCRIPT_SCHEMA,
+            )
+            if payload.get("_usage"):
+                usage.append(payload.pop("_usage"))
+            offset = index * self.chunk_seconds
+            texts.append(str(payload.get("text", "")))
+            for segment in payload.get("segments", []):
+                segment = dict(segment)
+                segment["start"] = float(segment.get("start", 0)) + offset
+                segment["end"] = float(segment.get("end", segment["start"] - offset)) + offset
+                if segment.get("speaker"):
+                    segment["speaker"] = str(segment["speaker"])
+                segments.append(segment)
+        segments.sort(key=lambda item: item["start"])
+        return {
+            "synthetic": False,
+            "provider": "Gemini",
+            "model": self.model_name,
+            "text": "\n".join(texts),
+            "segments": segments,
+            "chunk_count": len(audio_files),
+            "duration_seconds": episode.duration_seconds,
+            "usage": usage or None,
+        }
+
+
 EXTRACTION_SCHEMA: dict[str, Any] = {
     "type": "object",
     "additionalProperties": False,
@@ -291,11 +433,61 @@ class OpenAIExtractor:
         return result
 
 
+class GeminiExtractor:
+    def __init__(self, model_name: str, card_glossary: str = "") -> None:
+        self.model_name = model_name
+        self.card_glossary = card_glossary
+
+    def extract(self, episode: EpisodeCandidate, transcript: dict[str, Any]) -> dict[str, Any]:
+        api_key = os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
+        if not api_key:
+            raise RuntimeError("GEMINI_API_KEY is required for Gemini live extraction.")
+        section = locate_cards_to_watch(transcript.get("segments", []))
+        if not section["located"]:
+            return {"section": {key: value for key, value in section.items() if key != "segments"}, "recommendations": [], "review_reason": section["review_reason"]}
+        from google import genai
+        from google.genai import types
+
+        client = genai.Client(api_key=api_key)
+        evidence = json.dumps(section.pop("segments"), ensure_ascii=False)
+        instructions = (
+            "Extract only explicit MTG Fast Finance Cards to Watch recommendations from the supplied timestamped section. "
+            "Never add finance opinions or infer unsupported cards, printings, speakers, prices, targets, foil status, or confidence. "
+            "Unknown values must be null. Preserve original price wording in target.raw. Every pick needs a timestamp and a short evidence excerpt of 30 words or fewer. "
+            "Merge duplicate discussion of the same card unless distinct printings are clearly recommended. Mark ambiguity needs_review. "
+            "Return JSON that exactly matches the supplied schema."
+        )
+        if self.card_glossary:
+            instructions += " Candidate Magic names supplied by the operator for spelling assistance only: " + self.card_glossary
+        result = _gemini_generate_json(
+            client,
+            types,
+            model=self.model_name,
+            contents=[instructions, evidence],
+            schema=_inline_json_schema_refs(EXTRACTION_SCHEMA),
+        )
+        result["section"] = section
+        if section.get("review_reason") and not result.get("review_reason"):
+            result["review_reason"] = section["review_reason"]
+        return result
+
+
 def production_adapters(settings: Settings) -> tuple[Any, Any, Any, Any, Any]:
+    provider = settings.ai_provider.lower()
+    if provider not in {"openai", "gemini"}:
+        raise ValueError("FFW_AI_PROVIDER must be 'openai' or 'gemini'.")
+    transcriber: Any
+    extractor: Any
+    if provider == "gemini":
+        transcriber = GeminiTranscriber(settings.transcription_model, settings.audio_chunk_seconds)
+        extractor = GeminiExtractor(settings.extraction_model, settings.card_glossary)
+    else:
+        transcriber = OpenAITranscriber(settings.transcription_model, settings.audio_chunk_seconds)
+        extractor = OpenAIExtractor(settings.extraction_model, settings.card_glossary)
     return (
         LiveFeedSource(settings.feed_url),
         StreamingDownloader(settings.max_audio_bytes, settings.download_timeout_seconds),
         FfmpegAudioProcessor(settings.audio_chunk_seconds),
-        OpenAITranscriber(settings.transcription_model, settings.audio_chunk_seconds),
-        OpenAIExtractor(settings.extraction_model, settings.card_glossary),
+        transcriber,
+        extractor,
     )

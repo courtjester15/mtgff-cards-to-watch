@@ -12,7 +12,7 @@ One concurrency group serializes all writers. Complete and needs-review records 
 
 ## One-time GitHub setup
 
-1. Open the repository, then **Settings → Secrets and variables → Actions → New repository secret**. Name it exactly `OPENAI_API_KEY` and paste a valid OpenAI API key.
+1. Open the repository, then **Settings -> Secrets and variables -> Actions -> New repository secret**. For the temporary Gemini validation provider, name it exactly `GEMINI_API_KEY` and paste a valid Google AI Studio API key. For the OpenAI provider, name it exactly `OPENAI_API_KEY` and paste a valid OpenAI API key.
 2. Open **Settings → Actions → General → Workflow permissions**. Select **Read and write permissions**, then save.
 3. Open **Settings → Pages → Build and deployment → Source**. Select **GitHub Actions**.
 4. If GitHub pauses the first deployment, open **Actions → FFW automated archive → the waiting run → Review deployments**, approve `github-pages`, and continue.
