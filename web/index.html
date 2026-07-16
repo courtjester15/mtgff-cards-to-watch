@@ -3,9 +3,9 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="FFW local Cards to Watch archive">
+    <meta name="description" content="Automated MTG Fast Finance Cards to Watch archive">
     <title>FFW · Cards to Watch Archive</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=0.2.0">
   </head>
   <body>
     <div class="shell">
@@ -23,7 +23,7 @@
         </nav>
         <div class="sidebar-foot">
           <span class="live-dot"></span>
-          <span><strong>Local archive</strong><small id="side-version">Loading…</small></span>
+          <span><strong>Automated archive</strong><small id="side-version">Loading…</small></span>
         </div>
       </aside>
 
@@ -34,12 +34,12 @@
             <h1 id="page-title">Dashboard</h1>
           </div>
           <div class="top-actions">
-            <span class="fixture-pill">Synthetic fixtures</span>
+            <span id="mode-pill" class="fixture-pill">Automated</span>
             <button id="refresh-button" class="icon-button" type="button" title="Reload archive data" aria-label="Reload archive data">↻</button>
           </div>
         </header>
 
-        <div id="data-banner" class="banner">All visible recommendations are synthetic test fixtures, not real podcast commentary or financial advice.</div>
+        <div id="data-banner" class="banner" hidden></div>
         <div id="app" aria-live="polite">
           <div class="loading"><span></span> Loading archive…</div>
         </div>
@@ -54,6 +54,6 @@
     <template id="empty-template">
       <div class="empty-state"><strong>No matching records</strong><p>Try changing the search or status filter.</p></div>
     </template>
-    <script src="app.js" defer></script>
+    <script src="app.js?v=0.2.0" defer></script>
   </body>
 </html>

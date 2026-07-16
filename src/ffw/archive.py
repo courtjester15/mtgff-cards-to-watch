@@ -6,21 +6,27 @@ from typing import Any
 from .config import PIPELINE_VERSION, SCHEMA_VERSION
 from .rendering import render_episode_markdown
 from .utils import atomic_write_json, atomic_write_text, load_json
+from .models import utc_now
 
 
 SYNTHETIC_NOTICE = (
-    "All archive content in this Revision 1 build is synthetic fixture data. "
+    "All archive content in this fixture build is synthetic test data. "
     "It is not real podcast commentary or financial advice."
 )
 
 
-def rebuild_catalog(archive_dir: Path) -> tuple[dict[str, Any], list[dict[str, Any]]]:
+def rebuild_catalog(
+    archive_dir: Path, *, production: bool = False, feed_name: str = "MTG Fast Finance",
+    repository_url: str = "https://github.com/courtjester15/mtgff-cards-to-watch",
+) -> tuple[dict[str, Any], list[dict[str, Any]]]:
     archive_dir.mkdir(parents=True, exist_ok=True)
     episode_records: list[dict[str, Any]] = []
     cards: list[dict[str, Any]] = []
     for metadata_path in sorted((archive_dir / "episodes").glob("*/metadata.json")):
         metadata = load_json(metadata_path)
         if not metadata:
+            continue
+        if production and metadata.get("synthetic", False):
             continue
         summary_path = metadata_path.parent / "summary.json"
         summary = load_json(summary_path)
@@ -32,6 +38,10 @@ def rebuild_catalog(archive_dir: Path) -> tuple[dict[str, Any], list[dict[str, A
             "pick_count": len(summary["recommendations"]) if summary else 0,
             "directory": metadata_path.parent.relative_to(archive_dir).as_posix(),
             "outputs": metadata.get("outputs", {}),
+            "processed_at": metadata["processing"].get("processed_at"),
+            "review_reason": metadata["processing"].get("review_reason"),
+            "error": metadata["processing"].get("error"),
+            "synthetic": metadata.get("synthetic", False),
         }
         episode_records.append(episode_item)
         if summary:
@@ -63,14 +73,27 @@ def rebuild_catalog(archive_dir: Path) -> tuple[dict[str, Any], list[dict[str, A
         "failed": status_counts.get("failed", 0),
         "completed": status_counts.get("complete", 0),
     }
+    generated_at = utc_now()
+    is_synthetic = not production
+    successful = [episode for episode in episode_records if episode["processing_status"] in {"complete", "needs_review"}]
     index = {
         "schema_version": SCHEMA_VERSION,
-        "synthetic": True,
-        "notice": SYNTHETIC_NOTICE,
+        "synthetic": is_synthetic,
+        "notice": SYNTHETIC_NOTICE if is_synthetic else "Automated transcription and extraction may contain errors. Verify against source audio.",
         "metadata": {
             "project": "FFW",
             "pipeline_version": PIPELINE_VERSION,
-            "generated_from": "synthetic-fixtures",
+            "schema_version": SCHEMA_VERSION,
+            "generated_at": generated_at,
+            "latest_successful_run_at": max((item.get("processed_at") or "" for item in successful), default=None),
+            "generated_from": "synthetic-fixtures" if is_synthetic else "live-feed",
+            "production_mode": production,
+            "source": {"name": feed_name},
+            "real_episode_count": 0 if is_synthetic else len(episode_records),
+            "real_pick_count": 0 if is_synthetic else len(cards),
+            "last_discovered_episode_date": episode_records[0]["published_at"] if episode_records else None,
+            "repository_url": repository_url,
+            "workflow_url": f"{repository_url}/actions/workflows/ffw.yml",
         },
         "counts": counts,
         "status_counts": status_counts,
@@ -83,8 +106,8 @@ def rebuild_catalog(archive_dir: Path) -> tuple[dict[str, Any], list[dict[str, A
         archive_dir / "cards.json",
         {
             "schema_version": SCHEMA_VERSION,
-            "synthetic": True,
-            "notice": SYNTHETIC_NOTICE,
+            "synthetic": is_synthetic,
+            "notice": SYNTHETIC_NOTICE if is_synthetic else "Automated extraction; verify against source audio.",
             "count": len(cards),
             "cards": cards,
         },
@@ -92,12 +115,11 @@ def rebuild_catalog(archive_dir: Path) -> tuple[dict[str, Any], list[dict[str, A
     return index, cards
 
 
-def rerender_archive(archive_dir: Path) -> int:
+def rerender_archive(archive_dir: Path, *, production: bool = False) -> int:
     rendered = 0
     for summary_path in (archive_dir / "episodes").glob("*/summary.json"):
         summary = load_json(summary_path)
         atomic_write_text(summary_path.with_suffix(".md"), render_episode_markdown(summary))
         rendered += 1
-    rebuild_catalog(archive_dir)
+    rebuild_catalog(archive_dir, production=production)
     return rendered
-

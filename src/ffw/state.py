@@ -35,6 +35,8 @@ class JsonStateStore:
         state = self._load()
         timestamp = utc_now()
         record = state["episodes"].setdefault(guid, {"guid": guid, "history": []})
+        if status == "downloading" and record.get("status") != "downloading":
+            record["attempt_count"] = int(record.get("attempt_count", 0)) + 1
         record.update(updates)
         record["status"] = status
         record["updated_at"] = timestamp
@@ -43,3 +45,18 @@ class JsonStateStore:
         state["pipeline_version"] = PIPELINE_VERSION
         atomic_write_json(self.path, state)
 
+    def discover(self, episode: Any) -> bool:
+        if self.get(episode.guid):
+            return False
+        self.transition(
+            episode.guid,
+            "detected",
+            title=episode.title,
+            episode_number=episode.episode_number,
+            published_at=episode.published_at,
+            attempt_count=0,
+            pick_count=0,
+            error=None,
+        )
+        self.transition(episode.guid, "queued")
+        return True

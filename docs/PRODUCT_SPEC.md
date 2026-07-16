@@ -1,72 +1,103 @@
-# FFW Product Specification
+# ManaIntel Product Specification
 
 ## Purpose
 
-FFW eliminates the recurring manual work required to capture the **Cards to Watch** section of MTG Fast Finance. It deliberately excludes whole-episode summaries and original finance opinions.
+ManaIntel aggregates recommendations from trusted MTG finance sources into a consistent searchable archive. The canonical user question is:
 
-Revision 1 proves the architecture with synthetic input and no production credentials. It must feel and behave like the eventual product while making network boundaries unmistakable.
+> Who recommended what, when, and why?
+
+The current FFW application proves this workflow for the Cards to Watch section of one podcast. It is the first ingestion implementation, not the final product boundary.
 
 ## Product surfaces
 
-### Automation pipeline
+### Source ingestion
 
-The production target is:
+Every source adapter implements the same conceptual flow:
 
 ```text
-RSS → detect → download → prepare audio → transcribe → locate section
-    → extract → validate → JSON → Markdown → archive catalog
+discover source item -> acquire permitted content -> locate relevant material
+  -> extract recommendations -> validate evidence -> publish common records
 ```
 
-The current build performs the same orchestration through mock implementations. Every transition is durably written to the JSON state store.
+Source-specific work ends at normalization. Podcast transcription, video captions, HTML parsing, and community import are adapter concerns and must not leak into the archive or frontend.
 
-### Local archive
+### Recommendation archive
 
-The archive is a static client of generated data. It provides:
+The MVP archive provides:
 
-- Dashboard totals, latest episode, recent recommendations, and pipeline version.
-- Episode archive with status, review state, listen link, and generated summary link.
-- Searchable and filterable flattened picks.
-- Pick details including targets, hold, reasoning, caveats, confidence, timestamp, and evidence.
-- Processing-status overview.
-- About view documenting trust rules and production boundaries.
+- A chronological view of recent recommendations.
+- Search by card, source, contributor, source-item title, and recommendation text.
+- Filters for publication date, source, source type, and review status.
+- Recommendation detail with mentioned prices, targets, reasoning, confidence, and evidence.
+- A link or reference back to the exact location in the source when possible.
+- Visible processing and review status; uncertain records are never silently presented as approved.
 
-## Functional requirements
+## MVP functional requirements
 
-1. Episode identity is based on RSS GUID, not mutable title or publication time.
-2. A terminal episode is skipped on ordinary reruns.
-3. Successful episodes publish `metadata.json`, `summary.json`, and `summary.md`.
-4. Failed episodes publish metadata and failure details without pretending a summary exists.
-5. `archive/index.json` is the frontend master catalog.
-6. `archive/cards.json` contains every recommendation as a flattened record.
-7. Markdown is reproducibly rendered from summary JSON.
-8. Every recommendation has a deterministic unique ID.
-9. Unknown values remain `null`.
-10. Review and failure states remain visible in both data and UI.
+1. Each source, source item, and recommendation has a stable identity.
+2. Reprocessing a source item does not create duplicate recommendations.
+3. Every recommendation identifies its source item, publication date, card, and faithful recommendation summary.
+4. Mentioned market prices remain distinct from suggested entry and exit targets.
+5. Unknown values remain `null`; extraction must not invent missing context.
+6. Every published recommendation has a timestamp or source reference and short supporting evidence where permitted.
+7. Confidence and review status are stored as data and exposed in the UI.
+8. Failed ingestion remains auditable without publishing a fabricated or empty successful result.
+9. The frontend consumes only the common archive contract and contains no source-specific parsing or presentation logic.
+10. Generated or extracted text is clearly attributable to its source and can be verified against the source reference.
+11. The archive supports deterministic rebuilds of derived catalogs and views.
+12. Export boundaries are versioned so future consumers such as ManaSpec do not import pipeline internals.
 
-## Fixture acceptance criteria
+## MVP entities
 
-The included fixture bundle contains five clearly synthetic episodes and fifteen recommendations, including:
+```text
+Source -> Source item -> Recommendation -> Archive projections
+```
 
-- Three completed episodes, one needs-review episode, and one failed episode.
-- Repeated cards across episodes.
-- Confirmed, likely, ambiguous, and unknown printings.
-- Missing entry, hold, exit, and confidence values.
-- Multiple hosts and a three-host episode.
-- Ambiguous cross-talk and an intentional download failure.
+- A **source** is a publisher, show, channel, publication, or community feed.
+- A **source item** is an episode, video, article, newsletter issue, post, or curated discussion summary.
+- A **recommendation** is a source-attributed claim about a card, with supporting context and evidence.
+- An **archive projection** is a rebuildable search or display representation of canonical records.
 
-## Non-goals for Revision 1
+See [Data Model](DATA_MODEL.md) for the target contract and the mapping from the current episode schema.
 
-- Live RSS or historical backfill.
-- Real MP3 download, conversion, or transcription.
-- GitHub Actions or Pages.
-- Email, Discord, price tracking, performance scoring, authentication, or database storage.
-- ManaSpec integration.
+## Trust and content requirements
 
-## Success measures for the next production phase
+- Preserve source wording for prices and targets alongside any parsed numeric values.
+- Keep evidence excerpts compact and store only content that is permitted and necessary.
+- Distinguish source confidence from extraction confidence and editorial review status.
+- Do not infer financial advice, sentiment, targets, speakers, printings, or currencies without support.
+- Treat all imported content and extracted output as untrusted input.
+- Clearly identify synthetic fixtures so they cannot be mistaken for real recommendations.
 
-- No duplicate published episode for the same RSS GUID.
-- Card-name accuracy measured on a representative transcript set.
-- No unsupported entry, exit, printing, host, or confidence value in evaluation output.
-- Clear `needs_review` routing when section boundaries, speakers, prices, or printings are ambiguous.
-- A failed scheduled run can retry without corrupting or duplicating published data.
+## Explicit non-goals for the MVP
 
+- Live card-price tracking or market data.
+- Price prediction, automated picks, or AI investment analysis.
+- Portfolio, position, or transaction management.
+- Performance scoring or source leaderboards.
+- Recommendation alerts or trading automation.
+- Social features or user-generated investment advice.
+- Direct ManaSpec workflow integration.
+- Trend, agreement, disagreement, or reliability analytics.
+
+## Current FFW acceptance criteria
+
+Until the common contract is implemented, the proof of concept retains its existing acceptance criteria:
+
+- RSS GUID is the stable episode identity.
+- Terminal episodes are skipped on ordinary reruns.
+- Successful episodes publish `metadata.json`, `summary.json`, and deterministic `summary.md`.
+- Failed episodes publish metadata without a false summary.
+- `archive/index.json` and `archive/cards.json` are rebuildable frontend projections.
+- Every recommendation has a deterministic ID, timestamp, evidence excerpt, and review state.
+- The synthetic fixture set exercises repeats, missing values, ambiguous speech, multiple hosts, and failure handling.
+
+## MVP success measures
+
+- Users can answer the five questions in the [Vision](VISION.md) from the archive without inspecting raw pipeline data.
+- No duplicate source item or recommendation is published during normal reprocessing.
+- Card names, source attribution, prices, and references meet thresholds defined on representative evaluation fixtures.
+- Unsupported values are absent rather than inferred.
+- Ambiguous records route to review with an actionable reason.
+- A failed run can retry without corrupting or duplicating published data.
+- A second source type can be added without changing frontend recommendation logic.

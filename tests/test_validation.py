@@ -25,6 +25,14 @@ class ValidationTests(unittest.TestCase):
         codes = {issue.code for issue in validate_archive(settings.archive_dir, settings.state_file)}
         self.assertIn("cards_catalog_drift", codes)
 
+    def test_live_validation_refuses_fixture_catalog(self) -> None:
+        root = Path.cwd() / ".test-work" / str(uuid.uuid4())
+        root.mkdir(parents=True, exist_ok=True)
+        settings = Settings(root, root / "archive", root / "state/episodes.json", root / ".ffw-work")
+        Pipeline.mock(settings).run()
+        codes = {issue.code for issue in validate_archive(settings.archive_dir, settings.state_file, expected_production=True)}
+        self.assertIn("fixture_catalog_in_live_mode", codes)
+
 
 if __name__ == "__main__":
     unittest.main()

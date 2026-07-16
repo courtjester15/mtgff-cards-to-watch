@@ -17,16 +17,20 @@ def render_episode_markdown(summary: dict[str, Any]) -> str:
     lines = [
         f"# Episode {episode['episode_number']}: {episode['title']}",
         "",
-        "> **Synthetic fixture:** This document contains generated test data only. It does not represent real podcast commentary or financial advice.",
-        "",
+    ]
+    if summary.get("synthetic"):
+        lines.extend(["> **Synthetic fixture:** This document contains generated test data only. It does not represent real podcast commentary or financial advice.", ""])
+    else:
+        lines.extend(["> Automated transcription and extraction. Verify recommendations against the linked source audio.", ""])
+    lines.extend([
         f"- Published: {episode['published_at']}",
-        f"- Hosts: {', '.join(episode['hosts'])}",
+        f"- Hosts: {', '.join(episode['hosts']) or 'Not identified'}",
         f"- Processing status: {processing['status'].replace('_', ' ').title()}",
         f"- Episode source: {episode['episode_url']}",
         "",
         "## Cards to Watch",
         "",
-    ]
+    ])
     if not summary["recommendations"]:
         lines.extend(["No recommendations were extracted.", ""])
     for pick in summary["recommendations"]:
@@ -62,4 +66,3 @@ def render_episode_markdown(summary: dict[str, Any]) -> str:
         ]
     )
     return "\n".join(lines)
-

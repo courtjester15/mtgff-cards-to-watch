@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.0.0",
+  "schema_version": "1.1.0",
   "synthetic": true,
   "notice": "Synthetic fixture output. Not real podcast commentary or financial advice.",
   "episode": {
@@ -13,117 +13,82 @@
     "hosts": [
       "Alex Example",
       "Blair Example"
-    ]
+    ],
+    "description": null
   },
   "processing": {
     "status": "complete",
     "review_state": "approved",
     "review_reason": null,
-    "pipeline_version": "0.1.0-mock",
-    "schema_version": "1.0.0",
+    "pipeline_version": "0.2.0",
+    "schema_version": "1.1.0",
     "transcription_model": "mock-transcriber-v1",
     "extraction_model": "mock-extractor-v1",
-    "prompt_version": "cards-to-watch-v1",
-    "processed_at": "2026-07-15T02:54:59Z",
+    "prompt_version": "cards-to-watch-v2",
+    "processed_at": "2026-07-16T02:31:03Z",
     "history": [
       {
         "status": "detected",
-        "timestamp": "2026-07-15T02:42:01Z"
+        "timestamp": "2026-07-16T02:31:00Z"
+      },
+      {
+        "status": "queued",
+        "timestamp": "2026-07-16T02:31:00Z"
+      },
+      {
+        "status": "queued",
+        "timestamp": "2026-07-16T02:31:01Z"
       },
       {
         "status": "downloading",
-        "timestamp": "2026-07-15T02:42:01Z"
+        "timestamp": "2026-07-16T02:31:01Z"
       },
       {
         "status": "downloaded",
-        "timestamp": "2026-07-15T02:42:02Z"
+        "timestamp": "2026-07-16T02:31:01Z"
+      },
+      {
+        "status": "preparing",
+        "timestamp": "2026-07-16T02:31:01Z"
       },
       {
         "status": "transcribing",
-        "timestamp": "2026-07-15T02:42:02Z"
+        "timestamp": "2026-07-16T02:31:01Z"
       },
       {
         "status": "transcribed",
-        "timestamp": "2026-07-15T02:42:02Z"
+        "timestamp": "2026-07-16T02:31:02Z"
       },
       {
         "status": "extracting",
-        "timestamp": "2026-07-15T02:42:03Z"
+        "timestamp": "2026-07-16T02:31:03Z"
       },
       {
         "status": "extracted",
-        "timestamp": "2026-07-15T02:42:03Z"
+        "timestamp": "2026-07-16T02:31:03Z"
+      },
+      {
+        "status": "validating",
+        "timestamp": "2026-07-16T02:31:03Z"
+      },
+      {
+        "status": "publishing",
+        "timestamp": "2026-07-16T02:31:03Z"
       },
       {
         "status": "complete",
-        "timestamp": "2026-07-15T02:42:03Z"
-      },
-      {
-        "status": "detected",
-        "timestamp": "2026-07-15T02:52:07Z"
-      },
-      {
-        "status": "downloading",
-        "timestamp": "2026-07-15T02:52:07Z"
-      },
-      {
-        "status": "downloaded",
-        "timestamp": "2026-07-15T02:52:07Z"
-      },
-      {
-        "status": "transcribing",
-        "timestamp": "2026-07-15T02:52:07Z"
-      },
-      {
-        "status": "transcribed",
-        "timestamp": "2026-07-15T02:52:07Z"
-      },
-      {
-        "status": "extracting",
-        "timestamp": "2026-07-15T02:52:07Z"
-      },
-      {
-        "status": "extracted",
-        "timestamp": "2026-07-15T02:52:07Z"
-      },
-      {
-        "status": "complete",
-        "timestamp": "2026-07-15T02:52:07Z"
-      },
-      {
-        "status": "detected",
-        "timestamp": "2026-07-15T02:54:58Z"
-      },
-      {
-        "status": "downloading",
-        "timestamp": "2026-07-15T02:54:58Z"
-      },
-      {
-        "status": "downloaded",
-        "timestamp": "2026-07-15T02:54:58Z"
-      },
-      {
-        "status": "transcribing",
-        "timestamp": "2026-07-15T02:54:58Z"
-      },
-      {
-        "status": "transcribed",
-        "timestamp": "2026-07-15T02:54:58Z"
-      },
-      {
-        "status": "extracting",
-        "timestamp": "2026-07-15T02:54:58Z"
-      },
-      {
-        "status": "extracted",
-        "timestamp": "2026-07-15T02:54:58Z"
-      },
-      {
-        "status": "complete",
-        "timestamp": "2026-07-15T02:54:59Z"
+        "timestamp": "2026-07-16T02:31:03Z"
       }
     ],
-    "error": null
+    "error": null,
+    "transcription": {
+      "provider": "mock",
+      "model": "mock-transcriber-v1",
+      "chunk_count": 1,
+      "duration_seconds": null,
+      "usage": null
+    },
+    "extraction_usage": null
   },
   "section": {
     "located": true,
@@ -165,6 +130,9 @@
       "end_seconds": 1988,
       "evidence_excerpt": "Synthetic quote: I only want these if they settle into that thirteen-to-fifteen range.",
       "review_status": "approved",
+      "foil": null,
+      "mentioned_price": null,
+      "review_reason": null,
       "id": "pick-ee1977a41463746e",
       "timestamp": "00:31:42",
       "listen_url": "https://example.invalid/ffw/episode-901.mp3#t=1902"
@@ -196,6 +164,9 @@
       "end_seconds": 2076,
       "evidence_excerpt": "Synthetic quote: I am holding mine, but I would not buy this spike.",
       "review_status": "approved",
+      "foil": null,
+      "mentioned_price": null,
+      "review_reason": null,
       "id": "pick-9d0d16e30175f372",
       "timestamp": "00:33:24",
       "listen_url": "https://example.invalid/ffw/episode-901.mp3#t=2004"
@@ -226,6 +197,9 @@
       "end_seconds": 2152,
       "evidence_excerpt": "Synthetic quote: Under four is interesting, but I need to see the deck first.",
       "review_status": "approved",
+      "foil": null,
+      "mentioned_price": null,
+      "review_reason": null,
       "id": "pick-5d7912409882409d",
       "timestamp": "00:34:50",
       "listen_url": "https://example.invalid/ffw/episode-901.mp3#t=2090"
@@ -262,6 +236,9 @@
       "end_seconds": 2250,
       "evidence_excerpt": "Synthetic quote: The special frame is the one I mean, but verify which version before acting.",
       "review_status": "approved",
+      "foil": null,
+      "mentioned_price": null,
+      "review_reason": null,
       "id": "pick-56e60e33858b45a5",
       "timestamp": "00:36:10",
       "listen_url": "https://example.invalid/ffw/episode-901.mp3#t=2170"

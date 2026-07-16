@@ -1,79 +1,152 @@
-# FFW Architecture
+# ManaIntel Architecture
 
-## System boundary
+## Target system boundary
 
 ```mermaid
 flowchart LR
-    A["Feed adapter"] --> B["Pipeline orchestrator"]
-    B --> C["Downloader"]
-    C --> D["Audio processor"]
+    A["Source adapters"] --> B["Common ingestion orchestrator"]
+    B --> C["Normalizer"]
+    C --> D["Contract validator"]
+    D --> E["Canonical source and recommendation records"]
+    E --> F["Archive projection builder"]
+    F --> G["Source-agnostic archive UI"]
+    E -. "versioned read-only export" .-> H["ManaSpec"]
+    I["Operational state"] <--> B
+```
+
+The canonical boundary begins after normalization. Everything downstream of it operates on sources, source items, recommendations, and generic source references. It must not need to know whether input came from an RSS enclosure, video captions, HTML, or a community post.
+
+## Source adapter contract
+
+An adapter may implement different internal stages, but it has the same responsibilities:
+
+1. Identify the source and discover source items.
+2. Produce a stable external or derived identity for each item.
+3. Acquire content within the source's permissions and retention rules.
+4. Locate relevant recommendation material.
+5. Extract source-attributed recommendations without adding analysis.
+6. Attach a verifiable locator and compact evidence.
+7. Normalize into the common contract.
+8. Report processing, confidence, and review information.
+
+Example adapter flows:
+
+```text
+Podcast: RSS -> audio -> transcript -> timestamped recommendation
+Video:   feed/API -> captions -> timestamped recommendation
+Article: feed/index -> HTML -> section/paragraph recommendation
+Community: permitted API/export -> post/thread -> message reference
+```
+
+Acquisition and extraction interfaces can vary behind the adapter. The normalized output cannot.
+
+## Layer responsibilities
+
+| Layer | Responsibility |
+|---|---|
+| Source registry | Source identity, type, attribution, adapter configuration, and policy metadata. |
+| Adapter | Discovery, acquisition, source-specific parsing, and locator creation. |
+| Orchestrator | Stage ordering, idempotency, retry, state transitions, and publication. |
+| Normalizer | Maps adapter output to the common source-item and recommendation contract. |
+| Validator | Enforces schema, provenance, evidence, and trust invariants. |
+| Canonical store | Durable normalized records; independent of frontend needs. |
+| Projection builder | Rebuildable search catalogs, summaries, and exports. |
+| Archive UI | Search, filter, and source verification using only common projections. |
+
+## Canonical versus operational data
+
+- Canonical records describe sources, source items, and recommendations.
+- Operational state describes attempts, stages, errors, model versions, and review workflow.
+- Archive catalogs are disposable projections optimized for browsing and search.
+- Raw downloads and full transcripts are temporary adapter artifacts unless a documented permission and operational need justify retention.
+
+Keeping these roles separate prevents retries from altering published meaning and prevents frontend needs from becoming ingestion schema requirements.
+
+## Current FFW implementation
+
+The existing implementation is a production-shaped first adapter with podcast-specific types:
+
+```mermaid
+flowchart LR
+    A["FeedSource"] --> B["Pipeline"]
+    B --> C["AudioDownloader"]
+    C --> D["AudioProcessor"]
     D --> E["Transcriber"]
     E --> F["Extractor"]
     F --> G["Validator"]
-    G --> H["Episode JSON"]
+    G --> H["Episode summary JSON"]
     H --> I["Markdown renderer"]
-    H --> J["Archive catalog builder"]
-    J --> K["Static vanilla JS application"]
+    H --> J["Episode and card catalogs"]
+    J --> K["Static JavaScript UI"]
     L["JSON state store"] <--> B
 ```
 
-The frontend consumes generated JSON through HTTP. It does not import Python, read state, call a model, or know which orchestration host produced the archive.
+| Current module | Present responsibility | ManaIntel evolution |
+|---|---|---|
+| `interfaces.py` | Podcast feed/audio/extraction protocols. | Retain inside the podcast adapter; introduce a higher-level source-adapter contract. |
+| `production.py` / `mocks.py` | Live and synthetic podcast stages. | Become implementation details of the FFW adapter. |
+| `pipeline.py` | Podcast stage ordering and publication. | Reuse orchestration behavior while separating source-specific stages. |
+| `state.py` | Atomic operational state keyed by episode GUID. | Key attempts by source plus source-item identity. |
+| `validation.py` | Cross-file and podcast trust invariants. | Split common invariants from adapter-specific validation. |
+| `rendering.py` | Deterministic episode Markdown. | Render generic source items, with optional adapter-specific derived views. |
+| `archive.py` | Episode index and flattened card catalog. | Build neutral source-item and recommendation projections. |
+| `web/` | Static episode/pick interface. | Replace episode-specific labels and fields with common source concepts. |
 
-## Package responsibilities
+Current storage remains:
 
-| Module | Responsibility |
-|---|---|
-| `interfaces.py` | Protocol contracts for replaceable adapters. |
-| `mocks.py` | Credential-free feed, download, audio, transcription, and extraction fixtures. |
-| `pipeline.py` | Stage ordering, transitions, failure handling, and publication. |
-| `state.py` | Atomic durable operational state and transition history. |
-| `validation.py` | Cross-file and trust-invariant validation. |
-| `rendering.py` | Deterministic episode Markdown. |
-| `archive.py` | Master episode index and flattened card catalog. |
-| `cli.py` | Thin local operator interface and static server. |
+- `state/episodes.json`: mutable FFW pipeline state.
+- `archive/episodes/*/metadata.json`: episode and processing audit metadata.
+- `archive/episodes/*/summary.json`: canonical v1 podcast extraction.
+- `archive/episodes/*/summary.md`: deterministic v1 rendering.
+- `archive/index.json` and `archive/cards.json`: rebuildable v1 projections.
+- `.ffw-work/`: disposable stage workspace.
 
-## Storage
+These paths describe the current contract, not the required final ManaIntel layout.
 
-- `state/episodes.json` is mutable pipeline state keyed by GUID.
-- `archive/episodes/*/metadata.json` contains episode and pipeline audit metadata.
-- `archive/episodes/*/summary.json` is canonical extracted data.
-- `archive/episodes/*/summary.md` is derived human-readable output.
-- `archive/index.json` and `archive/cards.json` are rebuildable catalog projections.
-- `.ffw-work/` is disposable stage workspace and ignored by Git.
+### Revision 2 live operation
 
-All durable writes use a same-directory temporary file followed by replacement. A completed state is written only after episode outputs exist. The current mock intentionally keeps a failed fixture terminal; `backfill` forces a fresh attempt.
+`Pipeline.from_settings()` selects either the network-free fixture adapters or the live adapters without changing orchestration. Live RSS entries are normalized to the same `EpisodeCandidate` boundary and pass through:
 
-## Production adapter plan
+```text
+detected -> queued -> downloading -> downloaded -> preparing
+  -> transcribing -> transcribed -> extracting -> extracted
+  -> validating -> publishing -> complete | needs_review
+  -> failed from any stage (explicitly retryable)
+```
 
-### Feed
+The production catalog builder excludes synthetic episode folders even though fixture outputs remain in the repository for tests. GitHub Actions serializes writers, runs the Python pipeline and validation, commits `state/` and `archive/` only when changed, then packages `web/` plus the production archive at a clean Pages root. `.ffw-work/` never enters the durable artifact.
 
-Implement `FeedSource` with a standard-library or approved RSS parser. Identity must prefer item GUID and fall back to an enclosure URL hash only when GUID is absent. Iterate all retained feed items rather than comparing only the newest item.
+## Migration shape
 
-### Downloader and audio
+The first ManaIntel change should be an additive compatibility layer:
 
-Stream to temporary storage with size and content-type guards. A future `ffmpeg` adapter should normalize spoken-word audio and split uploads below the transcription provider's limit without retaining MP3s in Git.
+```text
+existing FFW summary -> FFW-to-ManaIntel normalizer -> common records -> new projections
+```
 
-### Transcription
+This makes the architectural claim testable before adding another source. Once the archive and UI operate entirely on common records, a second adapter can prove that no source-specific branch is required downstream. Existing v1 output should remain readable until migration behavior and identifiers are validated.
 
-Implement the existing `Transcriber` protocol. Persist model name and usage. Carry a Magic card-name glossary and preceding-chunk context, then evaluate card names, prices, negation, and timestamps.
+## Idempotency and identity
 
-### Extraction
+Idempotency is scoped by source:
 
-Use schema-constrained output. Locate the Cards to Watch boundaries before extraction; do not summarize the entire transcript. The model must emit null for unsupported fields and route ambiguity to review.
+- A source is identified independently of its display name.
+- A source item uses a stable publisher ID when available and a documented deterministic fallback otherwise.
+- A recommendation ID derives from source item identity plus stable evidence/card identity, not array position.
+- Reprocessing may update a record's extraction or review metadata without silently creating another logical recommendation.
 
-### Scheduling
+Exactly-once external API use is not guaranteed if a runner dies between a provider response and a durable checkpoint. Durable stage artifacts or transactional storage can be added if cost or scale makes that necessary.
 
-GitHub Actions can later call the same CLI with repository secrets and `contents: write`. Pipeline logic must remain here, not inside workflow YAML. Use an Actions concurrency group and a non-top-of-hour schedule.
+## Security, permissions, and trust
 
-## Idempotency boundary
+- Treat feed data, captions, HTML, transcript text, posts, and model output as untrusted.
+- Validate fetched protocols, redirects, sizes, and content types.
+- Store secrets only in an appropriate secret store.
+- Define access, excerpt, and retention policy per source before enabling its adapter.
+- Keep evidence short and attributable; do not build a shadow copy of restricted content.
+- Escape dynamic values in the browser and validate outbound source URLs.
+- Record extraction versions so recommendations can be audited and reproducibly regenerated where possible.
 
-FFW guarantees idempotent publication: one catalog identity per GUID and deterministic output paths/IDs. No process can guarantee an external API is called exactly once if a runner dies after the provider responds but before a durable checkpoint. If avoiding even rare repeated transcription charges becomes important, add durable stage blobs or a transactional database in a later phase.
+## Scaling boundary
 
-## Security and trust
-
-- Treat RSS strings, transcript text, and model output as untrusted data.
-- The browser escapes dynamic values before placing them in HTML.
-- Production URLs need protocol, redirect, content-length, and MIME validation.
-- Secrets belong in the scheduler's secret store, never JSON, state, logs, or frontend files.
-- Evidence excerpts should be short; raw audio and complete transcripts are not archive requirements.
-
+Static JSON and Git-backed state are reasonable for the current cadence and fixture size. Move to a database or search service only when concurrent writers, review workflows, catalog size, query latency, or schema migrations create a demonstrated need. The common contract and projection boundary should allow that storage change without redesigning adapters or the UI.

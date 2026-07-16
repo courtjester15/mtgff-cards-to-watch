@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>MTG Fast Finance</title>
+    <item>
+      <title>MTG Fast Finance Episode 1003</title>
+      <guid>real-guid-1003</guid>
+      <pubDate>Wed, 03 Jun 2026 12:00:00 +0000</pubDate>
+      <link>https://example.test/1003</link>
+      <description>Latest show</description>
+      <dc:creator>Host One &amp; Host Two</dc:creator>
+      <itunes:duration>01:05:30</itunes:duration>
+      <enclosure url="https://cdn.example.test/1003.mp3" type="audio/mpeg" length="12345"/>
+    </item>
+    <item>
+      <title>Episode 1001: Earlier Show</title>
+      <guid>real-guid-1001</guid>
+      <pubDate>Wed, 20 May 2026 12:00:00 +0000</pubDate>
+      <link>https://example.test/1001</link>
+      <enclosure url="https://cdn.example.test/1001.mp3" type="audio/mpeg"/>
+    </item>
+    <item>
+      <title>MTG Fast Finance Ep. 1002</title>
+      <pubDate>Wed, 27 May 2026 12:00:00 +0000</pubDate>
+      <link>https://example.test/1002</link>
+      <enclosure url="https://cdn.example.test/1002.mp3" type="audio/mpeg"/>
+    </item>
+    <item>
+      <title>Unsafe audio is ignored</title>
+      <guid>unsafe</guid>
+      <pubDate>Wed, 10 Jun 2026 12:00:00 +0000</pubDate>
+      <enclosure url="http://cdn.example.test/unsafe.mp3" type="audio/mpeg"/>
+    </item>
+  </channel>
+</rss>

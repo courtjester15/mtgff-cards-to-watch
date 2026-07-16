@@ -1,0 +1,149 @@
+name: FFW automated archive
+
+on:
+  schedule:
+    - cron: "17 10 * * *"
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Processing mode
+        required: true
+        type: choice
+        options: [normal, backfill]
+        default: normal
+      episode_limit:
+        description: Newest feed entries to inspect (0 means all)
+        required: true
+        default: "0"
+      retry_failed:
+        description: Retry episodes currently marked failed
+        required: true
+        type: boolean
+        default: false
+      force_guid:
+        description: Optional exact episode GUID to force
+        required: false
+        default: ""
+      deploy:
+        description: Deploy GitHub Pages after validation
+        required: true
+        type: boolean
+        default: true
+
+concurrency:
+  group: ffw-production-writer
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+env:
+  FFW_MODE: live
+  PYTHONUNBUFFERED: "1"
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install FFW and media tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes ffmpeg
+          python -m pip install --upgrade pip
+          python -m pip install -e .
+
+      - name: Run network-free tests
+        env:
+          FFW_MODE: mock
+        run: python -m unittest discover -s tests -v
+
+      - name: Process live feed
+        id: pipeline
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          INPUT_MODE: ${{ inputs.mode || 'normal' }}
+          INPUT_LIMIT: ${{ inputs.episode_limit || '0' }}
+          INPUT_RETRY: ${{ inputs.retry_failed || 'false' }}
+          INPUT_GUID: ${{ inputs.force_guid || '' }}
+        shell: bash
+        run: |
+          args=(run --live)
+          if [[ "$INPUT_MODE" == "backfill" ]]; then args=(backfill --live); fi
+          if [[ "$INPUT_LIMIT" != "0" ]]; then args+=(--limit "$INPUT_LIMIT"); fi
+          if [[ "$INPUT_RETRY" == "true" ]]; then args+=(--retry-failed); fi
+          if [[ -n "$INPUT_GUID" && "$INPUT_MODE" == "normal" ]]; then args+=(--force-guid "$INPUT_GUID"); fi
+          set +e
+          python -m ffw "${args[@]}"
+          exit_code=$?
+          set -e
+          echo "exit_code=$exit_code" >> "$GITHUB_OUTPUT"
+
+      - name: Validate production archive
+        run: python -m ffw validate
+
+      - name: Persist durable state and archive
+        id: persist
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add archive state
+          if git diff --cached --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            git commit -m "chore(ffw): publish automated episode updates"
+            git push origin HEAD:${{ github.event.repository.default_branch }}
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Build clean Pages artifact
+        shell: bash
+        run: |
+          mkdir -p _site/archive
+          cp web/index.html web/app.js web/styles.css _site/
+          cp -R archive/. _site/archive/
+
+      - name: Configure Pages
+        if: ${{ github.event_name == 'schedule' || inputs.deploy }}
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        if: ${{ github.event_name == 'schedule' || inputs.deploy }}
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Publish run summary
+        if: always()
+        shell: bash
+        run: |
+          echo "## FFW production run" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Pipeline exit: ${{ steps.pipeline.outputs.exit_code || 'not-run' }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Durable outputs changed: ${{ steps.persist.outputs.changed || 'unknown' }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Temporary audio is excluded from Git and runner storage is disposable." >> "$GITHUB_STEP_SUMMARY"
+
+
+  deploy:
+    needs: publish
+    if: ${{ github.event_name == 'schedule' || inputs.deploy }}
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

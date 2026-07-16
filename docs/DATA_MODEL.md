@@ -1,99 +1,169 @@
-# FFW Data Model
+# ManaIntel Data Model
 
-## Canonical records
+## Model boundary
 
-`summary.json` is canonical for an episode's extracted recommendations. `summary.md`, `index.json`, and `cards.json` are derived views and can be regenerated.
+ManaIntel normalizes every source into four concepts:
 
-The versioned contract is defined in [`schemas/cards-to-watch.schema.json`](../schemas/cards-to-watch.schema.json).
+```text
+Source -> Source item -> Recommendation -> Archive projection
+```
 
-## Episode identity
+The common contract described here is the target for a future ManaIntel schema. The implemented `schemas/cards-to-watch.schema.json` version 1.1.0 remains the authoritative FFW podcast contract until a new source-neutral schema and migration are added.
+
+## Source
+
+A source represents a publisher, show, channel, publication, or community feed.
 
 | Field | Type | Rule |
 |---|---|---|
-| `guid` | string | Required stable identity from RSS. |
-| `episode_number` | integer | Display and sorting aid; not identity. |
-| `title` | string | Publisher-controlled and mutable. |
-| `published_at` | date-time | Original release time. |
-| `audio_url` | string | Enclosure or equivalent audio URL. |
-| `episode_url` | string | Human-facing episode page. |
-| `duration_seconds` | integer/null | Unknown remains null. |
-| `hosts` | string[] | Explicitly identified hosts only. |
+| `id` | string | Stable internal identity; not derived only from mutable display name. |
+| `name` | string | User-facing source name. |
+| `source_type` | enum | `podcast`, `video`, `article`, `newsletter`, `community`, or a future versioned value. |
+| `publisher` | string/null | Publisher or owning organization when distinct from the source name. |
+| `url` | string/null | Canonical public source URL. |
+| `adapter` | string | Adapter/configuration identity used for provenance. |
+
+Policy and credentials belong in configuration or operational metadata, not public archive records.
+
+## Source item
+
+A source item is an episode, video, article, newsletter issue, post, or curated discussion summary.
+
+| Field | Type | Rule |
+|---|---|---|
+| `id` | string | Stable ManaIntel identity scoped to its source. |
+| `source_id` | string | Required reference to `source.id`. |
+| `external_id` | string/null | Publisher-provided stable identity when available. |
+| `item_type` | enum | `episode`, `video`, `article`, `newsletter_issue`, `post`, `discussion_summary`, or future versioned value. |
+| `title` | string | Publisher-controlled display title. |
+| `published_at` | date-time | Original publication time; preserves known timezone semantics. |
+| `url` | string | Human-facing canonical item URL. |
+| `contributors` | contributor[] | Hosts, authors, presenters, or explicitly identified participants. |
+| `duration_seconds` | integer/null | Relevant for timed media; otherwise null. |
+| `description` | string/null | Optional compact source description. |
+
+Item identity must not depend only on title or publication date. Each adapter documents its preferred external ID and deterministic fallback.
 
 ## Recommendation
 
-| Field | Type | Notes |
+| Field | Type | Rule |
 |---|---|---|
-| `id` | string | Deterministic `pick-` ID. |
-| `card` | string | Required source card name. |
+| `id` | string | Deterministic stable identity; never an array index. |
+| `source_item_id` | string | Required provenance link. |
+| `card` | string | Required source card name, normalized without losing source evidence. |
 | `printing` | string/null | Exact printing only when supported. |
 | `printing_certainty` | enum/null | `confirmed`, `likely`, `ambiguous`, or null. |
-| `hosts` | string[] | Speakers responsible for the recommendation. |
-| `recommendation` | string | Faithful action or stance; no added opinion. |
-| `entry_target` | target/null | Preserves source phrase plus optional numeric bounds. |
-| `hold` | string/null | Duration or condition exactly as expressed. |
-| `exit_target` | target/null | Preserves source phrase plus optional numeric bounds. |
-| `reasoning` | string[] | Host reasoning only. |
-| `caveats` | string[] | Risks and qualifications stated in the source. |
-| `confidence` | enum/null | Only explicit or unmistakable confidence. |
-| `start_seconds` / `end_seconds` | integer/null | Evidence span. Production successful picks require a start. |
-| `evidence_excerpt` | string | Short audit excerpt, not a full transcript. |
-| `review_status` | enum | `approved`, `pending`, or `needs_review`. |
-| `listen_url` | string | Audio URL with best-effort time fragment. |
+| `contributors` | contributor[] | People responsible for this recommendation when identifiable. |
+| `summary` | string | Faithful action or stance; no added finance opinion. |
+| `mentioned_prices` | price_mention[] | Prices discussed as context, distinct from targets. |
+| `entry_target` | target/null | Suggested acquisition price or range when explicitly supported. |
+| `exit_target` | target/null | Suggested sale price or range when explicitly supported. |
+| `hold` | string/null | Duration or condition as expressed. |
+| `reasoning` | string[] | Source reasoning only. |
+| `caveats` | string[] | Source-stated risks and qualifications. |
+| `source_confidence` | enum/null | Confidence stated or unmistakably expressed by the source. |
+| `extraction_confidence` | enum/null | Pipeline confidence in the record, not investment confidence. |
+| `reference` | source_reference | Timestamp, section, paragraph, message, or equivalent locator. |
+| `evidence_excerpt` | string/null | Compact supporting excerpt when permitted. |
+| `review_status` | enum | `pending`, `approved`, or `needs_review`. |
+| `review_reason` | string/null | Actionable reason when review is required. |
 
-### Target shape
+### Contributor
+
+At minimum, a contributor contains a display `name` and optional `role`. A future contributor registry may add stable IDs, but lack of a registry must not encourage guessed speaker attribution.
+
+### Price mention and target
+
+Price context and advice are semantically different and must remain separate.
 
 ```json
 {
-  "raw": "$13 to $15",
+  "raw": "copies are around $11",
   "currency": "USD",
-  "minimum": 13.0,
-  "maximum": 15.0
+  "minimum": 11.0,
+  "maximum": 11.0,
+  "context": "current_market"
 }
 ```
 
-`raw` is required whenever a target object exists. A target never exists merely because the transcript mentions the current market price.
-
-## Stable pick identifier
-
-The ID is the first 16 hexadecimal characters of SHA-256 over:
-
-```text
-normalized episode GUID | normalized card name | start seconds | normalized printing
+```json
+{
+  "raw": "buy these under $8",
+  "currency": "USD",
+  "minimum": null,
+  "maximum": 8.0
+}
 ```
 
-This is better than `episodeGuid-cardIndex` because extraction ordering can change during regeneration. It distinguishes repeated mentions of one card by timestamp and printing while remaining stable when unrelated picks are added or reordered.
+`raw` preserves the source wording. Parsed currency and bounds are optional and must never be filled merely to make analytics easier. Foil status, printing, timeframe, and per-unit or lot context should be retained when the source makes them material.
 
-Changing a material identity input intentionally produces a new ID. Future manual reconciliation can preserve aliases if a corrected timestamp would otherwise break an external reference.
+### Source reference
 
-## Pipeline metadata
+A generic reference supports all source types without forcing fake timestamps:
 
-Every successful episode records:
+| Field | Type | Examples |
+|---|---|---|
+| `kind` | enum | `timestamp`, `section`, `paragraph`, `page`, `message`, `url_fragment`. |
+| `url` | string | Deep link where the source platform supports one. |
+| `label` | string | `01:12:34`, `Budget Picks`, `paragraph 8`, or a message identifier. |
+| `start_seconds` / `end_seconds` | integer/null | Timed media only. |
+| `locator` | string/null | Adapter-specific opaque locator needed to verify the passage. |
 
-- Pipeline version.
-- Schema version.
-- Transcription model.
-- Extraction model.
-- Prompt version.
-- Processed timestamp.
-- Complete processing-state history.
-- Review state and reason.
-- Structured failure when applicable.
+The UI renders references generically based on available fields; it does not parse source-specific payloads.
 
-## Processing states
+## Confidence and review
 
-Canonical serialized values are lowercase snake case:
+Three concepts must not be collapsed:
+
+- `source_confidence`: how strongly the source expressed the recommendation.
+- `extraction_confidence`: how certain the pipeline is that it captured the source correctly.
+- `review_status`: the editorial verification state of the record.
+
+An enthusiastic source can still have a low-confidence extraction, and an approved extraction is not an endorsement by ManaIntel.
+
+## Stable identifiers
+
+The current FFW recommendation ID hashes normalized episode GUID, card name, start seconds, and printing. The common model retains that principle but scopes identity to a source item and generic reference:
 
 ```text
-detected → downloading → downloaded → transcribing → transcribed
-         → extracting → extracted → complete | needs_review
-         ↘ failed from any stage
+normalized source item ID | normalized card | normalized reference identity | normalized printing
 ```
 
-The state store is operational memory. Episode metadata is the immutable-style audit view captured with the output. `archive/index.json` is a frontend projection and must not be used to resume pipeline work.
+The exact canonicalization must be specified in the future schema implementation and covered by fixtures before migration. Material corrections may create a new ID; an alias or supersession mechanism can later preserve external links when necessary.
 
-## Catalogs
+## Processing metadata
 
-`archive/index.json` contains metadata, counts, status counts, newest episode, recent picks, and all episode summaries required by navigation.
+Processing metadata is associated with an ingestion attempt or source item, rather than embedded as recommendation meaning. It includes:
 
-`archive/cards.json` repeats episode identity inside each flattened recommendation. This slight denormalization makes native search simple and will support Fuse.js or future imports without loading every episode file.
+- Adapter, pipeline, schema, extraction, and prompt versions.
+- Processing timestamps and state history.
+- Review summary and reasons.
+- Structured retryable or terminal failures.
+- Content acquisition and retention facts needed for audit.
 
+The current FFW queue serializes `detected`, `queued`, `downloading`, `downloaded`, `preparing`, `transcribing`, `transcribed`, `extracting`, `extracted`, `validating`, `publishing`, `complete`, `needs_review`, and `failed`. Each record retains transition history, attempt count, a useful failure stage/message, and whether a live failure is retryable.
+
+## Archive projections
+
+Canonical records are the source of truth. Search indexes, flattened recommendation catalogs, Markdown summaries, dashboards, and future analytics are rebuildable projections.
+
+A flattened recommendation may repeat source and item display fields for efficient static search. That denormalization is a projection convenience, not a second canonical record.
+
+## FFW v1 mapping
+
+| FFW v1 | ManaIntel target |
+|---|---|
+| Single configured feed name | `source` record. |
+| `episode` | `source_item` with `item_type: episode`. |
+| Episode `guid` | Preferred `external_id` and input to stable source-item ID. |
+| Episode `hosts` | Source-item contributors. |
+| Recommendation `hosts` | Recommendation contributors. |
+| `recommendation` | `summary`. |
+| `mentioned_price` | One or more `mentioned_prices` records after lossless migration. |
+| `entry_target` / `exit_target` | Same semantic target fields. |
+| `confidence` | `source_confidence` only when it describes the host's stance; otherwise migration requires review. |
+| Timestamp fields and `listen_url` | `reference` with `kind: timestamp`. |
+| `review_status` | Same editorial state. |
+| Episode `processing` | Source-item ingestion-attempt metadata. |
+
+No v1 file should be silently reinterpreted. Ambiguous confidence or price fields must remain null or route to review during migration.

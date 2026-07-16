@@ -45,24 +45,29 @@ function display(value, fallback = "Not stated") {
 function target(value) { return value ? escapeHtml(value.raw) : "Not stated"; }
 function label(value) { return String(value ?? "unknown").replaceAll("_", " "); }
 function badge(value, kind = "status") { return `<span class="${kind} ${escapeHtml(value ?? "unknown")}">${escapeHtml(label(value))}</span>`; }
-function episodeSummaryUrl(episode) { return `../archive/${episode.directory}/summary.md`; }
+function episodeSummaryUrl(episode) { return `archive/${episode.directory}/summary.md`; }
 
 async function loadData() {
   app.innerHTML = `<div class="loading"><span></span> Loading archive…</div>`;
   try {
     const nonce = Date.now();
     const [indexResponse, cardsResponse] = await Promise.all([
-      fetch(`../archive/index.json?v=${nonce}`),
-      fetch(`../archive/cards.json?v=${nonce}`),
+      fetch(`archive/index.json?v=${nonce}`),
+      fetch(`archive/cards.json?v=${nonce}`),
     ]);
     if (!indexResponse.ok || !cardsResponse.ok) throw new Error("Generated archive files were not found.");
     state.index = await indexResponse.json();
     const cardsPayload = await cardsResponse.json();
     state.cards = cardsPayload.cards;
-    document.querySelector("#side-version").textContent = `Pipeline ${state.index.metadata.pipeline_version}`;
+    const updated = state.index.metadata.generated_at ? formatDate(state.index.metadata.generated_at, true) : "pending";
+    document.querySelector("#side-version").textContent = `Updated ${updated}`;
+    document.querySelector("#mode-pill").textContent = state.index.synthetic ? "Fixture mode" : "Live pipeline";
+    const banner = document.querySelector("#data-banner");
+    banner.hidden = !state.index.synthetic;
+    banner.textContent = state.index.synthetic ? state.index.notice : "";
     renderRoute();
   } catch (error) {
-    app.innerHTML = `<div class="empty-state"><strong>Archive could not be loaded</strong><p>${escapeHtml(error.message)}</p><p>Run <code>python -m ffw run</code>, then use <code>python -m ffw serve</code>.</p></div>`;
+    app.innerHTML = `<div class="empty-state"><strong>Published archive could not be loaded</strong><p>The automated pipeline may be updating or may need attention.</p></div>`;
   }
 }
 
@@ -85,7 +90,7 @@ function renderDashboard() {
   const { counts, latest_episode: latest, recent_picks: recent } = state.index;
   return `
     <section class="grid metrics" aria-label="Archive totals">
-      ${metric("Episodes", counts.episodes, "synthetic fixtures")}
+      ${metric("Episodes", counts.episodes, state.index.synthetic ? "synthetic fixtures" : "real podcast episodes")}
       ${metric("Picks", counts.picks, "structured records")}
       ${metric("Completed", counts.completed, "validated outputs")}
       ${metric("Needs review", counts.needs_review, "human attention")}
@@ -94,12 +99,12 @@ function renderDashboard() {
     <section class="grid dashboard-grid">
       <article class="panel">
         <div class="panel-head"><h2>Latest episode</h2><a href="#episodes">View archive →</a></div>
-        <div class="panel-body latest">
+        <div class="panel-body latest">${latest ? `
           <div>${badge(latest.processing_status)} ${latest.review_state === "needs_review" ? badge("needs_review") : ""}</div>
           <div><p class="eyebrow">Episode ${latest.episode_number} · ${formatDate(latest.published_at)}</p><h3>${escapeHtml(latest.title)}</h3></div>
           <div class="latest-meta"><span>${latest.pick_count} picks</span><span>${escapeHtml(latest.hosts.join(" · "))}</span><span>GUID ${escapeHtml(latest.guid)}</span></div>
           <div class="latest-actions"><a class="button" href="${safeUrl(latest.audio_url)}" target="_blank" rel="noreferrer">Listen</a><a class="button secondary" href="${episodeSummaryUrl(latest)}" target="_blank">Open summary</a></div>
-        </div>
+        ` : `<div class="empty-state"><strong>No live episodes published yet</strong><p>The first automated run is pending.</p></div>`}</div>
       </article>
       <article class="panel">
         <div class="panel-head"><h2>Recent recommendations</h2><a href="#picks">View all →</a></div>
@@ -147,15 +152,15 @@ function pickRows() {
 }
 
 function renderStatus() {
-  return `<article class="panel"><div class="panel-head"><h2>Fixture processing outcomes</h2><span class="muted">${state.index.episodes.length} episodes</span></div><div class="panel-body status-timeline">${state.index.episodes.map((episode) => `<div class="status-card"><span class="episode-no">${episode.episode_number}</span><div><strong>${escapeHtml(episode.title)}</strong><small>${episode.review_reason ? escapeHtml(episode.review_reason) : `${episode.pick_count} structured picks · ${formatDate(episode.published_at)}`}</small></div>${badge(episode.processing_status)}</div>`).join("")}</div></article>`;
+  return `<article class="panel"><div class="panel-head"><h2>Automated processing outcomes</h2><span class="muted">${state.index.episodes.length} episodes</span></div><div class="panel-body status-timeline">${state.index.episodes.map((episode) => `<div class="status-card"><span class="episode-no">${episode.episode_number || "—"}</span><div><strong>${escapeHtml(episode.title)}</strong><small>${episode.review_reason ? escapeHtml(episode.review_reason) : `${episode.pick_count} structured picks · ${formatDate(episode.published_at)} · processed ${formatDate(episode.processed_at)}`}</small></div>${badge(episode.processing_status)}</div>`).join("")}</div></article>`;
 }
 
 function renderAbout() {
   return `<section class="grid about-grid">
-    <article class="panel prose"><div class="panel-body"><p class="eyebrow">Project</p><h2>FFW is two products sharing one contract.</h2><p>The Python pipeline produces versioned JSON. This local vanilla JavaScript application visualizes it. Neither layer imports or executes the other.</p><p><strong>Pipeline:</strong> ${escapeHtml(state.index.metadata.pipeline_version)}<br><strong>Schema:</strong> ${escapeHtml(state.index.schema_version)}<br><strong>Source:</strong> ${escapeHtml(state.index.metadata.generated_from)}</p></div></article>
+    <article class="panel prose"><div class="panel-body"><p class="eyebrow">Project</p><h2>FFW updates without a laptop or manual downloads.</h2><p>A scheduled pipeline checks the podcast feed, temporarily processes new audio, and publishes only structured Cards to Watch data.</p><p><strong>Pipeline:</strong> ${escapeHtml(state.index.metadata.pipeline_version)}<br><strong>Schema:</strong> ${escapeHtml(state.index.schema_version)}<br><strong>Source:</strong> ${escapeHtml(state.index.metadata.source?.name || state.index.metadata.generated_from)}</p></div></article>
     <article class="panel prose"><div class="panel-body"><p class="eyebrow">Trust rules</p><h2>Unknown means null.</h2><ul><li>No missing price, printing, host, or confidence is inferred.</li><li>Every recommendation requires evidence and a timestamp.</li><li>Markdown is rendered deterministically from JSON.</li><li>Ambiguity is surfaced as review state, not hidden.</li></ul></div></article>
-    <article class="panel prose"><div class="panel-body"><p class="eyebrow">Local commands</p><h2>Credential-free workflow</h2><p><code>python -m ffw run</code><br><code>python -m ffw validate</code><br><code>python -m ffw render</code><br><code>python -m ffw serve</code></p></div></article>
-    <article class="panel prose"><div class="panel-body"><p class="eyebrow">Current boundary</p><h2>Production integrations are scaffolded.</h2><p>Live RSS, MP3 download, audio conversion, OpenAI transcription, extraction, GitHub Actions, Pages, and notifications remain deliberately disabled until credentials and production policy are supplied.</p></div></article>
+    <article class="panel prose"><div class="panel-body"><p class="eyebrow">Automation</p><h2>Daily unattended updates</h2><p>GitHub Actions discovers new episodes, validates generated records, commits durable state, and deploys this site.</p></div></article>
+    <article class="panel prose"><div class="panel-body"><p class="eyebrow">Disclaimer</p><h2>Verify automated records.</h2><p>Transcription and extraction can be wrong. This archive faithfully attempts to capture host commentary, adds no original finance opinions, and is not financial advice.</p></div></article>
   </section>`;
 }
 

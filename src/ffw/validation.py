@@ -3,6 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
+import re
 
 from .models import PROCESSING_STATES
 from .rendering import render_episode_markdown
@@ -17,7 +18,10 @@ class ValidationIssue:
     message: str
 
 
-def validate_archive(archive_dir: Path, state_file: Path, schema_path: Path | None = None) -> list[ValidationIssue]:
+def validate_archive(
+    archive_dir: Path, state_file: Path, schema_path: Path | None = None,
+    expected_production: bool | None = None,
+) -> list[ValidationIssue]:
     issues: list[ValidationIssue] = []
     index = load_json(archive_dir / "index.json")
     cards_payload = load_json(archive_dir / "cards.json")
@@ -26,6 +30,8 @@ def validate_archive(archive_dir: Path, state_file: Path, schema_path: Path | No
     if not cards_payload:
         issues.append(ValidationIssue("error", "missing_cards", str(archive_dir / "cards.json"), "Flattened cards catalog is missing."))
         cards_payload = {"cards": []}
+    if expected_production is True and index.get("synthetic"):
+        issues.append(ValidationIssue("error", "fixture_catalog_in_live_mode", str(archive_dir / "index.json"), "Live validation refuses to publish a fixture catalog."))
     if schema_path is not None:
         schema = load_json(schema_path)
         if not schema:
@@ -78,7 +84,7 @@ def validate_archive(archive_dir: Path, state_file: Path, schema_path: Path | No
             required_pick_fields = {
                 "id", "card", "printing", "printing_certainty", "hosts", "recommendation", "entry_target",
                 "hold", "exit_target", "reasoning", "caveats", "confidence", "start_seconds", "end_seconds",
-                "timestamp", "evidence_excerpt", "review_status", "listen_url",
+                "timestamp", "evidence_excerpt", "review_status", "listen_url", "foil", "mentioned_price", "review_reason",
             }
             missing_pick_fields = required_pick_fields - set(pick)
             if missing_pick_fields:
@@ -98,10 +104,15 @@ def validate_archive(archive_dir: Path, state_file: Path, schema_path: Path | No
                 issues.append(ValidationIssue("error", "missing_required_pick_field", pick_path, "Card and recommendation are required."))
             if not pick.get("evidence_excerpt") or pick.get("start_seconds") is None:
                 issues.append(ValidationIssue("error", "missing_evidence", pick_path, "Evidence excerpt and timestamp are required."))
+            timestamp = pick.get("timestamp")
+            if timestamp is not None and not re.fullmatch(r"\d{2,}:\d{2}:\d{2}", timestamp):
+                issues.append(ValidationIssue("error", "invalid_timestamp", pick_path, f"Invalid timestamp: {timestamp}"))
             for target_name in ("entry_target", "exit_target"):
                 target = pick.get(target_name)
                 if target is not None and not target.get("raw"):
                     issues.append(ValidationIssue("error", "target_without_source_text", pick_path, f"{target_name} requires raw source wording."))
+                if target is not None and set(target) != {"raw", "currency", "minimum", "maximum"}:
+                    issues.append(ValidationIssue("error", "malformed_target", pick_path, f"{target_name} has unexpected fields."))
             certainty = pick.get("printing_certainty")
             if certainty not in {None, "confirmed", "likely", "ambiguous"}:
                 issues.append(ValidationIssue("error", "invalid_printing_certainty", pick_path, f"Invalid printing certainty: {certainty}"))
@@ -117,6 +128,17 @@ def validate_archive(archive_dir: Path, state_file: Path, schema_path: Path | No
 
     state = load_json(state_file, {"episodes": {}})
     state_guids = set(state.get("episodes", {}))
-    if state_guids != seen_guids:
+    if not seen_guids.issubset(state_guids) or (index.get("synthetic") and state_guids != seen_guids):
         issues.append(ValidationIssue("error", "state_catalog_drift", str(state_file), "State GUIDs do not match archive episodes."))
+    if not index.get("synthetic"):
+        if any(episode.get("synthetic") for episode in index.get("episodes", [])):
+            issues.append(ValidationIssue("error", "synthetic_in_production", str(archive_dir / "index.json"), "Production catalog contains fixture data."))
+        required_metadata = {"generated_at", "latest_successful_run_at", "source", "pipeline_version", "schema_version", "production_mode", "real_episode_count", "real_pick_count"}
+        missing = required_metadata - set(index.get("metadata", {}))
+        if missing:
+            issues.append(ValidationIssue("error", "missing_production_metadata", str(archive_dir / "index.json"), f"Missing production metadata: {sorted(missing)}"))
+    for path in archive_dir.rglob("*.json"):
+        text = path.read_text(encoding="utf-8").casefold()
+        if ".ffw-work" in text or "source-audio" in text:
+            issues.append(ValidationIssue("error", "temporary_path_exposed", str(path), "Archive exposes a temporary local path."))
     return issues

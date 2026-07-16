@@ -104,4 +104,4 @@
 
 ---
 
-Schema 1.0.0 · Pipeline 0.1.0-mock · Prompt cards-to-watch-v1
+Schema 1.1.0 · Pipeline 0.2.0 · Prompt cards-to-watch-v2

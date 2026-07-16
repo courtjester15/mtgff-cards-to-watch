@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.0.0",
+  "schema_version": "1.1.0",
   "synthetic": true,
   "notice": "Synthetic fixture metadata.",
   "episode": {
@@ -13,117 +13,82 @@
     "hosts": [
       "Blair Example",
       "Casey Example"
-    ]
+    ],
+    "description": null
   },
   "processing": {
     "status": "needs_review",
     "review_state": "needs_review",
     "review_reason": "Synthetic cross-talk makes two printing references and one price target ambiguous.",
-    "pipeline_version": "0.1.0-mock",
-    "schema_version": "1.0.0",
+    "pipeline_version": "0.2.0",
+    "schema_version": "1.1.0",
     "transcription_model": "mock-transcriber-v1",
     "extraction_model": "mock-extractor-v1",
-    "prompt_version": "cards-to-watch-v1",
-    "processed_at": "2026-07-15T02:54:59Z",
+    "prompt_version": "cards-to-watch-v2",
+    "processed_at": "2026-07-16T02:31:05Z",
     "history": [
       {
         "status": "detected",
-        "timestamp": "2026-07-15T02:42:04Z"
+        "timestamp": "2026-07-16T02:31:01Z"
+      },
+      {
+        "status": "queued",
+        "timestamp": "2026-07-16T02:31:01Z"
+      },
+      {
+        "status": "queued",
+        "timestamp": "2026-07-16T02:31:04Z"
       },
       {
         "status": "downloading",
-        "timestamp": "2026-07-15T02:42:04Z"
+        "timestamp": "2026-07-16T02:31:04Z"
       },
       {
         "status": "downloaded",
-        "timestamp": "2026-07-15T02:42:04Z"
+        "timestamp": "2026-07-16T02:31:04Z"
+      },
+      {
+        "status": "preparing",
+        "timestamp": "2026-07-16T02:31:05Z"
       },
       {
         "status": "transcribing",
-        "timestamp": "2026-07-15T02:42:04Z"
+        "timestamp": "2026-07-16T02:31:05Z"
       },
       {
         "status": "transcribed",
-        "timestamp": "2026-07-15T02:42:04Z"
+        "timestamp": "2026-07-16T02:31:05Z"
       },
       {
         "status": "extracting",
-        "timestamp": "2026-07-15T02:42:04Z"
+        "timestamp": "2026-07-16T02:31:05Z"
       },
       {
         "status": "extracted",
-        "timestamp": "2026-07-15T02:42:04Z"
+        "timestamp": "2026-07-16T02:31:05Z"
+      },
+      {
+        "status": "validating",
+        "timestamp": "2026-07-16T02:31:05Z"
+      },
+      {
+        "status": "publishing",
+        "timestamp": "2026-07-16T02:31:05Z"
       },
       {
         "status": "needs_review",
-        "timestamp": "2026-07-15T02:42:04Z"
-      },
-      {
-        "status": "detected",
-        "timestamp": "2026-07-15T02:52:08Z"
-      },
-      {
-        "status": "downloading",
-        "timestamp": "2026-07-15T02:52:08Z"
-      },
-      {
-        "status": "downloaded",
-        "timestamp": "2026-07-15T02:52:08Z"
-      },
-      {
-        "status": "transcribing",
-        "timestamp": "2026-07-15T02:52:08Z"
-      },
-      {
-        "status": "transcribed",
-        "timestamp": "2026-07-15T02:52:08Z"
-      },
-      {
-        "status": "extracting",
-        "timestamp": "2026-07-15T02:52:08Z"
-      },
-      {
-        "status": "extracted",
-        "timestamp": "2026-07-15T02:52:08Z"
-      },
-      {
-        "status": "needs_review",
-        "timestamp": "2026-07-15T02:52:08Z"
-      },
-      {
-        "status": "detected",
-        "timestamp": "2026-07-15T02:54:59Z"
-      },
-      {
-        "status": "downloading",
-        "timestamp": "2026-07-15T02:54:59Z"
-      },
-      {
-        "status": "downloaded",
-        "timestamp": "2026-07-15T02:54:59Z"
-      },
-      {
-        "status": "transcribing",
-        "timestamp": "2026-07-15T02:54:59Z"
-      },
-      {
-        "status": "transcribed",
-        "timestamp": "2026-07-15T02:54:59Z"
-      },
-      {
-        "status": "extracting",
-        "timestamp": "2026-07-15T02:54:59Z"
-      },
-      {
-        "status": "extracted",
-        "timestamp": "2026-07-15T02:54:59Z"
-      },
-      {
-        "status": "needs_review",
-        "timestamp": "2026-07-15T02:54:59Z"
+        "timestamp": "2026-07-16T02:31:05Z"
       }
     ],
-    "error": null
+    "error": null,
+    "transcription": {
+      "provider": "mock",
+      "model": "mock-transcriber-v1",
+      "chunk_count": 1,
+      "duration_seconds": null,
+      "usage": null
+    },
+    "extraction_usage": null
   },
   "outputs": {
     "metadata": "episodes/0903-audio-cross-talk-test/metadata.json",

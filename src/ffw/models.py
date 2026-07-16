@@ -5,15 +5,19 @@ from datetime import datetime, timezone
 from typing import Any
 
 
-TERMINAL_STATES = {"complete", "needs_review", "failed"}
+TERMINAL_STATES = {"complete", "needs_review"}
 PROCESSING_STATES = {
     "detected",
+    "queued",
     "downloading",
     "downloaded",
+    "preparing",
     "transcribing",
     "transcribed",
     "extracting",
     "extracted",
+    "validating",
+    "publishing",
     "needs_review",
     "complete",
     "failed",
@@ -33,7 +37,14 @@ class EpisodeCandidate:
     audio_url: str
     episode_url: str
     hosts: list[str]
-    fixture: dict[str, Any] = field(repr=False, compare=False)
+    description: str | None = None
+    duration_seconds: int | None = None
+    feed_metadata: dict[str, Any] = field(default_factory=dict, repr=False, compare=False)
+    fixture: dict[str, Any] = field(default_factory=dict, repr=False, compare=False)
+
+    @property
+    def synthetic(self) -> bool:
+        return bool(self.fixture)
 
 
 @dataclass
@@ -43,4 +54,3 @@ class PipelineResult:
     output_directory: str | None = None
     pick_count: int = 0
     message: str = ""
-

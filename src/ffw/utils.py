@@ -30,10 +30,14 @@ def slugify(value: str) -> str:
     return value.strip("-") or "item"
 
 
-def episode_slug(number: int, title: str) -> str:
+def episode_slug(number: int, title: str, guid: str | None = None) -> str:
     clean_title = re.sub(r"^\[synthetic\]\s*", "", title, flags=re.IGNORECASE)
     clean_title = re.sub(r"^mtg fast finance\s+ep\s+\d+[:\s-]*", "", clean_title, flags=re.IGNORECASE)
-    return f"{number:04d}-{slugify(clean_title)}"
+    title_slug = slugify(clean_title)[:80].rstrip("-")
+    suffix = ""
+    if number == 0 and guid:
+        suffix = "-" + hashlib.sha256(guid.encode("utf-8")).hexdigest()[:8]
+    return f"{number:04d}-{title_slug}{suffix}"
 
 
 def stable_pick_id(guid: str, card_name: str, start_seconds: int | None, printing: str | None) -> str:
@@ -49,4 +53,3 @@ def seconds_to_timestamp(seconds: int | None) -> str | None:
     hours, remainder = divmod(max(0, seconds), 3600)
     minutes, secs = divmod(remainder, 60)
     return f"{hours:02d}:{minutes:02d}:{secs:02d}"
-

@@ -6,7 +6,7 @@
   "additionalProperties": false,
   "required": ["schema_version", "synthetic", "notice", "episode", "processing", "section", "recommendations"],
   "properties": {
-    "schema_version": {"type": "string", "const": "1.0.0"},
+    "schema_version": {"type": "string", "const": "1.1.0"},
     "synthetic": {"type": "boolean"},
     "notice": {"type": "string"},
     "episode": {"$ref": "#/$defs/episode"},
@@ -22,7 +22,7 @@
     "episode": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["guid", "episode_number", "title", "published_at", "audio_url", "episode_url", "duration_seconds", "hosts"],
+      "required": ["guid", "episode_number", "title", "published_at", "audio_url", "episode_url", "duration_seconds", "hosts", "description"],
       "properties": {
         "guid": {"type": "string", "minLength": 1},
         "episode_number": {"type": "integer", "minimum": 0},
@@ -31,14 +31,15 @@
         "audio_url": {"type": "string"},
         "episode_url": {"type": "string"},
         "duration_seconds": {"type": ["integer", "null"], "minimum": 0},
-        "hosts": {"type": "array", "items": {"type": "string"}, "minItems": 1}
+        "hosts": {"type": "array", "items": {"type": "string"}},
+        "description": {"$ref": "#/$defs/nullableString"}
       }
     },
     "processing": {
       "type": "object",
       "required": ["status", "pipeline_version", "schema_version", "transcription_model", "extraction_model", "prompt_version", "processed_at"],
       "properties": {
-        "status": {"enum": ["detected", "downloading", "downloaded", "transcribing", "transcribed", "extracting", "extracted", "needs_review", "complete", "failed"]},
+        "status": {"enum": ["detected", "queued", "downloading", "downloaded", "preparing", "transcribing", "transcribed", "extracting", "extracted", "validating", "publishing", "needs_review", "complete", "failed"]},
         "review_state": {"type": "string"},
         "review_reason": {"$ref": "#/$defs/nullableString"},
         "pipeline_version": {"type": "string"},
@@ -58,7 +59,9 @@
         "located": {"type": "boolean"},
         "start_seconds": {"type": ["integer", "null"], "minimum": 0},
         "end_seconds": {"type": ["integer", "null"], "minimum": 0},
-        "label": {"type": "string"}
+        "label": {"type": "string"},
+        "confidence": {"enum": ["low", "medium", "high", null]},
+        "review_reason": {"$ref": "#/$defs/nullableString"}
       }
     },
     "target": {
@@ -73,14 +76,16 @@
     },
     "recommendation": {
       "type": "object",
-      "required": ["id", "card", "printing", "printing_certainty", "hosts", "recommendation", "entry_target", "hold", "exit_target", "reasoning", "caveats", "confidence", "start_seconds", "end_seconds", "timestamp", "evidence_excerpt", "review_status", "listen_url"],
+      "required": ["id", "card", "printing", "printing_certainty", "foil", "hosts", "recommendation", "mentioned_price", "entry_target", "hold", "exit_target", "reasoning", "caveats", "confidence", "start_seconds", "end_seconds", "timestamp", "evidence_excerpt", "review_status", "review_reason", "listen_url"],
       "properties": {
         "id": {"type": "string", "pattern": "^pick-[a-f0-9]{16}$"},
         "card": {"type": "string", "minLength": 1},
         "printing": {"$ref": "#/$defs/nullableString"},
         "printing_certainty": {"enum": ["confirmed", "likely", "ambiguous", null]},
+        "foil": {"type": ["boolean", "null"]},
         "hosts": {"type": "array", "items": {"type": "string"}, "minItems": 1},
         "recommendation": {"type": "string", "minLength": 1},
+        "mentioned_price": {"$ref": "#/$defs/nullableString"},
         "entry_target": {"$ref": "#/$defs/target"},
         "hold": {"$ref": "#/$defs/nullableString"},
         "exit_target": {"$ref": "#/$defs/target"},
@@ -92,6 +97,7 @@
         "timestamp": {"$ref": "#/$defs/nullableString"},
         "evidence_excerpt": {"type": "string", "minLength": 1},
         "review_status": {"enum": ["approved", "pending", "needs_review"]},
+        "review_reason": {"$ref": "#/$defs/nullableString"},
         "listen_url": {"type": "string"}
       }
     }
