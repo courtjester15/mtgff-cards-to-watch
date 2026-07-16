@@ -1,478 +1,159 @@
 {
   "schema_version": "1.1.0",
-  "synthetic": true,
-  "notice": "All archive content in this fixture build is synthetic test data. It is not real podcast commentary or financial advice.",
+  "synthetic": false,
+  "notice": "Automated transcription and extraction may contain errors. Verify against source audio.",
   "metadata": {
     "project": "FFW",
     "pipeline_version": "0.2.0",
     "schema_version": "1.1.0",
-    "generated_at": "2026-07-16T02:31:10Z",
-    "latest_successful_run_at": "2026-07-16T02:31:06Z",
-    "generated_from": "synthetic-fixtures",
-    "production_mode": false,
+    "generated_at": "2026-07-16T03:40:05Z",
+    "latest_successful_run_at": null,
+    "generated_from": "live-feed",
+    "production_mode": true,
     "source": {
       "name": "MTG Fast Finance"
     },
-    "real_episode_count": 0,
+    "real_episode_count": 3,
     "real_pick_count": 0,
-    "last_discovered_episode_date": "2026-06-05T12:00:00Z",
+    "last_discovered_episode_date": "2026-07-05T21:41:20Z",
     "repository_url": "https://github.com/courtjester15/mtgff-cards-to-watch",
     "workflow_url": "https://github.com/courtjester15/mtgff-cards-to-watch/actions/workflows/ffw.yml"
   },
   "counts": {
-    "episodes": 5,
-    "picks": 15,
-    "needs_review": 1,
-    "failed": 1,
-    "completed": 3
+    "episodes": 3,
+    "picks": 0,
+    "needs_review": 0,
+    "failed": 3,
+    "completed": 0
   },
   "status_counts": {
-    "complete": 3,
-    "failed": 1,
-    "needs_review": 1
+    "failed": 3
   },
   "latest_episode": {
-    "guid": "ffw-synthetic-episode-905",
-    "episode_number": 905,
-    "title": "[SYNTHETIC] MTG Fast Finance Ep 905: Repeat Recommendation Test",
-    "published_at": "2026-06-05T12:00:00Z",
-    "audio_url": "https://example.invalid/ffw/episode-905.mp3",
-    "episode_url": "https://example.invalid/ffw/episode-905",
-    "duration_seconds": 3995,
+    "guid": "tag:soundcloud,2010:tracks/2353638380",
+    "episode_number": 530,
+    "title": "MTG Fast Finance Ep 530: Secret Lair Cats Superdrop Results",
+    "published_at": "2026-07-05T21:41:20Z",
+    "audio_url": "https://feeds.soundcloud.com/stream/2353638380-user-519789566-mtg-fast-finance-ep-530-secret.mp3",
+    "episode_url": "https://soundcloud.com/user-519789566/mtg-fast-finance-ep-530-secret",
+    "duration_seconds": 2522,
     "hosts": [
-      "Alex Example",
-      "Blair Example",
-      "Casey Example"
+      "MTG Fast Finance"
     ],
-    "description": null,
-    "processing_status": "complete",
-    "review_state": "approved",
+    "description": "Your favorite cardboard finance team gets you caught on all the Magic the Gathering card price action of the week, including meta updates, cards to watch and the low down on how the Cats Secret Lair Superdrop played out.\n\nIntro/Outro Music by Skylarka",
+    "processing_status": "failed",
+    "review_state": "not_applicable",
     "review_reason": null,
-    "pick_count": 3,
-    "directory": "episodes/0905-repeat-recommendation-test",
+    "pick_count": 0,
+    "directory": "episodes/0530-secret-lair-cats-superdrop-results",
     "outputs": {
-      "metadata": "episodes/0905-repeat-recommendation-test/metadata.json",
-      "summary_json": "episodes/0905-repeat-recommendation-test/summary.json",
-      "summary_markdown": "episodes/0905-repeat-recommendation-test/summary.md"
+      "metadata": "episodes/0530-secret-lair-cats-superdrop-results/metadata.json",
+      "summary_json": null,
+      "summary_markdown": null
     },
-    "processed_at": "2026-07-16T02:31:06Z",
-    "error": null,
-    "synthetic": true
+    "processed_at": "2026-07-16T03:40:05Z",
+    "error": {
+      "stage": "transcribing",
+      "message": "404 NOT_FOUND. {'error': {'code': 404, 'message': 'This model models/gemini-2.5-flash is no longer available to new users. Please update your code to use a newer model for the latest features and improvements.', 'status': 'NOT_FOUND'}}",
+      "synthetic": false,
+      "retryable": true
+    },
+    "synthetic": false
   },
-  "recent_picks": [
-    {
-      "card": "Finale of Devastation",
-      "printing": "War of the Spark regular nonfoil",
-      "printing_certainty": "confirmed",
-      "hosts": [
-        "Alex Example",
-        "Blair Example",
-        "Casey Example"
-      ],
-      "recommendation": "Hold existing copies and reassess after the next Commander release.",
-      "entry_target": {
-        "raw": "$24 to $26",
-        "currency": "USD",
-        "minimum": 24.0,
-        "maximum": 26.0
-      },
-      "hold": "Through the next Commander release",
-      "exit_target": null,
-      "reasoning": [
-        "Synthetic demand remains strong but no clean exit was stated."
-      ],
-      "caveats": [
-        "Exit target is intentionally absent."
-      ],
-      "confidence": null,
-      "start_seconds": 2020,
-      "end_seconds": 2094,
-      "evidence_excerpt": "Synthetic quote: I like the mid-twenties, but I do not have an exit number yet.",
-      "review_status": "approved",
-      "foil": null,
-      "mentioned_price": null,
-      "review_reason": null,
-      "id": "pick-888858225cf7677f",
-      "timestamp": "00:33:40",
-      "listen_url": "https://example.invalid/ffw/episode-905.mp3#t=2020",
-      "episode": {
-        "guid": "ffw-synthetic-episode-905",
-        "episode_number": 905,
-        "title": "[SYNTHETIC] MTG Fast Finance Ep 905: Repeat Recommendation Test",
-        "published_at": "2026-06-05T12:00:00Z",
-        "episode_url": "https://example.invalid/ffw/episode-905",
-        "audio_url": "https://example.invalid/ffw/episode-905.mp3"
-      },
-      "processing_status": "complete"
-    },
-    {
-      "card": "Rhystic Study",
-      "printing": "Wilds of Eldraine Enchanting Tales",
-      "printing_certainty": "confirmed",
-      "hosts": [
-        "Blair Example"
-      ],
-      "recommendation": "Continue watching; the prior synthetic entry has not been reached.",
-      "entry_target": {
-        "raw": "$22",
-        "currency": "USD",
-        "minimum": 22.0,
-        "maximum": 22.0
-      },
-      "hold": null,
-      "exit_target": {
-        "raw": "$38",
-        "currency": "USD",
-        "minimum": 38.0,
-        "maximum": 38.0
-      },
-      "reasoning": [
-        "This repeated recommendation verifies searchable history."
-      ],
-      "caveats": [
-        "No new purchase was recommended in this episode."
-      ],
-      "confidence": "medium",
-      "start_seconds": 1938,
-      "end_seconds": 2004,
-      "evidence_excerpt": "Synthetic quote: My numbers have not changed; this is still a watch, not a buy.",
-      "review_status": "approved",
-      "foil": null,
-      "mentioned_price": null,
-      "review_reason": null,
-      "id": "pick-bf0af01c4cb25941",
-      "timestamp": "00:32:18",
-      "listen_url": "https://example.invalid/ffw/episode-905.mp3#t=1938",
-      "episode": {
-        "guid": "ffw-synthetic-episode-905",
-        "episode_number": 905,
-        "title": "[SYNTHETIC] MTG Fast Finance Ep 905: Repeat Recommendation Test",
-        "published_at": "2026-06-05T12:00:00Z",
-        "episode_url": "https://example.invalid/ffw/episode-905",
-        "audio_url": "https://example.invalid/ffw/episode-905.mp3"
-      },
-      "processing_status": "complete"
-    },
-    {
-      "card": "Bloodstained Mire",
-      "printing": "Modern Horizons 3 regular nonfoil",
-      "printing_certainty": "confirmed",
-      "hosts": [
-        "Alex Example",
-        "Casey Example"
-      ],
-      "recommendation": "The earlier watch has reached its synthetic entry range; accumulate cautiously.",
-      "entry_target": {
-        "raw": "$14",
-        "currency": "USD",
-        "minimum": 14.0,
-        "maximum": 14.0
-      },
-      "hold": "Nine to twelve months",
-      "exit_target": {
-        "raw": "$23",
-        "currency": "USD",
-        "minimum": 23.0,
-        "maximum": 23.0
-      },
-      "reasoning": [
-        "This repeated recommendation tests cross-episode card history."
-      ],
-      "caveats": [
-        "This is a different printing from the earlier synthetic pick."
-      ],
-      "confidence": "medium",
-      "start_seconds": 1844,
-      "end_seconds": 1922,
-      "evidence_excerpt": "Synthetic quote: The regular copies are finally at fourteen, so I am starting slowly.",
-      "review_status": "approved",
-      "foil": null,
-      "mentioned_price": null,
-      "review_reason": null,
-      "id": "pick-513bb0d226986fe6",
-      "timestamp": "00:30:44",
-      "listen_url": "https://example.invalid/ffw/episode-905.mp3#t=1844",
-      "episode": {
-        "guid": "ffw-synthetic-episode-905",
-        "episode_number": 905,
-        "title": "[SYNTHETIC] MTG Fast Finance Ep 905: Repeat Recommendation Test",
-        "published_at": "2026-06-05T12:00:00Z",
-        "episode_url": "https://example.invalid/ffw/episode-905",
-        "audio_url": "https://example.invalid/ffw/episode-905.mp3"
-      },
-      "processing_status": "complete"
-    },
-    {
-      "card": "Ancient Copper Dragon",
-      "printing": "Commander Legends: Battle for Baldur's Gate",
-      "printing_certainty": "confirmed",
-      "hosts": [
-        "Blair Example",
-        "Casey Example"
-      ],
-      "recommendation": "Watch for a post-reprint floor.",
-      "entry_target": {
-        "raw": "$32 to $35",
-        "currency": "USD",
-        "minimum": 32.0,
-        "maximum": 35.0
-      },
-      "hold": "Eighteen months",
-      "exit_target": {
-        "raw": "$55",
-        "currency": "USD",
-        "minimum": 55.0,
-        "maximum": 55.0
-      },
-      "reasoning": [
-        "Synthetic casual demand is expected to recover after supply is absorbed."
-      ],
-      "caveats": [
-        "The reprint timing in this fixture is hypothetical."
-      ],
-      "confidence": "medium",
-      "start_seconds": 1788,
-      "end_seconds": 1860,
-      "evidence_excerpt": "Synthetic quote: Thirty-two to thirty-five after the reprint is the window I want.",
-      "review_status": "pending",
-      "foil": null,
-      "mentioned_price": null,
-      "review_reason": null,
-      "id": "pick-6fbc017718d71cef",
-      "timestamp": "00:29:48",
-      "listen_url": "https://example.invalid/ffw/episode-903.mp3#t=1788",
-      "episode": {
-        "guid": "ffw-synthetic-episode-903",
-        "episode_number": 903,
-        "title": "[SYNTHETIC] MTG Fast Finance Ep 903: Audio Cross-Talk Test",
-        "published_at": "2026-05-22T12:00:00Z",
-        "episode_url": "https://example.invalid/ffw/episode-903",
-        "audio_url": "https://example.invalid/ffw/episode-903.mp3"
-      },
-      "processing_status": "needs_review"
-    },
-    {
-      "card": "Orcish Bowmasters",
-      "printing": "The Lord of the Rings regular",
-      "printing_certainty": "confirmed",
-      "hosts": [
-        "Blair Example"
-      ],
-      "recommendation": "Do not buy solely on the synthetic metagame rumor.",
-      "entry_target": null,
-      "hold": null,
-      "exit_target": null,
-      "reasoning": [
-        "The supposed catalyst is not confirmed in the fixture."
-      ],
-      "caveats": [
-        "The recommendation is intentionally cautious."
-      ],
-      "confidence": "low",
-      "start_seconds": 1720,
-      "end_seconds": 1772,
-      "evidence_excerpt": "Synthetic quote: That rumor is not enough for me to buy a copy.",
-      "review_status": "pending",
-      "foil": null,
-      "mentioned_price": null,
-      "review_reason": null,
-      "id": "pick-b98ee8657c18d2c5",
-      "timestamp": "00:28:40",
-      "listen_url": "https://example.invalid/ffw/episode-903.mp3#t=1720",
-      "episode": {
-        "guid": "ffw-synthetic-episode-903",
-        "episode_number": 903,
-        "title": "[SYNTHETIC] MTG Fast Finance Ep 903: Audio Cross-Talk Test",
-        "published_at": "2026-05-22T12:00:00Z",
-        "episode_url": "https://example.invalid/ffw/episode-903",
-        "audio_url": "https://example.invalid/ffw/episode-903.mp3"
-      },
-      "processing_status": "needs_review"
-    },
-    {
-      "card": "Boseiju, Who Endures",
-      "printing": "Neon Dynasty borderless",
-      "printing_certainty": "likely",
-      "hosts": [
-        "Casey Example"
-      ],
-      "recommendation": "Hold existing premium copies.",
-      "entry_target": null,
-      "hold": "Long term",
-      "exit_target": {
-        "raw": "$50",
-        "currency": "USD",
-        "minimum": 50.0,
-        "maximum": 50.0
-      },
-      "reasoning": [
-        "The synthetic thesis cites multi-format utility and premium art demand."
-      ],
-      "caveats": [
-        "Printing certainty is only likely."
-      ],
-      "confidence": "medium",
-      "start_seconds": 1638,
-      "end_seconds": 1705,
-      "evidence_excerpt": "Synthetic quote: I am holding the borderless copies toward fifty.",
-      "review_status": "pending",
-      "foil": null,
-      "mentioned_price": null,
-      "review_reason": null,
-      "id": "pick-ccffcf14f50aa978",
-      "timestamp": "00:27:18",
-      "listen_url": "https://example.invalid/ffw/episode-903.mp3#t=1638",
-      "episode": {
-        "guid": "ffw-synthetic-episode-903",
-        "episode_number": 903,
-        "title": "[SYNTHETIC] MTG Fast Finance Ep 903: Audio Cross-Talk Test",
-        "published_at": "2026-05-22T12:00:00Z",
-        "episode_url": "https://example.invalid/ffw/episode-903",
-        "audio_url": "https://example.invalid/ffw/episode-903.mp3"
-      },
-      "processing_status": "needs_review"
-    }
-  ],
+  "recent_picks": [],
   "episodes": [
     {
-      "guid": "ffw-synthetic-episode-905",
-      "episode_number": 905,
-      "title": "[SYNTHETIC] MTG Fast Finance Ep 905: Repeat Recommendation Test",
-      "published_at": "2026-06-05T12:00:00Z",
-      "audio_url": "https://example.invalid/ffw/episode-905.mp3",
-      "episode_url": "https://example.invalid/ffw/episode-905",
-      "duration_seconds": 3995,
+      "guid": "tag:soundcloud,2010:tracks/2353638380",
+      "episode_number": 530,
+      "title": "MTG Fast Finance Ep 530: Secret Lair Cats Superdrop Results",
+      "published_at": "2026-07-05T21:41:20Z",
+      "audio_url": "https://feeds.soundcloud.com/stream/2353638380-user-519789566-mtg-fast-finance-ep-530-secret.mp3",
+      "episode_url": "https://soundcloud.com/user-519789566/mtg-fast-finance-ep-530-secret",
+      "duration_seconds": 2522,
       "hosts": [
-        "Alex Example",
-        "Blair Example",
-        "Casey Example"
+        "MTG Fast Finance"
       ],
-      "description": null,
-      "processing_status": "complete",
-      "review_state": "approved",
-      "review_reason": null,
-      "pick_count": 3,
-      "directory": "episodes/0905-repeat-recommendation-test",
-      "outputs": {
-        "metadata": "episodes/0905-repeat-recommendation-test/metadata.json",
-        "summary_json": "episodes/0905-repeat-recommendation-test/summary.json",
-        "summary_markdown": "episodes/0905-repeat-recommendation-test/summary.md"
-      },
-      "processed_at": "2026-07-16T02:31:06Z",
-      "error": null,
-      "synthetic": true
-    },
-    {
-      "guid": "ffw-synthetic-episode-904",
-      "episode_number": 904,
-      "title": "[SYNTHETIC] MTG Fast Finance Ep 904: Failed Download Fixture",
-      "published_at": "2026-05-29T12:00:00Z",
-      "audio_url": "https://example.invalid/ffw/episode-904.mp3",
-      "episode_url": "https://example.invalid/ffw/episode-904",
-      "duration_seconds": 0,
-      "hosts": [
-        "Alex Example"
-      ],
-      "description": null,
+      "description": "Your favorite cardboard finance team gets you caught on all the Magic the Gathering card price action of the week, including meta updates, cards to watch and the low down on how the Cats Secret Lair Superdrop played out.\n\nIntro/Outro Music by Skylarka",
       "processing_status": "failed",
       "review_state": "not_applicable",
       "review_reason": null,
       "pick_count": 0,
-      "directory": "episodes/0904-failed-download-fixture",
+      "directory": "episodes/0530-secret-lair-cats-superdrop-results",
       "outputs": {
-        "metadata": "episodes/0904-failed-download-fixture/metadata.json",
+        "metadata": "episodes/0530-secret-lair-cats-superdrop-results/metadata.json",
         "summary_json": null,
         "summary_markdown": null
       },
-      "processed_at": "2026-07-16T02:31:05Z",
+      "processed_at": "2026-07-16T03:40:05Z",
       "error": {
-        "stage": "downloading",
-        "message": "Synthetic downloader failure used to exercise error handling.",
-        "synthetic": true,
-        "retryable": false
+        "stage": "transcribing",
+        "message": "404 NOT_FOUND. {'error': {'code': 404, 'message': 'This model models/gemini-2.5-flash is no longer available to new users. Please update your code to use a newer model for the latest features and improvements.', 'status': 'NOT_FOUND'}}",
+        "synthetic": false,
+        "retryable": true
       },
-      "synthetic": true
+      "synthetic": false
     },
     {
-      "guid": "ffw-synthetic-episode-903",
-      "episode_number": 903,
-      "title": "[SYNTHETIC] MTG Fast Finance Ep 903: Audio Cross-Talk Test",
-      "published_at": "2026-05-22T12:00:00Z",
-      "audio_url": "https://example.invalid/ffw/episode-903.mp3",
-      "episode_url": "https://example.invalid/ffw/episode-903",
-      "duration_seconds": 3615,
+      "guid": "tag:soundcloud,2010:tracks/2353622054",
+      "episode_number": 529,
+      "title": "MTG Fast Finance Ep 529: Much More Marvel",
+      "published_at": "2026-07-05T20:59:50Z",
+      "audio_url": "https://feeds.soundcloud.com/stream/2353622054-user-519789566-mtg-fast-finance-ep-529-much.mp3",
+      "episode_url": "https://soundcloud.com/user-519789566/mtg-fast-finance-ep-529-much",
+      "duration_seconds": 4697,
       "hosts": [
-        "Blair Example",
-        "Casey Example"
+        "MTG Fast Finance"
       ],
-      "description": null,
-      "processing_status": "needs_review",
-      "review_state": "needs_review",
-      "review_reason": "Synthetic cross-talk makes two printing references and one price target ambiguous.",
-      "pick_count": 4,
-      "directory": "episodes/0903-audio-cross-talk-test",
-      "outputs": {
-        "metadata": "episodes/0903-audio-cross-talk-test/metadata.json",
-        "summary_json": "episodes/0903-audio-cross-talk-test/summary.json",
-        "summary_markdown": "episodes/0903-audio-cross-talk-test/summary.md"
-      },
-      "processed_at": "2026-07-16T02:31:05Z",
-      "error": null,
-      "synthetic": true
-    },
-    {
-      "guid": "ffw-synthetic-episode-902",
-      "episode_number": 902,
-      "title": "[SYNTHETIC] MTG Fast Finance Ep 902: Commander Reprint Windows",
-      "published_at": "2026-05-15T12:00:00Z",
-      "audio_url": "https://example.invalid/ffw/episode-902.mp3",
-      "episode_url": "https://example.invalid/ffw/episode-902",
-      "duration_seconds": 4210,
-      "hosts": [
-        "Alex Example",
-        "Casey Example"
-      ],
-      "description": null,
-      "processing_status": "complete",
-      "review_state": "approved",
+      "description": "The world's best Magic Finance team gets you caught on all the Magic the Gathering card price action of the week, including meta updates, cards to watch and even more chatter on the best of the cards from the Marvel superset.",
+      "processing_status": "failed",
+      "review_state": "not_applicable",
       "review_reason": null,
-      "pick_count": 4,
-      "directory": "episodes/0902-commander-reprint-windows",
+      "pick_count": 0,
+      "directory": "episodes/0529-much-more-marvel",
       "outputs": {
-        "metadata": "episodes/0902-commander-reprint-windows/metadata.json",
-        "summary_json": "episodes/0902-commander-reprint-windows/summary.json",
-        "summary_markdown": "episodes/0902-commander-reprint-windows/summary.md"
+        "metadata": "episodes/0529-much-more-marvel/metadata.json",
+        "summary_json": null,
+        "summary_markdown": null
       },
-      "processed_at": "2026-07-16T02:31:03Z",
-      "error": null,
-      "synthetic": true
+      "processed_at": "2026-07-16T03:39:48Z",
+      "error": {
+        "stage": "transcribing",
+        "message": "404 NOT_FOUND. {'error': {'code': 404, 'message': 'This model models/gemini-2.5-flash is no longer available to new users. Please update your code to use a newer model for the latest features and improvements.', 'status': 'NOT_FOUND'}}",
+        "synthetic": false,
+        "retryable": true
+      },
+      "synthetic": false
     },
     {
-      "guid": "ffw-synthetic-episode-901",
-      "episode_number": 901,
-      "title": "[SYNTHETIC] MTG Fast Finance Ep 901: Fetchland Signals",
-      "published_at": "2026-05-08T12:00:00Z",
-      "audio_url": "https://example.invalid/ffw/episode-901.mp3",
-      "episode_url": "https://example.invalid/ffw/episode-901",
-      "duration_seconds": 3870,
+      "guid": "tag:soundcloud,2010:tracks/2351008367",
+      "episode_number": 528,
+      "title": "MTGFastFinance Ep 528: Marvel x MTG Top 10",
+      "published_at": "2026-07-01T05:59:01Z",
+      "audio_url": "https://feeds.soundcloud.com/stream/2351008367-user-519789566-mtgfastfinance-ep-528-marvel-x.mp3",
+      "episode_url": "https://soundcloud.com/user-519789566/mtgfastfinance-ep-528-marvel-x",
+      "duration_seconds": 3520,
       "hosts": [
-        "Alex Example",
-        "Blair Example"
+        "MTG Fast Finance"
       ],
-      "description": null,
-      "processing_status": "complete",
-      "review_state": "approved",
+      "description": "James and Cliff catch you up on all the Magic the Gathering card price action of the week, including meta updates, cards to watch and tackle their top main set marvel cards from preview season.\n\nIntro/Outro Music by Skylarka",
+      "processing_status": "failed",
+      "review_state": "not_applicable",
       "review_reason": null,
-      "pick_count": 4,
-      "directory": "episodes/0901-fetchland-signals",
+      "pick_count": 0,
+      "directory": "episodes/0528-mtgfastfinance-ep-528-marvel-x-mtg-top-10",
       "outputs": {
-        "metadata": "episodes/0901-fetchland-signals/metadata.json",
-        "summary_json": "episodes/0901-fetchland-signals/summary.json",
-        "summary_markdown": "episodes/0901-fetchland-signals/summary.md"
+        "metadata": "episodes/0528-mtgfastfinance-ep-528-marvel-x-mtg-top-10/metadata.json",
+        "summary_json": null,
+        "summary_markdown": null
       },
-      "processed_at": "2026-07-16T02:31:03Z",
-      "error": null,
-      "synthetic": true
+      "processed_at": "2026-07-16T03:39:17Z",
+      "error": {
+        "stage": "transcribing",
+        "message": "404 NOT_FOUND. {'error': {'code': 404, 'message': 'This model models/gemini-2.5-flash is no longer available to new users. Please update your code to use a newer model for the latest features and improvements.', 'status': 'NOT_FOUND'}}",
+        "synthetic": false,
+        "retryable": true
+      },
+      "synthetic": false
     }
   ]
 }
