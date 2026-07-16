@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.1.0",
+  "synthetic": false,
+  "notice": "Live automated pipeline metadata.",
+  "episode": {
+    "guid": "tag:soundcloud,2010:tracks/308565102",
+    "episode_number": 0,
+    "title": "Ep55b Bonus Episode: Interview with Dan Bock of PowerNine Games",
+    "published_at": "2017-02-19T22:28:30Z",
+    "audio_url": "https://feeds.soundcloud.com/stream/308565102-user-519789566-ep55b-bonus-episode-interview-with-dan-bock-of-powernine-games.mp3",
+    "episode_url": "https://soundcloud.com/user-519789566/ep55b-bonus-episode-interview-with-dan-bock-of-powernine-games",
+    "duration_seconds": 11344,
+    "hosts": [
+      "MTG Fast Finance"
+    ],
+    "description": "James goes super deep with Dan Bock of PowerNine Games, one of the great survivors of 90s MTGFinance and one of the most experienced Ebay power sellers and purveyors of high end cards for Magic: The Gathering."
+  },
+  "processing": {
+    "status": "failed",
+    "review_state": "not_applicable",
+    "review_reason": null,
+    "pipeline_version": "0.2.0",
+    "schema_version": "1.1.0",
+    "transcription_model": "gemini-2.5-flash",
+    "extraction_model": "gemini-2.5-flash",
+    "prompt_version": "cards-to-watch-v2",
+    "processed_at": "2026-07-16T12:02:37Z",
+    "history": [
+      {
+        "status": "detected",
+        "timestamp": "2026-07-16T11:53:47Z"
+      },
+      {
+        "status": "queued",
+        "timestamp": "2026-07-16T11:53:47Z"
+      },
+      {
+        "status": "queued",
+        "timestamp": "2026-07-16T12:02:37Z"
+      },
+      {
+        "status": "downloading",
+        "timestamp": "2026-07-16T12:02:37Z"
+      },
+      {
+        "status": "failed",
+        "timestamp": "2026-07-16T12:02:37Z"
+      }
+    ],
+    "error": {
+      "stage": "downloading",
+      "message": "Audio exceeds configured maximum size.",
+      "synthetic": false,
+      "retryable": true
+    },
+    "transcription": null,
+    "extraction_usage": null
+  },
+  "outputs": {
+    "metadata": "episodes/0000-ep55b-bonus-episode-interview-with-dan-bock-of-powernine-games-d426fc5d/metadata.json",
+    "summary_json": null,
+    "summary_markdown": null
+  }
+}

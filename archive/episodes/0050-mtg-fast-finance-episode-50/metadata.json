@@ -1,0 +1,76 @@
+{
+  "schema_version": "1.1.0",
+  "synthetic": false,
+  "notice": "Live automated pipeline metadata.",
+  "episode": {
+    "guid": "tag:soundcloud,2010:tracks/302604732",
+    "episode_number": 50,
+    "title": "MTG Fast Finance Episode 50",
+    "published_at": "2017-01-15T19:06:52Z",
+    "audio_url": "https://feeds.soundcloud.com/stream/302604732-user-519789566-mtg-fast-finance-episode-50.mp3",
+    "episode_url": "https://soundcloud.com/user-519789566/mtg-fast-finance-episode-50",
+    "duration_seconds": 4552,
+    "hosts": [
+      "MTG Fast Finance"
+    ],
+    "description": "MTG Fast Finance Episode 50"
+  },
+  "processing": {
+    "status": "failed",
+    "review_state": "not_applicable",
+    "review_reason": null,
+    "pipeline_version": "0.2.0",
+    "schema_version": "1.1.0",
+    "transcription_model": "gemini-2.5-flash",
+    "extraction_model": "gemini-2.5-flash",
+    "prompt_version": "cards-to-watch-v2",
+    "processed_at": "2026-07-16T12:00:55Z",
+    "history": [
+      {
+        "status": "detected",
+        "timestamp": "2026-07-16T11:53:47Z"
+      },
+      {
+        "status": "queued",
+        "timestamp": "2026-07-16T11:53:47Z"
+      },
+      {
+        "status": "queued",
+        "timestamp": "2026-07-16T12:00:26Z"
+      },
+      {
+        "status": "downloading",
+        "timestamp": "2026-07-16T12:00:26Z"
+      },
+      {
+        "status": "downloaded",
+        "timestamp": "2026-07-16T12:00:28Z"
+      },
+      {
+        "status": "preparing",
+        "timestamp": "2026-07-16T12:00:28Z"
+      },
+      {
+        "status": "transcribing",
+        "timestamp": "2026-07-16T12:00:54Z"
+      },
+      {
+        "status": "failed",
+        "timestamp": "2026-07-16T12:00:55Z"
+      }
+    ],
+    "error": {
+      "stage": "transcribing",
+      "message": "404 NOT_FOUND. {'error': {'code': 404, 'message': 'This model models/gemini-2.5-flash is no longer available to new users. Please update your code to use a newer model for the latest features and improvements.', 'status': 'NOT_FOUND'}}",
+      "synthetic": false,
+      "retryable": true
+    },
+    "transcription": null,
+    "extraction_usage": null
+  },
+  "outputs": {
+    "metadata": "episodes/0050-mtg-fast-finance-episode-50/metadata.json",
+    "summary_json": null,
+    "summary_markdown": null
+  }
+}

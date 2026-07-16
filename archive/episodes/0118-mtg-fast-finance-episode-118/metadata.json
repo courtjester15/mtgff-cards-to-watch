@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.1.0",
+  "synthetic": false,
+  "notice": "Live automated pipeline metadata.",
+  "episode": {
+    "guid": "tag:soundcloud,2010:tracks/443637393",
+    "episode_number": 118,
+    "title": "MTG Fast Finance Episode 118",
+    "published_at": "2018-05-15T20:47:17Z",
+    "audio_url": "https://feeds.soundcloud.com/stream/443637393-user-519789566-mtg-fast-finance-episode-118.mp3",
+    "episode_url": "https://soundcloud.com/user-519789566/mtg-fast-finance-episode-118",
+    "duration_seconds": 10425,
+    "hosts": [
+      "MTG Fast Finance"
+    ],
+    "description": "MTG Fast Finance Episode 118"
+  },
+  "processing": {
+    "status": "failed",
+    "review_state": "not_applicable",
+    "review_reason": null,
+    "pipeline_version": "0.2.0",
+    "schema_version": "1.1.0",
+    "transcription_model": "gemini-2.5-flash",
+    "extraction_model": "gemini-2.5-flash",
+    "prompt_version": "cards-to-watch-v2",
+    "processed_at": "2026-07-16T12:34:13Z",
+    "history": [
+      {
+        "status": "detected",
+        "timestamp": "2026-07-16T11:53:48Z"
+      },
+      {
+        "status": "queued",
+        "timestamp": "2026-07-16T11:53:48Z"
+      },
+      {
+        "status": "queued",
+        "timestamp": "2026-07-16T12:34:12Z"
+      },
+      {
+        "status": "downloading",
+        "timestamp": "2026-07-16T12:34:12Z"
+      },
+      {
+        "status": "failed",
+        "timestamp": "2026-07-16T12:34:13Z"
+      }
+    ],
+    "error": {
+      "stage": "downloading",
+      "message": "Audio exceeds configured maximum size.",
+      "synthetic": false,
+      "retryable": true
+    },
+    "transcription": null,
+    "extraction_usage": null
+  },
+  "outputs": {
+    "metadata": "episodes/0118-mtg-fast-finance-episode-118/metadata.json",
+    "summary_json": null,
+    "summary_markdown": null
+  }
+}

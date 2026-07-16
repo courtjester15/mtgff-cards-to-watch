@@ -1,0 +1,76 @@
+{
+  "schema_version": "1.1.0",
+  "synthetic": false,
+  "notice": "Live automated pipeline metadata.",
+  "episode": {
+    "guid": "tag:soundcloud,2010:tracks/2220274529",
+    "episode_number": 503,
+    "title": "MTG Fast Finance Ep 503: Avatar Secret Lair Results",
+    "published_at": "2025-11-28T00:35:36Z",
+    "audio_url": "https://feeds.soundcloud.com/stream/2220274529-user-519789566-mtg-fast-finance-ep-503-avatar-secret-lair-results.mp3",
+    "episode_url": "https://soundcloud.com/user-519789566/mtg-fast-finance-ep-503-avatar-secret-lair-results",
+    "duration_seconds": 3057,
+    "hosts": [
+      "MTG Fast Finance"
+    ],
+    "description": "James and Cliff drop knowledge on all the lastest in #mtgfinance, including fast movers, cards to watch, meta changes and a quick look at how the Avatar Secret Lair drops played out and how the main set singles and sealed products are trending.\n\nIntro/Outro Music by Skylarka"
+  },
+  "processing": {
+    "status": "failed",
+    "review_state": "not_applicable",
+    "review_reason": null,
+    "pipeline_version": "0.2.0",
+    "schema_version": "1.1.0",
+    "transcription_model": "gemini-2.5-flash",
+    "extraction_model": "gemini-2.5-flash",
+    "prompt_version": "cards-to-watch-v2",
+    "processed_at": "2026-07-16T16:10:49Z",
+    "history": [
+      {
+        "status": "detected",
+        "timestamp": "2026-07-16T11:53:52Z"
+      },
+      {
+        "status": "queued",
+        "timestamp": "2026-07-16T11:53:52Z"
+      },
+      {
+        "status": "queued",
+        "timestamp": "2026-07-16T16:10:29Z"
+      },
+      {
+        "status": "downloading",
+        "timestamp": "2026-07-16T16:10:29Z"
+      },
+      {
+        "status": "downloaded",
+        "timestamp": "2026-07-16T16:10:31Z"
+      },
+      {
+        "status": "preparing",
+        "timestamp": "2026-07-16T16:10:31Z"
+      },
+      {
+        "status": "transcribing",
+        "timestamp": "2026-07-16T16:10:48Z"
+      },
+      {
+        "status": "failed",
+        "timestamp": "2026-07-16T16:10:49Z"
+      }
+    ],
+    "error": {
+      "stage": "transcribing",
+      "message": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash\\nPlease retry in 10.978285101s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-2.5-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '10s'}]}}",
+      "synthetic": false,
+      "retryable": true
+    },
+    "transcription": null,
+    "extraction_usage": null
+  },
+  "outputs": {
+    "metadata": "episodes/0503-avatar-secret-lair-results/metadata.json",
+    "summary_json": null,
+    "summary_markdown": null
+  }
+}

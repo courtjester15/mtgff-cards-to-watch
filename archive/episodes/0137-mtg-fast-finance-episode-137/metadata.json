@@ -1,0 +1,76 @@
+{
+  "schema_version": "1.1.0",
+  "synthetic": false,
+  "notice": "Live automated pipeline metadata.",
+  "episode": {
+    "guid": "tag:soundcloud,2010:tracks/506115156",
+    "episode_number": 137,
+    "title": "MTG Fast Finance Episode 137",
+    "published_at": "2018-09-28T20:12:55Z",
+    "audio_url": "https://feeds.soundcloud.com/stream/506115156-user-519789566-mtg-fast-finance-episode-137.mp3",
+    "episode_url": "https://soundcloud.com/user-519789566/mtg-fast-finance-episode-137",
+    "duration_seconds": 9784,
+    "hosts": [
+      "MTG Fast Finance"
+    ],
+    "description": "James & Cliff provide a comprehensive set review for Guilds of Ravnica with the help of SCG Tour Pro Todd Stevens."
+  },
+  "processing": {
+    "status": "failed",
+    "review_state": "not_applicable",
+    "review_reason": null,
+    "pipeline_version": "0.2.0",
+    "schema_version": "1.1.0",
+    "transcription_model": "gemini-2.5-flash",
+    "extraction_model": "gemini-2.5-flash",
+    "prompt_version": "cards-to-watch-v2",
+    "processed_at": "2026-07-16T12:45:15Z",
+    "history": [
+      {
+        "status": "detected",
+        "timestamp": "2026-07-16T11:53:48Z"
+      },
+      {
+        "status": "queued",
+        "timestamp": "2026-07-16T11:53:48Z"
+      },
+      {
+        "status": "queued",
+        "timestamp": "2026-07-16T12:44:13Z"
+      },
+      {
+        "status": "downloading",
+        "timestamp": "2026-07-16T12:44:13Z"
+      },
+      {
+        "status": "downloaded",
+        "timestamp": "2026-07-16T12:44:17Z"
+      },
+      {
+        "status": "preparing",
+        "timestamp": "2026-07-16T12:44:17Z"
+      },
+      {
+        "status": "transcribing",
+        "timestamp": "2026-07-16T12:45:15Z"
+      },
+      {
+        "status": "failed",
+        "timestamp": "2026-07-16T12:45:15Z"
+      }
+    ],
+    "error": {
+      "stage": "transcribing",
+      "message": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash\\nPlease retry in 44.332979189s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-2.5-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '44s'}]}}",
+      "synthetic": false,
+      "retryable": true
+    },
+    "transcription": null,
+    "extraction_usage": null
+  },
+  "outputs": {
+    "metadata": "episodes/0137-mtg-fast-finance-episode-137/metadata.json",
+    "summary_json": null,
+    "summary_markdown": null
+  }
+}

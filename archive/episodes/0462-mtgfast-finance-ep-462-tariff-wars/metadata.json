@@ -1,0 +1,76 @@
+{
+  "schema_version": "1.1.0",
+  "synthetic": false,
+  "notice": "Live automated pipeline metadata.",
+  "episode": {
+    "guid": "tag:soundcloud,2010:tracks/2028969924",
+    "episode_number": 462,
+    "title": "MTGFast Finance Ep 462: Tariff Wars",
+    "published_at": "2025-02-07T21:52:11Z",
+    "audio_url": "https://feeds.soundcloud.com/stream/2028969924-user-519789566-mtgfast-finance-ep-462-tariff-wars.mp3",
+    "episode_url": "https://soundcloud.com/user-519789566/mtgfast-finance-ep-462-tariff-wars",
+    "duration_seconds": 4244,
+    "hosts": [
+      "MTG Fast Finance"
+    ],
+    "description": "James and Cliff get you caught up on all the latest in MTGFinance news, fast movers, cards to watch, and go over the Trump tariff wars and the upcoming Secret Lair Winter Superdrop."
+  },
+  "processing": {
+    "status": "failed",
+    "review_state": "not_applicable",
+    "review_reason": null,
+    "pipeline_version": "0.2.0",
+    "schema_version": "1.1.0",
+    "transcription_model": "gemini-2.5-flash",
+    "extraction_model": "gemini-2.5-flash",
+    "prompt_version": "cards-to-watch-v2",
+    "processed_at": "2026-07-16T15:54:22Z",
+    "history": [
+      {
+        "status": "detected",
+        "timestamp": "2026-07-16T11:53:51Z"
+      },
+      {
+        "status": "queued",
+        "timestamp": "2026-07-16T11:53:51Z"
+      },
+      {
+        "status": "queued",
+        "timestamp": "2026-07-16T15:53:54Z"
+      },
+      {
+        "status": "downloading",
+        "timestamp": "2026-07-16T15:53:54Z"
+      },
+      {
+        "status": "downloaded",
+        "timestamp": "2026-07-16T15:53:57Z"
+      },
+      {
+        "status": "preparing",
+        "timestamp": "2026-07-16T15:53:57Z"
+      },
+      {
+        "status": "transcribing",
+        "timestamp": "2026-07-16T15:54:21Z"
+      },
+      {
+        "status": "failed",
+        "timestamp": "2026-07-16T15:54:22Z"
+      }
+    ],
+    "error": {
+      "stage": "transcribing",
+      "message": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash\\nPlease retry in 37.731770015s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-2.5-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '37s'}]}}",
+      "synthetic": false,
+      "retryable": true
+    },
+    "transcription": null,
+    "extraction_usage": null
+  },
+  "outputs": {
+    "metadata": "episodes/0462-mtgfast-finance-ep-462-tariff-wars/metadata.json",
+    "summary_json": null,
+    "summary_markdown": null
+  }
+}

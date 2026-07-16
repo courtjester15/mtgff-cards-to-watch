@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.1.0",
+  "synthetic": false,
+  "notice": "Live automated pipeline metadata.",
+  "episode": {
+    "guid": "tag:soundcloud,2010:tracks/902520835",
+    "episode_number": 239,
+    "title": "MTG Fast Finance Episode 239",
+    "published_at": "2020-10-01T01:21:16Z",
+    "audio_url": "https://feeds.soundcloud.com/stream/902520835-user-519789566-mtg-fast-finance-episode-239.mp3",
+    "episode_url": "https://soundcloud.com/user-519789566/mtg-fast-finance-episode-239",
+    "duration_seconds": 11179,
+    "hosts": [
+      "MTG Fast Finance"
+    ],
+    "description": "MTG Fast Finance Episode 239"
+  },
+  "processing": {
+    "status": "failed",
+    "review_state": "not_applicable",
+    "review_reason": null,
+    "pipeline_version": "0.2.0",
+    "schema_version": "1.1.0",
+    "transcription_model": "gemini-2.5-flash",
+    "extraction_model": "gemini-2.5-flash",
+    "prompt_version": "cards-to-watch-v2",
+    "processed_at": "2026-07-16T13:50:35Z",
+    "history": [
+      {
+        "status": "detected",
+        "timestamp": "2026-07-16T11:53:48Z"
+      },
+      {
+        "status": "queued",
+        "timestamp": "2026-07-16T11:53:48Z"
+      },
+      {
+        "status": "queued",
+        "timestamp": "2026-07-16T13:50:34Z"
+      },
+      {
+        "status": "downloading",
+        "timestamp": "2026-07-16T13:50:34Z"
+      },
+      {
+        "status": "failed",
+        "timestamp": "2026-07-16T13:50:35Z"
+      }
+    ],
+    "error": {
+      "stage": "downloading",
+      "message": "Audio exceeds configured maximum size.",
+      "synthetic": false,
+      "retryable": true
+    },
+    "transcription": null,
+    "extraction_usage": null
+  },
+  "outputs": {
+    "metadata": "episodes/0239-mtg-fast-finance-episode-239/metadata.json",
+    "summary_json": null,
+    "summary_markdown": null
+  }
+}
