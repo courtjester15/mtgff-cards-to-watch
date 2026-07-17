@@ -47,6 +47,38 @@ function label(value) { return String(value ?? "unknown").replaceAll("_", " "); 
 function badge(value, kind = "status") { return `<span class="${kind} ${escapeHtml(value ?? "unknown")}">${escapeHtml(label(value))}</span>`; }
 function episodeSummaryUrl(episode) { return `archive/${episode.directory}/summary.md`; }
 function canOpenSummary(episode) { return Boolean(episode?.outputs?.summary_markdown); }
+function sentenceList(items, empty = "Not stated") {
+  return items?.length ? items.map((item) => `<li>${escapeHtml(item)}</li>`).join("") : `<li>${escapeHtml(empty)}</li>`;
+}
+function pickMeta(pick) {
+  return [
+    pick.printing || "Printing not stated",
+    pick.printing_certainty ? `${label(pick.printing_certainty)} printing` : "printing certainty unknown",
+    pick.hosts?.length ? pick.hosts.join(", ") : "host not stated",
+  ].map(escapeHtml).join(" · ");
+}
+function pickCard(pick, compact = false) {
+  return `<article class="pick-card ${compact ? "compact" : ""}" data-pick-id="${escapeHtml(pick.id)}" role="button" tabindex="0">
+    <div class="pick-card-head">
+      <div>
+        <p class="eyebrow">Episode ${escapeHtml(pick.episode.episode_number)} · ${display(pick.timestamp)}</p>
+        <h3>${escapeHtml(pick.card)}</h3>
+        <p class="pick-meta">${pickMeta(pick)}</p>
+      </div>
+      <div class="pick-badges">
+        ${pick.confidence ? badge(pick.confidence, "confidence") : ""}
+        ${badge(pick.review_status)}
+      </div>
+    </div>
+    <p class="recommendation-copy">${escapeHtml(pick.recommendation)}</p>
+    <div class="target-strip">
+      <div><small>Entry</small><strong>${target(pick.entry_target)}</strong></div>
+      <div><small>Hold</small><strong>${display(pick.hold)}</strong></div>
+      <div><small>Exit</small><strong>${target(pick.exit_target)}</strong></div>
+    </div>
+    ${compact ? "" : `<div class="evidence-preview">${escapeHtml(pick.evidence_excerpt || "No evidence excerpt recorded.")}</div>`}
+  </article>`;
+}
 function failureReason(error) {
   const message = String(error?.message ?? "");
   if (!message) return "No failure message was recorded.";
@@ -157,7 +189,7 @@ function episodeRows() {
 function renderPicks() {
   return `
     <div class="toolbar"><label class="search"><input id="pick-search" type="search" placeholder="Search card, printing, host, recommendation…" value="${escapeHtml(state.query)}"></label><select id="pick-status" aria-label="Filter by review status"><option value="all">All review states</option>${["approved", "pending", "needs_review"].map((value) => `<option value="${value}" ${state.status === value ? "selected" : ""}>${label(value)}</option>`).join("")}</select></div>
-    <div class="table-wrap"><table><thead><tr><th>Card</th><th>Printing</th><th>Host</th><th>Entry</th><th>Hold</th><th>Exit</th><th>Confidence</th><th>Episode</th><th>Time</th><th>Status</th><th></th></tr></thead><tbody id="pick-rows">${pickRows()}</tbody></table></div>`;
+    <div id="pick-rows" class="pick-grid">${pickRows()}</div>`;
 }
 
 function pickRows() {
@@ -166,8 +198,8 @@ function pickRows() {
     const haystack = `${pick.card} ${pick.printing ?? ""} ${pick.hosts.join(" ")} ${pick.recommendation} ${pick.episode.title}`.toLowerCase();
     return haystack.includes(query) && (state.status === "all" || pick.review_status === state.status);
   });
-  if (!picks.length) return `<tr><td colspan="11">No matching picks.</td></tr>`;
-  return picks.map((pick) => `<tr><td><strong>${escapeHtml(pick.card)}</strong></td><td>${display(pick.printing)}<br>${pick.printing_certainty ? badge(pick.printing_certainty, "certainty") : ""}</td><td>${escapeHtml(pick.hosts.join(", "))}</td><td>${target(pick.entry_target)}</td><td>${display(pick.hold)}</td><td>${target(pick.exit_target)}</td><td>${pick.confidence ? badge(pick.confidence, "confidence") : `<span class="muted">Not stated</span>`}</td><td>#${pick.episode.episode_number}</td><td>${display(pick.timestamp)}</td><td>${badge(pick.review_status)}</td><td><button class="link-button" data-pick-id="${escapeHtml(pick.id)}">Details</button></td></tr>`).join("");
+  if (!picks.length) return `<div class="empty-state"><strong>No matching picks</strong><p>Try a different card, host, or review filter.</p></div>`;
+  return picks.map((pick) => pickCard(pick)).join("");
 }
 
 function renderStatus() {
@@ -219,7 +251,7 @@ function bindEpisodeButtons() {
 function showPick(id) {
   const pick = state.cards.find((item) => item.id === id);
   if (!pick) return;
-  dialogContent.innerHTML = `<div class="dialog-content"><p class="eyebrow">Episode ${pick.episode.episode_number} · ${formatDate(pick.episode.published_at, true)}</p><h2 id="dialog-card">${escapeHtml(pick.card)}</h2><div class="dialog-sub">${display(pick.printing)} · ${pick.printing_certainty ? label(pick.printing_certainty) : "printing not stated"} · ${escapeHtml(pick.hosts.join(", "))}</div><div class="detail-grid"><div class="detail-box"><small>Entry</small><strong>${target(pick.entry_target)}</strong></div><div class="detail-box"><small>Hold</small><strong>${display(pick.hold)}</strong></div><div class="detail-box"><small>Exit</small><strong>${target(pick.exit_target)}</strong></div></div><div class="detail-section"><h3>Recommendation</h3><p>${escapeHtml(pick.recommendation)}</p></div><div class="detail-section"><h3>Reasoning</h3><ul>${pick.reasoning.map((reason) => `<li>${escapeHtml(reason)}</li>`).join("") || "<li>Not stated</li>"}</ul></div><div class="detail-section"><h3>Caveats</h3><ul>${pick.caveats.map((caveat) => `<li>${escapeHtml(caveat)}</li>`).join("") || "<li>None stated</li>"}</ul></div><div class="detail-section"><h3>Evidence · ${display(pick.timestamp)}</h3><div class="evidence">${escapeHtml(pick.evidence_excerpt)}</div></div><div class="latest-actions" style="margin-top:20px"><a class="button" href="${safeUrl(pick.listen_url)}" target="_blank" rel="noreferrer">Listen at timestamp</a>${badge(pick.review_status)}</div></div>`;
+  dialogContent.innerHTML = `<div class="dialog-content pick-detail"><p class="eyebrow">Episode ${pick.episode.episode_number} · ${formatDate(pick.episode.published_at, true)}</p><h2 id="dialog-card">${escapeHtml(pick.card)}</h2><div class="dialog-sub">${pickMeta(pick)}</div><div class="detail-grid"><div class="detail-box"><small>Entry</small><strong>${target(pick.entry_target)}</strong></div><div class="detail-box"><small>Hold</small><strong>${display(pick.hold)}</strong></div><div class="detail-box"><small>Exit</small><strong>${target(pick.exit_target)}</strong></div></div><div class="recommendation-callout"><small>Host recommendation</small><p>${escapeHtml(pick.recommendation)}</p></div><div class="detail-section"><h3>Why it was mentioned</h3><ul>${sentenceList(pick.reasoning)}</ul></div><div class="detail-section"><h3>Caveats</h3><ul>${sentenceList(pick.caveats, "None stated")}</ul></div><div class="detail-section"><h3>Evidence · ${display(pick.timestamp)}</h3><div class="evidence">${escapeHtml(pick.evidence_excerpt || "No evidence excerpt recorded.")}</div></div><div class="latest-actions" style="margin-top:20px"><a class="button" href="${safeUrl(pick.listen_url)}" target="_blank" rel="noreferrer">Listen at timestamp</a>${badge(pick.review_status)}</div></div>`;
   dialog.showModal();
 }
 
@@ -228,12 +260,28 @@ function showEpisode(guid) {
   if (!episode) return;
   const error = episode.error || {};
   const summaryLink = canOpenSummary(episode) ? `<a class="button secondary" href="${episodeSummaryUrl(episode)}" target="_blank">Open summary</a>` : "";
-  dialogContent.innerHTML = `<div class="dialog-content"><p class="eyebrow">Episode ${episode.episode_number || "unknown"} Â· ${formatDate(episode.published_at, true)}</p><h2 id="dialog-card">${escapeHtml(episode.title)}</h2><div class="dialog-sub">${escapeHtml(episode.hosts.join(", ") || "Hosts not stated")} Â· GUID ${escapeHtml(episode.guid)}</div><div class="detail-grid"><div class="detail-box"><small>Status</small><strong>${escapeHtml(label(episode.processing_status))}</strong></div><div class="detail-box"><small>Picks</small><strong>${Number(episode.pick_count || 0)}</strong></div><div class="detail-box"><small>Review</small><strong>${escapeHtml(label(episode.review_state))}</strong></div></div>${episode.error ? `<div class="detail-section"><h3>Failure details</h3><div class="failure-note">${failureReason(error)}</div><dl class="failure-grid"><div><dt>Stage</dt><dd>${display(error.stage, "Unknown")}</dd></div><div><dt>Retryable</dt><dd>${error.retryable === true ? "Yes" : "No"}</dd></div><div><dt>Processed</dt><dd>${display(formatDate(episode.processed_at, true), "Not recorded")}</dd></div></dl><details><summary>Technical message</summary><pre>${escapeHtml(error.message || "No raw error recorded.")}</pre></details></div>` : `<div class="detail-section"><h3>Summary</h3><p>${canOpenSummary(episode) ? "Structured summary output is available for this episode." : "No summary output has been published for this episode yet."}</p></div>`}<div class="detail-section"><h3>Source</h3><p>${escapeHtml(episode.description || "No feed description was captured.")}</p></div><div class="latest-actions" style="margin-top:20px"><a class="button" href="${safeUrl(episode.audio_url)}" target="_blank" rel="noreferrer">Listen</a>${summaryLink}</div></div>`;
+  const episodePicks = state.cards.filter((pick) => pick.episode.guid === episode.guid);
+  const picksSection = episodePicks.length
+    ? `<div class="detail-section"><h3>Cards to Watch</h3><div class="episode-pick-list">${episodePicks.map((pick) => pickCard(pick, true)).join("")}</div></div>`
+    : `<div class="detail-section"><h3>Cards to Watch</h3><p>No structured picks were published for this episode.</p></div>`;
+  dialogContent.innerHTML = `<div class="dialog-content"><p class="eyebrow">Episode ${episode.episode_number || "unknown"} · ${formatDate(episode.published_at, true)}</p><h2 id="dialog-card">${escapeHtml(episode.title)}</h2><div class="dialog-sub">${escapeHtml(episode.hosts.join(", ") || "Hosts not stated")} · GUID ${escapeHtml(episode.guid)}</div><div class="detail-grid"><div class="detail-box"><small>Status</small><strong>${escapeHtml(label(episode.processing_status))}</strong></div><div class="detail-box"><small>Picks</small><strong>${Number(episode.pick_count || 0)}</strong></div><div class="detail-box"><small>Review</small><strong>${escapeHtml(label(episode.review_state))}</strong></div></div>${episode.error ? `<div class="detail-section"><h3>Failure details</h3><div class="failure-note">${failureReason(error)}</div><dl class="failure-grid"><div><dt>Stage</dt><dd>${display(error.stage, "Unknown")}</dd></div><div><dt>Retryable</dt><dd>${error.retryable === true ? "Yes" : "No"}</dd></div><div><dt>Processed</dt><dd>${display(formatDate(episode.processed_at, true), "Not recorded")}</dd></div></dl><details><summary>Technical message</summary><pre>${escapeHtml(error.message || "No raw error recorded.")}</pre></details></div>` : picksSection}<div class="detail-section"><h3>Source</h3><p>${escapeHtml(episode.description || "No feed description was captured.")}</p></div><div class="latest-actions" style="margin-top:20px"><a class="button" href="${safeUrl(episode.audio_url)}" target="_blank" rel="noreferrer">Listen</a>${summaryLink}</div></div>`;
   dialog.showModal();
 }
 
 document.querySelector(".dialog-close").addEventListener("click", () => dialog.close());
 dialog.addEventListener("click", (event) => { if (event.target === dialog) dialog.close(); });
+dialogContent.addEventListener("click", (event) => {
+  const pickElement = event.target.closest("[data-pick-id]");
+  if (pickElement) showPick(pickElement.dataset.pickId);
+});
+dialogContent.addEventListener("keydown", (event) => {
+  if (!["Enter", " "].includes(event.key)) return;
+  const pickElement = event.target.closest("[data-pick-id]");
+  if (pickElement) {
+    event.preventDefault();
+    showPick(pickElement.dataset.pickId);
+  }
+});
 document.querySelector("#refresh-button").addEventListener("click", loadData);
 window.addEventListener("hashchange", () => { state.query = ""; state.status = "all"; setRoute(); });
 state.route = window.location.hash.replace("#", "") || "dashboard";
