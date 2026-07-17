@@ -1,0 +1,383 @@
+{
+  "schema_version": "1.1.0",
+  "synthetic": false,
+  "notice": "Automated transcription and extraction; verify against the linked source audio.",
+  "episode": {
+    "guid": "tag:soundcloud,2010:tracks/2353638380",
+    "episode_number": 530,
+    "title": "MTG Fast Finance Ep 530: Secret Lair Cats Superdrop Results",
+    "published_at": "2026-07-05T21:41:20Z",
+    "audio_url": "https://feeds.soundcloud.com/stream/2353638380-user-519789566-mtg-fast-finance-ep-530-secret.mp3",
+    "episode_url": "https://soundcloud.com/user-519789566/mtg-fast-finance-ep-530-secret",
+    "duration_seconds": 2522,
+    "hosts": [
+      "MTG Fast Finance"
+    ],
+    "description": "Your favorite cardboard finance team gets you caught on all the Magic the Gathering card price action of the week, including meta updates, cards to watch and the low down on how the Cats Secret Lair Superdrop played out.\n\nIntro/Outro Music by Skylarka"
+  },
+  "processing": {
+    "status": "needs_review",
+    "review_state": "needs_review",
+    "review_reason": "Found highly ambiguous card and cycle names ('Turbulent Fens', 'five Fen cards') in the transcript, which are likely transcription errors and have been flagged for review. Other recommendations are clear and approved.",
+    "pipeline_version": "0.2.0",
+    "schema_version": "1.1.0",
+    "transcription_model": "gemini-flash-latest",
+    "extraction_model": "gemini-flash-latest",
+    "prompt_version": "cards-to-watch-v2",
+    "processed_at": "2026-07-17T03:52:44Z",
+    "history": [
+      {
+        "status": "detected",
+        "timestamp": "2026-07-17T03:45:20Z"
+      },
+      {
+        "status": "queued",
+        "timestamp": "2026-07-17T03:45:20Z"
+      },
+      {
+        "status": "queued",
+        "timestamp": "2026-07-17T03:45:20Z"
+      },
+      {
+        "status": "downloading",
+        "timestamp": "2026-07-17T03:45:20Z"
+      },
+      {
+        "status": "downloaded",
+        "timestamp": "2026-07-17T03:45:21Z"
+      },
+      {
+        "status": "preparing",
+        "timestamp": "2026-07-17T03:45:21Z"
+      },
+      {
+        "status": "transcribing",
+        "timestamp": "2026-07-17T03:45:36Z"
+      },
+      {
+        "status": "transcribed",
+        "timestamp": "2026-07-17T03:50:36Z"
+      },
+      {
+        "status": "extracting",
+        "timestamp": "2026-07-17T03:50:36Z"
+      },
+      {
+        "status": "extracted",
+        "timestamp": "2026-07-17T03:52:44Z"
+      },
+      {
+        "status": "validating",
+        "timestamp": "2026-07-17T03:52:44Z"
+      },
+      {
+        "status": "publishing",
+        "timestamp": "2026-07-17T03:52:44Z"
+      },
+      {
+        "status": "needs_review",
+        "timestamp": "2026-07-17T03:52:44Z"
+      }
+    ],
+    "error": null,
+    "transcription": {
+      "provider": "Gemini",
+      "model": "gemini-flash-latest",
+      "chunk_count": 3,
+      "duration_seconds": 2522,
+      "usage": [
+        {
+          "cache_tokens_details": null,
+          "cached_content_token_count": null,
+          "candidates_token_count": 12779,
+          "candidates_tokens_details": null,
+          "prompt_token_count": 30050,
+          "prompt_tokens_details": [
+            {
+              "modality": "TEXT",
+              "token_count": 51
+            },
+            {
+              "modality": "AUDIO",
+              "token_count": 29999
+            }
+          ],
+          "thoughts_token_count": 1831,
+          "tool_use_prompt_token_count": null,
+          "tool_use_prompt_tokens_details": null,
+          "total_token_count": 44660,
+          "traffic_type": null
+        },
+        {
+          "cache_tokens_details": null,
+          "cached_content_token_count": null,
+          "candidates_token_count": 17553,
+          "candidates_tokens_details": null,
+          "prompt_token_count": 30050,
+          "prompt_tokens_details": [
+            {
+              "modality": "TEXT",
+              "token_count": 51
+            },
+            {
+              "modality": "AUDIO",
+              "token_count": 29999
+            }
+          ],
+          "thoughts_token_count": 8830,
+          "tool_use_prompt_token_count": null,
+          "tool_use_prompt_tokens_details": null,
+          "total_token_count": 56433,
+          "traffic_type": null
+        },
+        {
+          "cache_tokens_details": null,
+          "cached_content_token_count": null,
+          "candidates_token_count": 1399,
+          "candidates_tokens_details": null,
+          "prompt_token_count": 3117,
+          "prompt_tokens_details": [
+            {
+              "modality": "TEXT",
+              "token_count": 51
+            },
+            {
+              "modality": "AUDIO",
+              "token_count": 3066
+            }
+          ],
+          "thoughts_token_count": 66,
+          "tool_use_prompt_token_count": null,
+          "tool_use_prompt_tokens_details": null,
+          "total_token_count": 4582,
+          "traffic_type": null
+        }
+      ]
+    },
+    "extraction_usage": {
+      "cache_tokens_details": null,
+      "cached_content_token_count": null,
+      "candidates_token_count": 1298,
+      "candidates_tokens_details": null,
+      "prompt_token_count": 18025,
+      "prompt_tokens_details": [
+        {
+          "modality": "TEXT",
+          "token_count": 18025
+        }
+      ],
+      "thoughts_token_count": 21297,
+      "tool_use_prompt_token_count": null,
+      "tool_use_prompt_tokens_details": null,
+      "total_token_count": 40620,
+      "traffic_type": null
+    }
+  },
+  "section": {
+    "located": true,
+    "start_seconds": 103,
+    "end_seconds": 2559,
+    "label": "Cards to Watch",
+    "confidence": "medium",
+    "review_reason": "Section start found, but no explicit end marker was detected."
+  },
+  "recommendations": [
+    {
+      "card": "Turbulent Fens",
+      "printing": null,
+      "printing_certainty": null,
+      "foil": null,
+      "hosts": [
+        "speaker_1",
+        "speaker_2"
+      ],
+      "recommendation": "buy",
+      "mentioned_price": "$15 to $20",
+      "entry_target": null,
+      "hold": null,
+      "exit_target": {
+        "raw": "$15 to $20 range",
+        "currency": "USD",
+        "minimum": 15.0,
+        "maximum": 20.0
+      },
+      "reasoning": [
+        "Inventory is draining out on TCGPlayer, which historically acts as a buy signal.",
+        "Super staple status indicated by strong monthly sales volumes of both regular and extended art copies."
+      ],
+      "caveats": [],
+      "confidence": "medium",
+      "start_seconds": 1228,
+      "end_seconds": 1315,
+      "evidence_excerpt": "700 copies sold this month of Turbulent Fens... Price has been going down but inventory's draining out. That usually is a buy signal.",
+      "review_status": "needs_review",
+      "review_reason": "Ambiguous card name; likely transcription error for Talon Gates of Madara.",
+      "id": "pick-e96efbe36475ee5e",
+      "timestamp": "00:20:28",
+      "listen_url": "https://feeds.soundcloud.com/stream/2353638380-user-519789566-mtg-fast-finance-ep-530-secret.mp3#t=1228"
+    },
+    {
+      "card": "Karn, the Legacy Reforged",
+      "printing": "foil etched",
+      "printing_certainty": "confirmed",
+      "foil": true,
+      "hosts": [
+        "speaker_1",
+        "speaker_2"
+      ],
+      "recommendation": "buy",
+      "mentioned_price": "$20",
+      "entry_target": {
+        "raw": "$20",
+        "currency": "USD",
+        "minimum": 20.0,
+        "maximum": 20.0
+      },
+      "hold": "six months",
+      "exit_target": {
+        "raw": "$40",
+        "currency": "USD",
+        "minimum": 40.0,
+        "maximum": 40.0
+      },
+      "reasoning": [
+        "Etched foils are favored versions that tend to experience price movement first.",
+        "Sought-after inclusion in artifact synergy commander builds, such as those led by Ultron, the Artificial Malevolence."
+      ],
+      "caveats": [
+        "The card has already received a reprint in a Mystery Booster, though future reprints are deemed unlikely in the near term."
+      ],
+      "confidence": "high",
+      "start_seconds": 1358,
+      "end_seconds": 1493,
+      "evidence_excerpt": "I think these etched foils will end up $40 sometime in the next six months.",
+      "review_status": "approved",
+      "review_reason": null,
+      "id": "pick-7862994fdaff8997",
+      "timestamp": "00:22:38",
+      "listen_url": "https://feeds.soundcloud.com/stream/2353638380-user-519789566-mtg-fast-finance-ep-530-secret.mp3#t=1358"
+    },
+    {
+      "card": "Plaza of Heroes",
+      "printing": "borderless Galaxy foil",
+      "printing_certainty": "confirmed",
+      "foil": true,
+      "hosts": [
+        "speaker_1",
+        "speaker_2"
+      ],
+      "recommendation": "buy",
+      "mentioned_price": "low 30s",
+      "entry_target": {
+        "raw": "low 30s",
+        "currency": "USD",
+        "minimum": 30.0,
+        "maximum": 34.0
+      },
+      "hold": null,
+      "exit_target": {
+        "raw": "35 to 60 dollars plus",
+        "currency": "USD",
+        "minimum": 35.0,
+        "maximum": 60.0
+      },
+      "reasoning": [
+        "Very low market supply with only 13 near mint listings remaining on TCGPlayer.",
+        "Widely recognized as an EDH super staple due to its utility in multicolor legendary-focused decks."
+      ],
+      "caveats": [
+        "Some players might prefer alternative art styles, though the Galaxy foil remains a highly sought-after rarity."
+      ],
+      "confidence": "high",
+      "start_seconds": 1493,
+      "end_seconds": 1617,
+      "evidence_excerpt": "Plaza of Heroes borderless Galaxy foil number 123... bounced up into the low 30s... These are going to go 35 to 60 dollars plus pretty quickly.",
+      "review_status": "approved",
+      "review_reason": null,
+      "id": "pick-5b1afe568997d818",
+      "timestamp": "00:24:53",
+      "listen_url": "https://feeds.soundcloud.com/stream/2353638380-user-519789566-mtg-fast-finance-ep-530-secret.mp3#t=1493"
+    },
+    {
+      "card": "Nut Collector",
+      "printing": "borderless",
+      "printing_certainty": "confirmed",
+      "foil": null,
+      "hosts": [
+        "speaker_2"
+      ],
+      "recommendation": "buy",
+      "mentioned_price": "around six dollars",
+      "entry_target": {
+        "raw": "around six dollars",
+        "currency": "USD",
+        "minimum": 6.0,
+        "maximum": 6.0
+      },
+      "hold": "next few weeks to couple months",
+      "exit_target": {
+        "raw": "around 15 dollars",
+        "currency": "USD",
+        "minimum": 15.0,
+        "maximum": 15.0
+      },
+      "reasoning": [
+        "Driven by increased player interest in Squirrel tribal commanders like Squirrel Girl and Chatterfang.",
+        "Acts as a strong, repetitive source of squirrel tokens and provides a substantial power/toughness anthem."
+      ],
+      "caveats": [
+        "Carries a high mana cost of six mana, which can make it slower in competitive or optimized environments."
+      ],
+      "confidence": "medium",
+      "start_seconds": 1627,
+      "end_seconds": 1700,
+      "evidence_excerpt": "Nut Collector borderless... get copies right now, uh, for around six dollars, uh, shipped. And I think... this should end up being around 15 dollars.",
+      "review_status": "approved",
+      "review_reason": null,
+      "id": "pick-a18b41650c9b8f5a",
+      "timestamp": "00:27:07",
+      "listen_url": "https://feeds.soundcloud.com/stream/2353638380-user-519789566-mtg-fast-finance-ep-530-secret.mp3#t=1627"
+    },
+    {
+      "card": "five Fen cards",
+      "printing": null,
+      "printing_certainty": null,
+      "foil": null,
+      "hosts": [
+        "James Chilcott",
+        "Cliff Daigle"
+      ],
+      "recommendation": "buy",
+      "mentioned_price": "under $10",
+      "entry_target": {
+        "raw": "under $10",
+        "currency": "USD",
+        "minimum": null,
+        "maximum": 10.0
+      },
+      "hold": "one-to-two years",
+      "exit_target": {
+        "raw": "high teens to low 20s",
+        "currency": "USD",
+        "minimum": 15.0,
+        "maximum": 22.0
+      },
+      "reasoning": [
+        "Considered true staples in the Commander format with high EDHREC inclusion rates of 5% to 6%.",
+        "Prices have steadily drifted downward since their release, making the summer lull an ideal entry window."
+      ],
+      "caveats": [
+        "Wizards could decide to reprint these cards in preconstructed decks, although such reprints are unlikely to feature the current extended art treatment."
+      ],
+      "confidence": "medium",
+      "start_seconds": 1707,
+      "end_seconds": 1926,
+      "evidence_excerpt": "these five Fen cards for EDH purposes are true staples... somewhere in this summer lull, you are going to want to be picking up these Fens...",
+      "review_status": "needs_review",
+      "review_reason": "Ambiguous cycle name; likely transcription error for Snarls or another Strixhaven cycle.",
+      "id": "pick-8643aa617952d7d0",
+      "timestamp": "00:28:27",
+      "listen_url": "https://feeds.soundcloud.com/stream/2353638380-user-519789566-mtg-fast-finance-ep-530-secret.mp3#t=1707"
+    }
+  ]
+}
