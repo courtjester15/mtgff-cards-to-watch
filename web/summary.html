@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Styled MTG Fast Finance Cards to Watch episode summary">
+    <title>FFW · Episode Summary</title>
+    <link rel="stylesheet" href="styles.css?v=0.2.2">
+  </head>
+  <body class="summary-page">
+    <main class="summary-shell">
+      <header class="summary-hero">
+        <a class="summary-back" href="./">← Back to archive</a>
+        <p class="eyebrow">MTG Fast Finance · Cards to Watch</p>
+        <h1 id="summary-title">Loading episode summary…</h1>
+        <div id="summary-meta" class="summary-meta"></div>
+        <div id="summary-actions" class="latest-actions"></div>
+      </header>
+
+      <section id="review-banner" class="banner" hidden></section>
+      <section id="summary-app" aria-live="polite">
+        <div class="loading"><span></span> Loading structured summary…</div>
+      </section>
+    </main>
+
+    <script src="summary.js?v=0.2.2" defer></script>
+  </body>
+</html>

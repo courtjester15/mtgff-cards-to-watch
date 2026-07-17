@@ -45,7 +45,7 @@ function display(value, fallback = "Not stated") {
 function target(value) { return value ? escapeHtml(value.raw) : "Not stated"; }
 function label(value) { return String(value ?? "unknown").replaceAll("_", " "); }
 function badge(value, kind = "status") { return `<span class="${kind} ${escapeHtml(value ?? "unknown")}">${escapeHtml(label(value))}</span>`; }
-function episodeSummaryUrl(episode) { return `archive/${episode.directory}/summary.md`; }
+function episodeSummaryUrl(episode) { return `summary.html?episode=${encodeURIComponent(episode.directory.replace(/^episodes\//, ""))}`; }
 function canOpenSummary(episode) { return Boolean(episode?.outputs?.summary_markdown); }
 function sentenceList(items, empty = "Not stated") {
   return items?.length ? items.map((item) => `<li>${escapeHtml(item)}</li>`).join("") : `<li>${escapeHtml(empty)}</li>`;
