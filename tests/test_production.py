@@ -152,6 +152,10 @@ class FrontendContractTests(unittest.TestCase):
         self.assertNotIn("../archive", app)
         self.assertIn("automated pipeline may be updating", app)
         self.assertNotIn("python -m ffw", app)
+        self.assertIn("data-episode-guid", app)
+        self.assertIn("function showEpisode", app)
+        self.assertIn("View failure details", app)
+        self.assertNotIn("Unavailable", app)
 
     def test_workflow_defaults_and_limit_guard_are_safe(self) -> None:
         workflow = (Path(__file__).parents[1] / ".github/workflows/ffw.yml").read_text(encoding="utf-8")

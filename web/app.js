@@ -46,6 +46,24 @@ function target(value) { return value ? escapeHtml(value.raw) : "Not stated"; }
 function label(value) { return String(value ?? "unknown").replaceAll("_", " "); }
 function badge(value, kind = "status") { return `<span class="${kind} ${escapeHtml(value ?? "unknown")}">${escapeHtml(label(value))}</span>`; }
 function episodeSummaryUrl(episode) { return `archive/${episode.directory}/summary.md`; }
+function canOpenSummary(episode) { return Boolean(episode?.outputs?.summary_markdown); }
+function failureReason(error) {
+  const message = String(error?.message ?? "");
+  if (!message) return "No failure message was recorded.";
+  const lower = message.toLowerCase();
+  if (lower.includes("resource_exhausted") || lower.includes("quota")) return "Gemini quota or rate limit was reached.";
+  if (lower.includes("not_found") && lower.includes("model")) return "Gemini model was unavailable for this API key.";
+  if (lower.includes("api key") || lower.includes("unauthenticated") || lower.includes("permission_denied")) return "The AI provider key was missing, invalid, or unauthorized.";
+  if (lower.includes("maximum size")) return "Audio exceeded the configured maximum size.";
+  if (lower.includes("response_schema") || lower.includes("response_json_schema")) return "The AI provider rejected the structured JSON schema.";
+  return message.length > 220 ? `${escapeHtml(message.slice(0, 220))}â€¦` : escapeHtml(message);
+}
+function episodeAction(episode) {
+  if (!episode) return "";
+  return canOpenSummary(episode)
+    ? `<a class="button secondary" href="${episodeSummaryUrl(episode)}" target="_blank">Open summary</a>`
+    : `<button class="button secondary" type="button" data-episode-guid="${escapeHtml(episode.guid)}">View failure details</button>`;
+}
 
 async function loadData() {
   app.innerHTML = `<div class="loading"><span></span> Loading archive…</div>`;
@@ -103,7 +121,8 @@ function renderDashboard() {
           <div>${badge(latest.processing_status)} ${latest.review_state === "needs_review" ? badge("needs_review") : ""}</div>
           <div><p class="eyebrow">Episode ${latest.episode_number} · ${formatDate(latest.published_at)}</p><h3>${escapeHtml(latest.title)}</h3></div>
           <div class="latest-meta"><span>${latest.pick_count} picks</span><span>${escapeHtml(latest.hosts.join(" · "))}</span><span>GUID ${escapeHtml(latest.guid)}</span></div>
-          <div class="latest-actions"><a class="button" href="${safeUrl(latest.audio_url)}" target="_blank" rel="noreferrer">Listen</a><a class="button secondary" href="${episodeSummaryUrl(latest)}" target="_blank">Open summary</a></div>
+          ${latest.error ? `<div class="failure-note">${failureReason(latest.error)}</div>` : ""}
+          <div class="latest-actions"><a class="button" href="${safeUrl(latest.audio_url)}" target="_blank" rel="noreferrer">Listen</a>${episodeAction(latest)}</div>
         ` : `<div class="empty-state"><strong>No live episodes published yet</strong><p>The first automated run is pending.</p></div>`}</div>
       </article>
       <article class="panel">
@@ -132,7 +151,7 @@ function episodeRows() {
     return haystack.includes(query) && (state.status === "all" || episode.processing_status === state.status);
   });
   if (!episodes.length) return `<tr><td colspan="8">No matching episodes.</td></tr>`;
-  return episodes.map((episode) => `<tr><td><strong>#${episode.episode_number}</strong></td><td>${formatDate(episode.published_at)}</td><td><strong>${escapeHtml(episode.title)}</strong><br><span class="muted">${escapeHtml(episode.hosts.join(", "))}</span></td><td>${badge(episode.processing_status)}</td><td>${episode.pick_count}</td><td>${escapeHtml(label(episode.review_state))}</td><td><a class="link-button" href="${safeUrl(episode.audio_url)}" target="_blank" rel="noreferrer">Listen</a></td><td>${episode.outputs.summary_markdown ? `<a class="link-button" href="${episodeSummaryUrl(episode)}" target="_blank">Open</a>` : `<span class="muted">Unavailable</span>`}</td></tr>`).join("");
+  return episodes.map((episode) => `<tr class="episode-row" data-episode-guid="${escapeHtml(episode.guid)}" role="button" tabindex="0"><td><strong>#${episode.episode_number}</strong></td><td>${formatDate(episode.published_at)}</td><td><strong>${escapeHtml(episode.title)}</strong><br><span class="muted">${escapeHtml(episode.hosts.join(", "))}</span></td><td>${badge(episode.processing_status)}</td><td>${episode.pick_count}</td><td>${escapeHtml(label(episode.review_state))}</td><td><a class="link-button" href="${safeUrl(episode.audio_url)}" target="_blank" rel="noreferrer">Listen</a></td><td><button class="link-button" type="button" data-episode-guid="${escapeHtml(episode.guid)}">Details</button></td></tr>`).join("");
 }
 
 function renderPicks() {
@@ -166,10 +185,11 @@ function renderAbout() {
 
 function bindPageEvents() {
   bindPickButtons();
+  bindEpisodeButtons();
   const episodeSearch = document.querySelector("#episode-search");
   const episodeStatus = document.querySelector("#episode-status");
-  if (episodeSearch) episodeSearch.addEventListener("input", () => { state.query = episodeSearch.value; document.querySelector("#episode-rows").innerHTML = episodeRows(); });
-  if (episodeStatus) episodeStatus.addEventListener("change", () => { state.status = episodeStatus.value; document.querySelector("#episode-rows").innerHTML = episodeRows(); });
+  if (episodeSearch) episodeSearch.addEventListener("input", () => { state.query = episodeSearch.value; document.querySelector("#episode-rows").innerHTML = episodeRows(); bindEpisodeButtons(); });
+  if (episodeStatus) episodeStatus.addEventListener("change", () => { state.status = episodeStatus.value; document.querySelector("#episode-rows").innerHTML = episodeRows(); bindEpisodeButtons(); });
   const pickSearch = document.querySelector("#pick-search");
   const pickStatus = document.querySelector("#pick-status");
   if (pickSearch) pickSearch.addEventListener("input", () => { state.query = pickSearch.value; document.querySelector("#pick-rows").innerHTML = pickRows(); bindPickButtons(); });
@@ -184,10 +204,31 @@ function bindPickButtons() {
   });
 }
 
+function bindEpisodeButtons() {
+  document.querySelectorAll("[data-episode-guid]").forEach((element) => {
+    const open = (event) => {
+      event?.stopPropagation();
+      if (event?.target?.closest("a")) return;
+      showEpisode(element.dataset.episodeGuid);
+    };
+    element.addEventListener("click", open);
+    element.addEventListener("keydown", (event) => { if (["Enter", " "].includes(event.key)) { event.preventDefault(); open(event); } });
+  });
+}
+
 function showPick(id) {
   const pick = state.cards.find((item) => item.id === id);
   if (!pick) return;
   dialogContent.innerHTML = `<div class="dialog-content"><p class="eyebrow">Episode ${pick.episode.episode_number} · ${formatDate(pick.episode.published_at, true)}</p><h2 id="dialog-card">${escapeHtml(pick.card)}</h2><div class="dialog-sub">${display(pick.printing)} · ${pick.printing_certainty ? label(pick.printing_certainty) : "printing not stated"} · ${escapeHtml(pick.hosts.join(", "))}</div><div class="detail-grid"><div class="detail-box"><small>Entry</small><strong>${target(pick.entry_target)}</strong></div><div class="detail-box"><small>Hold</small><strong>${display(pick.hold)}</strong></div><div class="detail-box"><small>Exit</small><strong>${target(pick.exit_target)}</strong></div></div><div class="detail-section"><h3>Recommendation</h3><p>${escapeHtml(pick.recommendation)}</p></div><div class="detail-section"><h3>Reasoning</h3><ul>${pick.reasoning.map((reason) => `<li>${escapeHtml(reason)}</li>`).join("") || "<li>Not stated</li>"}</ul></div><div class="detail-section"><h3>Caveats</h3><ul>${pick.caveats.map((caveat) => `<li>${escapeHtml(caveat)}</li>`).join("") || "<li>None stated</li>"}</ul></div><div class="detail-section"><h3>Evidence · ${display(pick.timestamp)}</h3><div class="evidence">${escapeHtml(pick.evidence_excerpt)}</div></div><div class="latest-actions" style="margin-top:20px"><a class="button" href="${safeUrl(pick.listen_url)}" target="_blank" rel="noreferrer">Listen at timestamp</a>${badge(pick.review_status)}</div></div>`;
+  dialog.showModal();
+}
+
+function showEpisode(guid) {
+  const episode = state.index.episodes.find((item) => item.guid === guid);
+  if (!episode) return;
+  const error = episode.error || {};
+  const summaryLink = canOpenSummary(episode) ? `<a class="button secondary" href="${episodeSummaryUrl(episode)}" target="_blank">Open summary</a>` : "";
+  dialogContent.innerHTML = `<div class="dialog-content"><p class="eyebrow">Episode ${episode.episode_number || "unknown"} Â· ${formatDate(episode.published_at, true)}</p><h2 id="dialog-card">${escapeHtml(episode.title)}</h2><div class="dialog-sub">${escapeHtml(episode.hosts.join(", ") || "Hosts not stated")} Â· GUID ${escapeHtml(episode.guid)}</div><div class="detail-grid"><div class="detail-box"><small>Status</small><strong>${escapeHtml(label(episode.processing_status))}</strong></div><div class="detail-box"><small>Picks</small><strong>${Number(episode.pick_count || 0)}</strong></div><div class="detail-box"><small>Review</small><strong>${escapeHtml(label(episode.review_state))}</strong></div></div>${episode.error ? `<div class="detail-section"><h3>Failure details</h3><div class="failure-note">${failureReason(error)}</div><dl class="failure-grid"><div><dt>Stage</dt><dd>${display(error.stage, "Unknown")}</dd></div><div><dt>Retryable</dt><dd>${error.retryable === true ? "Yes" : "No"}</dd></div><div><dt>Processed</dt><dd>${display(formatDate(episode.processed_at, true), "Not recorded")}</dd></div></dl><details><summary>Technical message</summary><pre>${escapeHtml(error.message || "No raw error recorded.")}</pre></details></div>` : `<div class="detail-section"><h3>Summary</h3><p>${canOpenSummary(episode) ? "Structured summary output is available for this episode." : "No summary output has been published for this episode yet."}</p></div>`}<div class="detail-section"><h3>Source</h3><p>${escapeHtml(episode.description || "No feed description was captured.")}</p></div><div class="latest-actions" style="margin-top:20px"><a class="button" href="${safeUrl(episode.audio_url)}" target="_blank" rel="noreferrer">Listen</a>${summaryLink}</div></div>`;
   dialog.showModal();
 }
 
