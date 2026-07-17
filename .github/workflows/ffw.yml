@@ -12,9 +12,9 @@ on:
         options: [normal, backfill]
         default: backfill
       episode_limit:
-        description: Newest feed entries to inspect (0 means all)
+        description: Newest feed entries to inspect (1-20)
         required: true
-        default: "3"
+        default: "1"
       retry_failed:
         description: Retry episodes currently marked failed
         required: true
@@ -42,8 +42,9 @@ permissions:
 env:
   FFW_MODE: live
   FFW_AI_PROVIDER: gemini
-  FFW_TRANSCRIPTION_MODEL: gemini-2.5-flash
-  FFW_EXTRACTION_MODEL: gemini-2.5-flash
+  FFW_TRANSCRIPTION_MODEL: gemini-flash-latest
+  FFW_EXTRACTION_MODEL: gemini-flash-latest
+  FFW_MAX_LIVE_BATCH: "20"
   PYTHONUNBUFFERED: "1"
 
 jobs:
@@ -97,14 +98,22 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           INPUT_MODE: ${{ inputs.mode || 'normal' }}
-          INPUT_LIMIT: ${{ inputs.episode_limit || '0' }}
+          INPUT_LIMIT: ${{ inputs.episode_limit || '1' }}
           INPUT_RETRY: ${{ inputs.retry_failed || 'false' }}
           INPUT_GUID: ${{ inputs.force_guid || '' }}
         shell: bash
         run: |
+          if [[ ! "$INPUT_LIMIT" =~ ^[1-9][0-9]*$ ]]; then
+            echo "::error::episode_limit must be a positive integer from 1 to $FFW_MAX_LIVE_BATCH."
+            exit 2
+          fi
+          if (( INPUT_LIMIT > FFW_MAX_LIVE_BATCH )); then
+            echo "::error::episode_limit $INPUT_LIMIT exceeds the safety cap of $FFW_MAX_LIVE_BATCH."
+            exit 2
+          fi
           args=(run --live)
           if [[ "$INPUT_MODE" == "backfill" ]]; then args=(backfill --live); fi
-          if [[ "$INPUT_LIMIT" != "0" ]]; then args+=(--limit "$INPUT_LIMIT"); fi
+          args+=(--limit "$INPUT_LIMIT")
           if [[ "$INPUT_RETRY" == "true" ]]; then args+=(--retry-failed); fi
           if [[ -n "$INPUT_GUID" && "$INPUT_MODE" == "normal" ]]; then args+=(--force-guid "$INPUT_GUID"); fi
           set +e

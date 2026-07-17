@@ -47,6 +47,8 @@ For development without installing the package, set `PYTHONPATH=src` before invo
 | `python -m ffw validate` | Validate identity, states, evidence, outputs, catalogs, and deterministic Markdown. |
 | `python -m ffw render` | Re-render Markdown from JSON and rebuild `index.json` and `cards.json`. |
 | `python -m ffw serve` | Serve the repository and local archive on port 8765. |
+
+Live runs require a positive limit unless an exact GUID or latest-only command is used. GitHub Actions caps manual validation runs to a small batch so provider outages or model configuration failures cannot mark the whole RSS feed as failed.
 | `python -m ffw backfill` | Force-regenerate every synthetic fixture. |
 | `python -m ffw backfill --live --limit N` | Attempt the newest N live feed items. |
 | `python -m ffw retry-failed` | Retry failed live items. |

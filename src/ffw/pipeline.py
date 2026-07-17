@@ -16,6 +16,24 @@ from .rendering import render_episode_markdown
 from .state import JsonStateStore
 from .utils import atomic_write_json, atomic_write_text, episode_slug, seconds_to_timestamp, stable_pick_id
 
+PROVIDER_WIDE_ERROR_PATTERNS = (
+    "401",
+    "403",
+    "429",
+    "api key",
+    "invalid api",
+    "invalid_argument",
+    "not_found",
+    "permission_denied",
+    "quota",
+    "rate limit",
+    "resource_exhausted",
+    "response_json_schema",
+    "response_schema",
+    "unauthenticated",
+    "unsupported model",
+)
+
 
 class Pipeline:
     def __init__(
@@ -69,6 +87,7 @@ class Pipeline:
         self, *, force: bool = False, latest_only: bool = False, limit: int | None = None,
         retry_failed: bool = False, force_guid: str | None = None,
     ) -> list[PipelineResult]:
+        self._validate_live_scope(latest_only=latest_only, limit=limit, force_guid=force_guid)
         candidates = self.feed.episodes()
         if latest_only and candidates:
             candidates = [max(candidates, key=lambda episode: episode.published_at)]
@@ -77,9 +96,13 @@ class Pipeline:
             candidates.sort(key=lambda episode: episode.published_at)
         if force_guid:
             candidates = [episode for episode in candidates if episode.guid == force_guid]
+        results: list[PipelineResult] = []
         for episode in candidates:
             self.state.discover(episode)
-        results = [self.process_episode(episode, force=force, retry_failed=retry_failed) for episode in candidates]
+            result = self.process_episode(episode, force=force, retry_failed=retry_failed)
+            results.append(result)
+            if self.settings.mode == "live" and result.status == "failed" and self._is_provider_wide_error(result.message):
+                break
         rebuild_catalog(
             self.settings.archive_dir,
             production=self.settings.mode == "live",
@@ -87,6 +110,21 @@ class Pipeline:
             repository_url=self.settings.repository_url,
         )
         return results
+
+    def _validate_live_scope(self, *, latest_only: bool, limit: int | None, force_guid: str | None) -> None:
+        if self.settings.mode != "live" or latest_only or force_guid:
+            return
+        if limit is None:
+            raise ValueError("Live runs require a positive --limit to avoid processing the full feed.")
+        if limit < 1:
+            raise ValueError("Live run --limit must be at least 1.")
+        if limit > self.settings.max_live_batch:
+            raise ValueError(f"Live run --limit cannot exceed {self.settings.max_live_batch}.")
+
+    @staticmethod
+    def _is_provider_wide_error(message: str) -> bool:
+        normalized = message.lower()
+        return any(pattern in normalized for pattern in PROVIDER_WIDE_ERROR_PATTERNS)
 
     def process_episode(self, episode: EpisodeCandidate, *, force: bool = False, retry_failed: bool = False) -> PipelineResult:
         existing = self.state.get(episode.guid)
@@ -170,12 +208,13 @@ class Pipeline:
         except Exception as exc:
             current = self.state.get(episode.guid) or {}
             failed_stage = current.get("status", "detected")
+            retryable = not episode.synthetic and not self._is_provider_wide_error(str(exc))
             self.state.transition(
                 episode.guid,
                 "failed",
                 output_directory=relative_output,
                 pick_count=0,
-                error={"stage": failed_stage, "message": str(exc), "synthetic": episode.synthetic, "retryable": not episode.synthetic},
+                error={"stage": failed_stage, "message": str(exc), "synthetic": episode.synthetic, "retryable": retryable},
             )
             output_dir.mkdir(parents=True, exist_ok=True)
             metadata = self._build_metadata(episode, "failed", relative_output, None)

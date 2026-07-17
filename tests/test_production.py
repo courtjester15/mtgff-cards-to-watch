@@ -153,6 +153,15 @@ class FrontendContractTests(unittest.TestCase):
         self.assertIn("automated pipeline may be updating", app)
         self.assertNotIn("python -m ffw", app)
 
+    def test_workflow_defaults_and_limit_guard_are_safe(self) -> None:
+        workflow = (Path(__file__).parents[1] / ".github/workflows/ffw.yml").read_text(encoding="utf-8")
+        self.assertIn("default: backfill", workflow)
+        self.assertIn('default: "1"', workflow)
+        self.assertIn("episode_limit must be a positive integer", workflow)
+        self.assertIn("exceeds the safety cap", workflow)
+        self.assertIn("gemini-flash-latest", workflow)
+        self.assertNotIn("0 means all", workflow)
+
 
 class ProductionPipelineTests(unittest.TestCase):
     def test_live_provider_selection_is_swappable(self) -> None:
@@ -174,6 +183,102 @@ class ProductionPipelineTests(unittest.TestCase):
         _, _, _, transcriber, extractor = production_adapters(settings)
         self.assertIsInstance(transcriber, OpenAITranscriber)
         self.assertIsInstance(extractor, OpenAIExtractor)
+
+    def test_live_run_requires_positive_limit(self) -> None:
+        root = workspace_temp()
+        settings = Settings(root, root / "archive", root / "state/episodes.json", root / ".ffw-work", mode="live")
+
+        class Feed:
+            def episodes(self): return [episode()]
+
+        pipeline = Pipeline(settings, Feed(), object(), object(), object(), object(), JsonStateStore(settings.state_file))
+        with self.assertRaisesRegex(ValueError, "positive --limit"):
+            pipeline.run()
+        with self.assertRaisesRegex(ValueError, "at least 1"):
+            pipeline.run(limit=0)
+        with self.assertRaisesRegex(ValueError, "cannot exceed"):
+            pipeline.run(limit=settings.max_live_batch + 1)
+
+    def test_provider_wide_failure_stops_live_batch(self) -> None:
+        root = workspace_temp()
+        settings = Settings(root, root / "archive", root / "state/episodes.json", root / ".ffw-work", mode="live")
+        candidates = [
+            EpisodeCandidate(f"guid-{index}", 50 + index, f"Episode {index}", f"2026-01-0{index}T00:00:00Z", "https://cdn.example.test/audio.mp3", "https://example.test/e", [])
+            for index in range(1, 4)
+        ]
+
+        class Feed:
+            def episodes(self): return candidates
+
+        class Downloader:
+            def download(self, item, destination):
+                path = destination.with_suffix(".mp3")
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_bytes(b"temporary audio")
+                return path
+
+        class Audio:
+            def prepare(self, source, destination): return [source]
+
+        class Transcriber:
+            model_name = "bad-model"
+            def transcribe(self, item, files):
+                raise RuntimeError("404 NOT_FOUND. model is not available")
+
+        class Extractor:
+            model_name = "unused"
+
+        pipeline = Pipeline(settings, Feed(), Downloader(), Audio(), Transcriber(), Extractor(), JsonStateStore(settings.state_file))
+        results = pipeline.run(limit=3, retry_failed=True)
+        self.assertEqual(1, len(results))
+        self.assertEqual("failed", results[0].status)
+        records = pipeline.state.all()
+        self.assertEqual(["guid-1"], sorted(records))
+        self.assertFalse(records["guid-1"]["error"]["retryable"])
+
+    def test_episode_specific_failure_does_not_stop_limited_batch(self) -> None:
+        root = workspace_temp()
+        settings = Settings(root, root / "archive", root / "state/episodes.json", root / ".ffw-work", mode="live")
+        candidates = [
+            EpisodeCandidate("guid-1", 1, "Episode 1", "2026-01-01T00:00:00Z", "https://cdn.example.test/1.mp3", "https://example.test/1", []),
+            EpisodeCandidate("guid-2", 2, "Episode 2", "2026-01-02T00:00:00Z", "https://cdn.example.test/2.mp3", "https://example.test/2", []),
+        ]
+
+        class Feed:
+            def episodes(self): return candidates
+
+        class Downloader:
+            def download(self, item, destination):
+                if item.guid == "guid-1":
+                    raise ValueError("Audio exceeds configured maximum size.")
+                path = destination.with_suffix(".mp3")
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_bytes(b"temporary audio")
+                return path
+
+        class Audio:
+            def prepare(self, source, destination): return [source]
+
+        class Transcriber:
+            model_name = "test-transcriber"
+            def transcribe(self, item, files): return {"provider": "test", "segments": [], "chunk_count": 1}
+
+        class Extractor:
+            model_name = "test-extractor"
+            def extract(self, item, transcript):
+                return {"section": {"located": True, "start_seconds": 600, "end_seconds": 630, "label": "Cards to Watch", "confidence": "high", "review_reason": None}, "recommendations": [{
+                    "card": "Real Card", "printing": None, "printing_certainty": None,
+                    "foil": None, "hosts": [], "recommendation": "Watch for an entry.",
+                    "mentioned_price": None, "entry_target": None, "hold": None, "exit_target": None,
+                    "reasoning": ["Supply was discussed."], "caveats": [], "confidence": None,
+                    "start_seconds": 600, "end_seconds": 630, "evidence_excerpt": "Short evidence.",
+                    "review_status": "approved", "review_reason": None,
+                }], "review_reason": None}
+
+        pipeline = Pipeline(settings, Feed(), Downloader(), Audio(), Transcriber(), Extractor(), JsonStateStore(settings.state_file))
+        results = pipeline.run(limit=2, retry_failed=True)
+        self.assertEqual(["failed", "complete"], [item.status for item in results])
+        self.assertTrue(pipeline.state.get("guid-1")["error"]["retryable"])
 
     def test_real_five_pick_publication_cleanup_and_idempotent_skip(self) -> None:
         root = workspace_temp()
@@ -217,13 +322,13 @@ class ProductionPipelineTests(unittest.TestCase):
 
         extractor = Extractor()
         pipeline = Pipeline(settings, Feed(), Downloader(), Audio(), Transcriber(), extractor, JsonStateStore(settings.state_file))
-        result = pipeline.run()[0]
+        result = pipeline.run(limit=1)[0]
         self.assertEqual(("complete", 5), (result.status, result.pick_count))
         summary = load_json(settings.archive_dir / result.output_directory / "summary.json")
         self.assertFalse(summary["synthetic"])
         self.assertEqual(5, len(summary["recommendations"]))
         self.assertFalse(any(settings.work_dir.glob("*")))
-        second = pipeline.run()[0]
+        second = pipeline.run(limit=1)[0]
         self.assertIn("idempotent skip", second.message)
         self.assertEqual(1, extractor.calls)
 

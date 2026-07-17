@@ -17,6 +17,14 @@ One concurrency group serializes all writers. Complete and needs-review records 
 3. Open **Settings → Pages → Build and deployment → Source**. Select **GitHub Actions**.
 4. If GitHub pauses the first deployment, open **Actions → FFW automated archive → the waiting run → Review deployments**, approve `github-pages`, and continue.
 
+## Controlled live validation
+
+Manual live runs are intentionally capped. Use `backfill`, `episode_limit=1`, `retry_failed=true`, and `deploy=true` for Gemini validation until a single real episode succeeds. The workflow rejects zero, blank, negative, and over-cap limits so a manual run cannot accidentally process the full RSS feed.
+
+The first Gemini validation attempt used `gemini-2.5-flash`, which returned `404 NOT_FOUND` for this key because that model was not available to new users. That run also demonstrated why provider-wide failures must stop the batch: the old `episode_limit=0` default meant "all episodes" and published roughly 500 failed live records. The archive/state cleanup commit removes those generated failure records and keeps the synthetic fixture archive only.
+
+Provider-wide failures include missing or invalid keys, unavailable models, quota exhaustion, and provider schema capability errors. Those failures should stop after the first attempted episode and fail the GitHub Action before commit/deploy. Episode-specific failures, such as an oversized audio file inside a limited run, can remain isolated to that episode.
+
 Never put the API key in `.env.example`, state, archive output, workflow inputs, issue text, or logs.
 
 ## Initial three-episode backfill

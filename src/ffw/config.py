@@ -10,6 +10,7 @@ SCHEMA_VERSION = "1.1.0"
 PROMPT_VERSION = "cards-to-watch-v2"
 MOCK_TRANSCRIPTION_MODEL = "mock-transcriber-v1"
 MOCK_EXTRACTION_MODEL = "mock-extractor-v1"
+MAX_LIVE_BATCH = 20
 
 
 def project_root() -> Path:
@@ -31,6 +32,7 @@ class Settings:
     audio_chunk_seconds: int = 1200
     transcription_model: str = "gpt-4o-transcribe-diarize"
     extraction_model: str = "gpt-5.6-luna"
+    max_live_batch: int = MAX_LIVE_BATCH
     card_glossary: str = ""
     repository_url: str = "https://github.com/courtjester15/mtgff-cards-to-watch"
 
@@ -53,6 +55,7 @@ class Settings:
             audio_chunk_seconds=int(os.getenv("FFW_AUDIO_CHUNK_SECONDS", "1200")),
             transcription_model=os.getenv("FFW_TRANSCRIPTION_MODEL", "gpt-4o-transcribe-diarize"),
             extraction_model=os.getenv("FFW_EXTRACTION_MODEL", "gpt-5.6-luna"),
+            max_live_batch=int(os.getenv("FFW_MAX_LIVE_BATCH", str(MAX_LIVE_BATCH))),
             card_glossary=os.getenv("FFW_CARD_GLOSSARY", ""),
             repository_url=os.getenv("FFW_REPOSITORY_URL", "https://github.com/courtjester15/mtgff-cards-to-watch"),
         )
