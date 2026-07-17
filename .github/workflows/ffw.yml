@@ -1,6 +1,12 @@
 name: FFW automated archive
 
 on:
+  push:
+    branches: [master]
+    paths:
+      - ".github/workflows/ffw.yml"
+      - "archive/**"
+      - "web/**"
   schedule:
     - cron: "17 10 * * *"
   workflow_dispatch:
@@ -75,6 +81,7 @@ jobs:
         run: python -m unittest discover -s tests -v
 
       - name: Verify AI provider credentials
+        if: ${{ github.event_name != 'push' && inputs.mode != 'deploy_only' }}
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
@@ -93,6 +100,7 @@ jobs:
           fi
 
       - name: Process live feed
+        if: ${{ github.event_name != 'push' }}
         id: pipeline
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
@@ -132,14 +140,14 @@ jobs:
           fi
 
       - name: Build deploy-only production catalog
-        if: ${{ inputs.mode == 'deploy_only' }}
+        if: ${{ github.event_name == 'push' || inputs.mode == 'deploy_only' }}
         run: python -m ffw render
 
       - name: Validate production archive
         run: python -m ffw validate
 
       - name: Persist durable state and archive
-        if: ${{ github.event_name != 'workflow_dispatch' || inputs.mode != 'deploy_only' }}
+        if: ${{ github.event_name != 'push' && (github.event_name != 'workflow_dispatch' || inputs.mode != 'deploy_only') }}
         id: persist
         shell: bash
         run: |
@@ -162,11 +170,11 @@ jobs:
           cp -R archive/. _site/archive/
 
       - name: Configure Pages
-        if: ${{ github.event_name == 'schedule' || inputs.deploy }}
+        if: ${{ github.event_name == 'push' || github.event_name == 'schedule' || inputs.deploy }}
         uses: actions/configure-pages@v5
 
       - name: Upload Pages artifact
-        if: ${{ github.event_name == 'schedule' || inputs.deploy }}
+        if: ${{ github.event_name == 'push' || github.event_name == 'schedule' || inputs.deploy }}
         uses: actions/upload-pages-artifact@v3
         with:
           path: _site
@@ -183,7 +191,7 @@ jobs:
 
   deploy:
     needs: publish
-    if: ${{ github.event_name == 'schedule' || inputs.deploy }}
+    if: ${{ github.event_name == 'push' || github.event_name == 'schedule' || inputs.deploy }}
     runs-on: ubuntu-latest
     environment:
       name: github-pages
