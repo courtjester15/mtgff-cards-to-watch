@@ -10,16 +10,16 @@ on:
         required: true
         type: choice
         options: [normal, backfill]
-        default: normal
+        default: backfill
       episode_limit:
         description: Newest feed entries to inspect (0 means all)
         required: true
-        default: "0"
+        default: "3"
       retry_failed:
         description: Retry episodes currently marked failed
         required: true
         type: boolean
-        default: false
+        default: true
       force_guid:
         description: Optional exact episode GUID to force
         required: false
@@ -73,6 +73,24 @@ jobs:
           FFW_MODE: mock
         run: python -m unittest discover -s tests -v
 
+      - name: Verify AI provider credentials
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        shell: bash
+        run: |
+          echo "Provider: $FFW_AI_PROVIDER"
+          echo "Transcription model: $FFW_TRANSCRIPTION_MODEL"
+          echo "Extraction model: $FFW_EXTRACTION_MODEL"
+          if [[ "$FFW_AI_PROVIDER" == "gemini" && -z "$GEMINI_API_KEY" ]]; then
+            echo "::error::GEMINI_API_KEY repository secret is missing or empty."
+            exit 2
+          fi
+          if [[ "$FFW_AI_PROVIDER" == "openai" && -z "$OPENAI_API_KEY" ]]; then
+            echo "::error::OPENAI_API_KEY repository secret is missing or empty."
+            exit 2
+          fi
+
       - name: Process live feed
         id: pipeline
         env:
@@ -94,6 +112,10 @@ jobs:
           exit_code=$?
           set -e
           echo "exit_code=$exit_code" >> "$GITHUB_OUTPUT"
+          if [[ "$exit_code" != "0" ]]; then
+            echo "::error::FFW pipeline failed with exit code $exit_code."
+            exit "$exit_code"
+          fi
 
       - name: Validate production archive
         run: python -m ffw validate
