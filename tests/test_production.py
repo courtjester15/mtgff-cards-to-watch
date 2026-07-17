@@ -164,6 +164,8 @@ class FrontendContractTests(unittest.TestCase):
         self.assertIn("episode_limit must be a positive integer", workflow)
         self.assertIn("exceeds the safety cap", workflow)
         self.assertIn("gemini-flash-latest", workflow)
+        self.assertIn("deploy_only", workflow)
+        self.assertIn("Deploy-only mode selected", workflow)
         self.assertNotIn("0 means all", workflow)
 
 

@@ -9,7 +9,7 @@ on:
         description: Processing mode
         required: true
         type: choice
-        options: [normal, backfill]
+        options: [normal, backfill, deploy_only]
         default: backfill
       episode_limit:
         description: Newest feed entries to inspect (1-20)
@@ -103,6 +103,11 @@ jobs:
           INPUT_GUID: ${{ inputs.force_guid || '' }}
         shell: bash
         run: |
+          if [[ "$INPUT_MODE" == "deploy_only" ]]; then
+            echo "exit_code=0" >> "$GITHUB_OUTPUT"
+            echo "Deploy-only mode selected; skipping live feed processing."
+            exit 0
+          fi
           if [[ ! "$INPUT_LIMIT" =~ ^[1-9][0-9]*$ ]]; then
             echo "::error::episode_limit must be a positive integer from 1 to $FFW_MAX_LIVE_BATCH."
             exit 2
@@ -126,10 +131,15 @@ jobs:
             exit "$exit_code"
           fi
 
+      - name: Build deploy-only production catalog
+        if: ${{ inputs.mode == 'deploy_only' }}
+        run: python -m ffw render
+
       - name: Validate production archive
         run: python -m ffw validate
 
       - name: Persist durable state and archive
+        if: ${{ github.event_name != 'workflow_dispatch' || inputs.mode != 'deploy_only' }}
         id: persist
         shell: bash
         run: |
