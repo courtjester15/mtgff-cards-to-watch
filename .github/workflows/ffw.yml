@@ -15,17 +15,12 @@ on:
         description: Processing mode
         required: true
         type: choice
-        options: [normal, backfill, deploy_only]
-        default: backfill
-      episode_limit:
-        description: Newest feed entries to inspect (1-20)
+        options: [next, backfill, retry_failed, deploy_only]
+        default: next
+      batch_size:
+        description: Eligible episodes to process (1-20)
         required: true
         default: "1"
-      retry_failed:
-        description: Retry episodes currently marked failed
-        required: true
-        type: boolean
-        default: true
       force_guid:
         description: Optional exact episode GUID to force
         required: false
@@ -56,6 +51,8 @@ env:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    env:
+      FFW_REPORT_PATH: /tmp/ffw-run-report.json
     steps:
       - name: Check out repository
         uses: actions/checkout@v6
@@ -105,9 +102,8 @@ jobs:
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          INPUT_MODE: ${{ inputs.mode || 'normal' }}
-          INPUT_LIMIT: ${{ inputs.episode_limit || '1' }}
-          INPUT_RETRY: ${{ inputs.retry_failed || 'false' }}
+          INPUT_MODE: ${{ inputs.mode || 'next' }}
+          INPUT_LIMIT: ${{ inputs.batch_size || '1' }}
           INPUT_GUID: ${{ inputs.force_guid || '' }}
         shell: bash
         run: |
@@ -117,27 +113,27 @@ jobs:
             exit 0
           fi
           if [[ ! "$INPUT_LIMIT" =~ ^[1-9][0-9]*$ ]]; then
-            echo "::error::episode_limit must be a positive integer from 1 to $FFW_MAX_LIVE_BATCH."
+            echo "::error::batch_size must be a positive integer from 1 to $FFW_MAX_LIVE_BATCH."
             exit 2
           fi
           if (( INPUT_LIMIT > FFW_MAX_LIVE_BATCH )); then
-            echo "::error::episode_limit $INPUT_LIMIT exceeds the safety cap of $FFW_MAX_LIVE_BATCH."
+            echo "::error::batch_size $INPUT_LIMIT exceeds the safety cap of $FFW_MAX_LIVE_BATCH."
             exit 2
           fi
-          args=(run --live)
-          if [[ "$INPUT_MODE" == "backfill" ]]; then args=(backfill --live); fi
-          args+=(--limit "$INPUT_LIMIT")
-          if [[ "$INPUT_RETRY" == "true" ]]; then args+=(--retry-failed); fi
-          if [[ -n "$INPUT_GUID" && "$INPUT_MODE" == "normal" ]]; then args+=(--force-guid "$INPUT_GUID"); fi
+          case "$INPUT_MODE" in
+            next) args=(process-next --live) ;;
+            backfill) args=(backfill --live --limit "$INPUT_LIMIT") ;;
+            retry_failed) args=(retry-failed --live --limit "$INPUT_LIMIT") ;;
+            *) echo "::error::Unsupported processing mode: $INPUT_MODE"; exit 2 ;;
+          esac
+          if [[ -n "$INPUT_GUID" ]]; then args=(run --live --force-guid "$INPUT_GUID"); fi
+          args+=(--report-json "$FFW_REPORT_PATH")
           set +e
           python -m ffw "${args[@]}"
           exit_code=$?
           set -e
           echo "exit_code=$exit_code" >> "$GITHUB_OUTPUT"
-          if [[ "$exit_code" != "0" ]]; then
-            echo "::error::FFW pipeline failed with exit code $exit_code."
-            exit "$exit_code"
-          fi
+          echo "Pipeline completed with exit code $exit_code; validation and durable-state persistence will continue."
 
       - name: Build deploy-only production catalog
         if: ${{ github.event_name == 'push' || inputs.mode == 'deploy_only' }}
@@ -170,11 +166,11 @@ jobs:
           cp -R archive/. _site/archive/
 
       - name: Configure Pages
-        if: ${{ github.event_name == 'push' || github.event_name == 'schedule' || inputs.deploy }}
+        if: ${{ (github.event_name == 'push' || github.event_name == 'schedule' || inputs.deploy) && (steps.pipeline.outputs.exit_code == '0' || steps.pipeline.outputs.exit_code == '') }}
         uses: actions/configure-pages@v5
 
       - name: Upload Pages artifact
-        if: ${{ github.event_name == 'push' || github.event_name == 'schedule' || inputs.deploy }}
+        if: ${{ (github.event_name == 'push' || github.event_name == 'schedule' || inputs.deploy) && (steps.pipeline.outputs.exit_code == '0' || steps.pipeline.outputs.exit_code == '') }}
         uses: actions/upload-pages-artifact@v3
         with:
           path: _site
@@ -184,9 +180,40 @@ jobs:
         shell: bash
         run: |
           echo "## FFW production run" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Mode: ${{ inputs.mode || 'next' }}" >> "$GITHUB_STEP_SUMMARY"
           echo "- Pipeline exit: ${{ steps.pipeline.outputs.exit_code || 'not-run' }}" >> "$GITHUB_STEP_SUMMARY"
           echo "- Durable outputs changed: ${{ steps.persist.outputs.changed || 'unknown' }}" >> "$GITHUB_STEP_SUMMARY"
+          if [[ -f "$FFW_REPORT_PATH" ]]; then
+            python - "$FFW_REPORT_PATH" "$GITHUB_STEP_SUMMARY" <<'PY'
+          import json
+          import sys
+
+          report = json.load(open(sys.argv[1], encoding="utf-8"))
+          with open(sys.argv[2], "a", encoding="utf-8") as summary:
+              summary.write(f"- Selector policy: {report['policy']}\n")
+              summary.write(f"- Feed entries scanned: {report['feed_entries_scanned']}\n")
+              summary.write(f"- Completed skipped: {report['completed_skipped']}\n")
+              summary.write(f"- Failed skipped: {report['failed_skipped']}\n")
+              summary.write(f"- Eligible found: {report['eligible_found']}\n")
+              summary.write(f"- Selected: {report['selected_count']}\n")
+              summary.write(f"- Attempted: {report['attempted']}\n")
+              summary.write(f"- Complete: {report['completed']}\n")
+              summary.write(f"- Needs review: {report['needs_review']}\n")
+              summary.write(f"- Failed: {report['failed']}\n")
+              if report["newest_selected"]:
+                  summary.write(f"- Newest selected: {report['newest_selected']['title']}\n")
+              if report["oldest_selected"]:
+                  summary.write(f"- Oldest selected: {report['oldest_selected']['title']}\n")
+          PY
+          fi
           echo "- Temporary audio is excluded from Git and runner storage is disposable." >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Report pipeline failure
+        if: ${{ steps.pipeline.outputs.exit_code != '' && steps.pipeline.outputs.exit_code != '0' }}
+        shell: bash
+        run: |
+          echo "::error::FFW pipeline failed with exit code ${{ steps.pipeline.outputs.exit_code }}. Durable failure state was validated and persisted."
+          exit "${{ steps.pipeline.outputs.exit_code }}"
 
 
   deploy:
@@ -200,3 +227,11 @@ jobs:
       - name: Deploy Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Publish deployment summary
+        if: always()
+        shell: bash
+        run: |
+          echo "## FFW deployment" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Pages deployment outcome: ${{ steps.deployment.outcome }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Pages URL: ${{ steps.deployment.outputs.page_url || 'not available' }}" >> "$GITHUB_STEP_SUMMARY"

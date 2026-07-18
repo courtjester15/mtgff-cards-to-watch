@@ -28,7 +28,7 @@ class PipelineTests(unittest.TestCase):
     def test_mock_pipeline_builds_required_fixture_mix(self) -> None:
         results = Pipeline.mock(self.settings).run()
         self.assertEqual(5, len(results))
-        self.assertEqual(["complete", "complete", "needs_review", "failed", "complete"], [item.status for item in results])
+        self.assertEqual(["complete", "failed", "needs_review", "complete", "complete"], [item.status for item in results])
         index = load_json(self.settings.archive_dir / "index.json")
         self.assertEqual(5, index["counts"]["episodes"])
         self.assertEqual(15, index["counts"]["picks"])
@@ -40,10 +40,14 @@ class PipelineTests(unittest.TestCase):
         pipeline = Pipeline.mock(self.settings)
         pipeline.run()
         before = self.settings.state_file.read_text(encoding="utf-8")
+        before_index = (self.settings.archive_dir / "index.json").read_text(encoding="utf-8")
         results = pipeline.run()
         after = self.settings.state_file.read_text(encoding="utf-8")
         self.assertEqual(before, after)
-        self.assertTrue(all("idempotent skip" in item.message for item in results))
+        self.assertEqual(before_index, (self.settings.archive_dir / "index.json").read_text(encoding="utf-8"))
+        self.assertEqual([], results)
+        self.assertEqual(4, pipeline.last_selection.completed_skipped)
+        self.assertEqual(1, pipeline.last_selection.failed_skipped)
 
     def test_generated_archive_validates(self) -> None:
         Pipeline.mock(self.settings).run()

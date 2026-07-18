@@ -54,3 +54,35 @@ class PipelineResult:
     output_directory: str | None = None
     pick_count: int = 0
     message: str = ""
+
+
+@dataclass
+class SelectionReport:
+    policy: str
+    feed_entries_scanned: int = 0
+    completed_skipped: int = 0
+    failed_skipped: int = 0
+    eligible_found: int = 0
+    selected: list[EpisodeCandidate] = field(default_factory=list)
+
+    def as_dict(self) -> dict[str, Any]:
+        selected = [
+            {
+                "guid": episode.guid,
+                "episode_number": episode.episode_number,
+                "title": episode.title,
+                "published_at": episode.published_at,
+            }
+            for episode in self.selected
+        ]
+        return {
+            "policy": self.policy,
+            "feed_entries_scanned": self.feed_entries_scanned,
+            "completed_skipped": self.completed_skipped,
+            "failed_skipped": self.failed_skipped,
+            "eligible_found": self.eligible_found,
+            "selected_count": len(selected),
+            "selected": selected,
+            "newest_selected": selected[0] if selected else None,
+            "oldest_selected": selected[-1] if selected else None,
+        }

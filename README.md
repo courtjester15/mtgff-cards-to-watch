@@ -13,7 +13,7 @@ Version 0.2 retains a fully runnable credential-free mock mode and adds live RSS
 
 ## Normal user workflow
 
-Open <https://courtjester15.github.io/mtgff-cards-to-watch/>. The archive checks for new episodes every day at 10:17 UTC and updates without a laptop, local server, manual MP3 download, or manual transcription.
+Open <https://courtjester15.github.io/mtgff-cards-to-watch/>. Every day at 10:17 UTC, the archive processes the newest eligible unprocessed episode. A new release takes priority automatically; otherwise the workflow continues backward through historical episodes one per day.
 
 The repository starts with synthetic fixtures. The deployed production catalog excludes those fixtures and shows only live records after the first successful backfill.
 
@@ -43,16 +43,17 @@ For development without installing the package, set `PYTHONPATH=src` before invo
 | Command | Purpose |
 |---|---|
 | `python -m ffw run` | Process unprocessed mock episodes and skip terminal records idempotently. |
-| `python -m ffw run --live` | Process the configured live feed with the selected production adapters. |
+| `python -m ffw process-next --live` | Process the newest eligible live episode, at most one. |
+| `python -m ffw backfill --live --limit N` | Process the newest N eligible unprocessed live episodes. |
+| `python -m ffw retry-failed --live --limit N` | Retry only the newest N failed live episodes. |
+| `python -m ffw run --live --force-guid GUID` | Force one exact feed GUID regardless of feed position or terminal state. |
+| `python -m ffw backfill` | Force-regenerate every synthetic fixture. |
+| `python -m ffw process-latest` | Process only the newest eligible synthetic fixture. |
 | `python -m ffw validate` | Validate identity, states, evidence, outputs, catalogs, and deterministic Markdown. |
 | `python -m ffw render` | Re-render Markdown from JSON and rebuild `index.json` and `cards.json`. |
 | `python -m ffw serve` | Serve the repository and local archive on port 8765. |
 
-Live runs require a positive limit unless an exact GUID or latest-only command is used. GitHub Actions caps manual validation runs to a small batch so provider outages or model configuration failures cannot mark the whole RSS feed as failed.
-| `python -m ffw backfill` | Force-regenerate every synthetic fixture. |
-| `python -m ffw backfill --live --limit N` | Attempt the newest N live feed items. |
-| `python -m ffw retry-failed` | Retry failed live items. |
-| `python -m ffw process-latest` | Process only the newest synthetic fixture. |
+Live batch and failed-only runs require a positive limit no greater than 20. Limits count eligible selected episodes, not RSS entries inspected. `complete` and `needs_review` records are skipped before download or provider calls; failed records are selected only by `retry-failed` or an exact GUID override. A no-op does not rewrite catalogs or state.
 
 Run the tests with:
 
@@ -89,7 +90,7 @@ Structural validation can prove that evidence exists; it cannot prove that an AI
 
 ## Production operation
 
-The official feed is `https://feeds.soundcloud.com/users/soundcloud:users:201003125/sounds.rss`. The workflow is [`.github/workflows/ffw.yml`](.github/workflows/ffw.yml), supports scheduled and manual runs, serializes writers, commits only `archive/` and `state/`, and deploys a clean Pages artifact. Audio, chunks, and full transcripts remain inside ignored/disposable `.ffw-work/` storage.
+The official feed is `https://feeds.soundcloud.com/users/soundcloud:users:201003125/sounds.rss`. The workflow is [`.github/workflows/ffw.yml`](.github/workflows/ffw.yml), supports `next`, `backfill`, `retry_failed`, and `deploy_only` manual modes, serializes writers, commits only `archive/` and `state/`, and deploys a clean Pages artifact. Audio, chunks, and full transcripts remain inside ignored/disposable `.ffw-work/` storage.
 
 Required repository setup and recovery procedures are documented in [Production Runbook](docs/RUNBOOK.md).
 

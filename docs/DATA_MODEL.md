@@ -143,6 +143,8 @@ Processing metadata is associated with an ingestion attempt or source item, rath
 
 The current FFW queue serializes `detected`, `queued`, `downloading`, `downloaded`, `preparing`, `transcribing`, `transcribed`, `extracting`, `extracted`, `validating`, `publishing`, `complete`, `needs_review`, and `failed`. Each record retains transition history, attempt count, a useful failure stage/message, and whether a live failure is retryable.
 
+Feed selection treats `complete` and `needs_review` as successful terminal states and uses the GUID-keyed records as the historical cursor. Failed records remain durable but are eligible only for explicit failed-only retry; unseen and interrupted nonterminal records remain eligible for ordinary newest-first selection.
+
 ## Archive projections
 
 Canonical records are the source of truth. Search indexes, flattened recommendation catalogs, Markdown summaries, dashboards, and future analytics are rebuildable projections.

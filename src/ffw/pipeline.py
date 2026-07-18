@@ -10,7 +10,7 @@ from .archive import rebuild_catalog
 from .config import PIPELINE_VERSION, PROMPT_VERSION, SCHEMA_VERSION, Settings
 from .interfaces import AudioDownloader, AudioProcessor, Extractor, FeedSource, Transcriber
 from .mocks import MockAudioProcessor, MockDownloader, MockExtractor, MockFeedSource, MockTranscriber
-from .models import EpisodeCandidate, PipelineResult, TERMINAL_STATES, utc_now
+from .models import EpisodeCandidate, PipelineResult, SelectionReport, TERMINAL_STATES, utc_now
 from .production import production_adapters
 from .rendering import render_episode_markdown
 from .state import JsonStateStore
@@ -53,6 +53,7 @@ class Pipeline:
         self.transcriber = transcriber
         self.extractor = extractor
         self.state = state
+        self.last_selection = SelectionReport(policy="backfill")
 
     @classmethod
     def mock(cls, settings: Settings) -> "Pipeline":
@@ -84,35 +85,94 @@ class Pipeline:
         return cls(settings, feed, downloader, audio, transcriber, extractor, JsonStateStore(settings.state_file))
 
     def run(
-        self, *, force: bool = False, latest_only: bool = False, limit: int | None = None,
-        retry_failed: bool = False, force_guid: str | None = None,
+        self, *, force: bool = False, limit: int | None = None,
+        force_guid: str | None = None, selection_policy: str | None = None,
     ) -> list[PipelineResult]:
-        self._validate_live_scope(latest_only=latest_only, limit=limit, force_guid=force_guid)
+        policy = selection_policy or ("exact_guid" if force_guid else "backfill")
+        self._validate_live_scope(policy=policy, limit=limit, force_guid=force_guid)
         candidates = self.feed.episodes()
-        if latest_only and candidates:
-            candidates = [max(candidates, key=lambda episode: episode.published_at)]
-        if limit is not None:
-            candidates = sorted(candidates, key=lambda episode: episode.published_at, reverse=True)[:limit]
-            candidates.sort(key=lambda episode: episode.published_at)
-        if force_guid:
-            candidates = [episode for episode in candidates if episode.guid == force_guid]
+        self.last_selection = self.select_candidates(
+            candidates,
+            policy=policy,
+            limit=limit,
+            force_guid=force_guid,
+            include_completed=force,
+        )
         results: list[PipelineResult] = []
-        for episode in candidates:
+        for episode in self.last_selection.selected:
             self.state.discover(episode)
-            result = self.process_episode(episode, force=force, retry_failed=retry_failed)
+            result = self.process_episode(
+                episode,
+                force=force or policy == "exact_guid",
+                retry_failed=policy == "failed_only",
+            )
             results.append(result)
             if self.settings.mode == "live" and result.status == "failed" and self._is_provider_wide_error(result.message):
                 break
-        rebuild_catalog(
-            self.settings.archive_dir,
-            production=self.settings.mode == "live",
-            feed_name=self.settings.feed_name,
-            repository_url=self.settings.repository_url,
-        )
+        if results:
+            rebuild_catalog(
+                self.settings.archive_dir,
+                production=self.settings.mode == "live",
+                feed_name=self.settings.feed_name,
+                repository_url=self.settings.repository_url,
+            )
         return results
 
-    def _validate_live_scope(self, *, latest_only: bool, limit: int | None, force_guid: str | None) -> None:
-        if self.settings.mode != "live" or latest_only or force_guid:
+    def select_candidates(
+        self,
+        candidates: list[EpisodeCandidate],
+        *,
+        policy: str,
+        limit: int | None = None,
+        force_guid: str | None = None,
+        include_completed: bool = False,
+    ) -> SelectionReport:
+        if policy not in {"next", "backfill", "failed_only", "exact_guid"}:
+            raise ValueError(f"Unsupported selection policy: {policy}")
+        ordered_feed = sorted(candidates, key=lambda episode: (episode.published_at, episode.guid), reverse=True)
+        ordered: list[EpisodeCandidate] = []
+        seen_guids: set[str] = set()
+        for episode in ordered_feed:
+            if episode.guid not in seen_guids:
+                ordered.append(episode)
+                seen_guids.add(episode.guid)
+        records = self.state.all()
+        report = SelectionReport(policy=policy, feed_entries_scanned=len(ordered_feed))
+        eligible: list[EpisodeCandidate] = []
+        for episode in ordered:
+            record = records.get(episode.guid)
+            status = record.get("status") if record else None
+            if policy == "exact_guid":
+                if episode.guid == force_guid:
+                    eligible.append(episode)
+                continue
+            if include_completed:
+                eligible.append(episode)
+                continue
+            if status in TERMINAL_STATES:
+                report.completed_skipped += 1
+                continue
+            if policy == "failed_only":
+                if status == "failed":
+                    eligible.append(episode)
+                continue
+            if status == "failed":
+                report.failed_skipped += 1
+                continue
+            eligible.append(episode)
+        report.eligible_found = len(eligible)
+        if policy == "next":
+            report.selected = eligible[:1]
+        elif policy == "exact_guid":
+            report.selected = eligible[:1]
+        else:
+            report.selected = eligible if limit is None else eligible[:limit]
+        return report
+
+    def _validate_live_scope(self, *, policy: str, limit: int | None, force_guid: str | None) -> None:
+        if policy == "exact_guid" and not force_guid:
+            raise ValueError("Exact GUID selection requires --force-guid.")
+        if self.settings.mode != "live" or policy in {"next", "exact_guid"}:
             return
         if limit is None:
             raise ValueError("Live runs require a positive --limit to avoid processing the full feed.")

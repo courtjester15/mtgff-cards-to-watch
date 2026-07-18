@@ -159,13 +159,18 @@ class FrontendContractTests(unittest.TestCase):
 
     def test_workflow_defaults_and_limit_guard_are_safe(self) -> None:
         workflow = (Path(__file__).parents[1] / ".github/workflows/ffw.yml").read_text(encoding="utf-8")
-        self.assertIn("default: backfill", workflow)
+        self.assertIn("default: next", workflow)
         self.assertIn('default: "1"', workflow)
-        self.assertIn("episode_limit must be a positive integer", workflow)
+        self.assertIn("batch_size must be a positive integer", workflow)
         self.assertIn("exceeds the safety cap", workflow)
         self.assertIn("gemini-flash-latest", workflow)
         self.assertIn("deploy_only", workflow)
+        self.assertIn("retry_failed", workflow)
+        self.assertIn("process-next --live", workflow)
         self.assertIn("Deploy-only mode selected", workflow)
+        self.assertIn("validation and durable-state persistence will continue", workflow)
+        self.assertIn("Report pipeline failure", workflow)
+        self.assertIn("Publish deployment summary", workflow)
         self.assertNotIn("0 means all", workflow)
 
 
@@ -235,12 +240,12 @@ class ProductionPipelineTests(unittest.TestCase):
             model_name = "unused"
 
         pipeline = Pipeline(settings, Feed(), Downloader(), Audio(), Transcriber(), Extractor(), JsonStateStore(settings.state_file))
-        results = pipeline.run(limit=3, retry_failed=True)
+        results = pipeline.run(limit=3, selection_policy="backfill")
         self.assertEqual(1, len(results))
         self.assertEqual("failed", results[0].status)
         records = pipeline.state.all()
-        self.assertEqual(["guid-1"], sorted(records))
-        self.assertFalse(records["guid-1"]["error"]["retryable"])
+        self.assertEqual(["guid-3"], sorted(records))
+        self.assertFalse(records["guid-3"]["error"]["retryable"])
 
     def test_episode_specific_failure_does_not_stop_limited_batch(self) -> None:
         root = workspace_temp()
@@ -282,8 +287,8 @@ class ProductionPipelineTests(unittest.TestCase):
                 }], "review_reason": None}
 
         pipeline = Pipeline(settings, Feed(), Downloader(), Audio(), Transcriber(), Extractor(), JsonStateStore(settings.state_file))
-        results = pipeline.run(limit=2, retry_failed=True)
-        self.assertEqual(["failed", "complete"], [item.status for item in results])
+        results = pipeline.run(limit=2, selection_policy="backfill")
+        self.assertEqual(["complete", "failed"], [item.status for item in results])
         self.assertTrue(pipeline.state.get("guid-1")["error"]["retryable"])
 
     def test_real_five_pick_publication_cleanup_and_idempotent_skip(self) -> None:
@@ -334,9 +339,114 @@ class ProductionPipelineTests(unittest.TestCase):
         self.assertFalse(summary["synthetic"])
         self.assertEqual(5, len(summary["recommendations"]))
         self.assertFalse(any(settings.work_dir.glob("*")))
-        second = pipeline.run(limit=1)[0]
-        self.assertIn("idempotent skip", second.message)
+        second = pipeline.run(limit=1)
+        self.assertEqual([], second)
+        self.assertEqual(1, pipeline.last_selection.completed_skipped)
         self.assertEqual(1, extractor.calls)
+
+
+class StateAwareSelectionTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.root = workspace_temp()
+        self.settings = Settings(
+            self.root,
+            self.root / "archive",
+            self.root / "state/episodes.json",
+            self.root / ".ffw-work",
+            mode="live",
+        )
+        self.state = JsonStateStore(self.settings.state_file)
+        self.pipeline = Pipeline(self.settings, object(), object(), object(), object(), object(), self.state)
+
+    @staticmethod
+    def candidates() -> list[EpisodeCandidate]:
+        return [
+            EpisodeCandidate(f"guid-{index}", index, f"Episode {index}", f"2026-01-0{index}T00:00:00Z", f"https://cdn.example.test/{index}.mp3", f"https://example.test/{index}", [])
+            for index in range(1, 7)
+        ]
+
+    def set_status(self, candidate: EpisodeCandidate, status: str) -> None:
+        self.state.discover(candidate)
+        self.state.transition(candidate.guid, status)
+
+    def test_next_selects_newest_unseen_after_completed_and_failed(self) -> None:
+        candidates = self.candidates()
+        self.set_status(candidates[5], "complete")
+        self.set_status(candidates[4], "needs_review")
+        self.set_status(candidates[3], "failed")
+        report = self.pipeline.select_candidates(candidates, policy="next")
+        self.assertEqual(["guid-3"], [item.guid for item in report.selected])
+        self.assertEqual((2, 1, 3), (report.completed_skipped, report.failed_skipped, report.eligible_found))
+
+    def test_backfill_limit_counts_eligible_not_feed_positions(self) -> None:
+        candidates = self.candidates()
+        self.set_status(candidates[5], "complete")
+        self.set_status(candidates[4], "needs_review")
+        self.set_status(candidates[3], "failed")
+        report = self.pipeline.select_candidates(candidates, policy="backfill", limit=2)
+        self.assertEqual(["guid-3", "guid-2"], [item.guid for item in report.selected])
+        self.assertEqual(2, len(report.selected))
+
+    def test_failed_only_never_selects_unseen_and_respects_limit(self) -> None:
+        candidates = self.candidates()
+        self.set_status(candidates[4], "failed")
+        self.set_status(candidates[1], "failed")
+        report = self.pipeline.select_candidates(candidates, policy="failed_only", limit=1)
+        self.assertEqual(["guid-5"], [item.guid for item in report.selected])
+        self.assertEqual(2, report.eligible_found)
+
+    def test_exact_guid_searches_full_feed_and_bypasses_position_limit(self) -> None:
+        candidates = self.candidates()
+        self.set_status(candidates[0], "complete")
+        report = self.pipeline.select_candidates(candidates, policy="exact_guid", limit=1, force_guid="guid-1")
+        self.assertEqual(6, report.feed_entries_scanned)
+        self.assertEqual(["guid-1"], [item.guid for item in report.selected])
+
+    def test_reordered_feed_and_new_release_keep_guid_identity(self) -> None:
+        candidates = self.candidates()
+        self.set_status(candidates[5], "complete")
+        reordered = [candidates[1], candidates[5], candidates[0], candidates[4], candidates[2], candidates[3]]
+        first = self.pipeline.select_candidates(reordered, policy="next")
+        self.assertEqual("guid-5", first.selected[0].guid)
+        self.set_status(candidates[4], "complete")
+        new_release = EpisodeCandidate("guid-7", 7, "Episode 7", "2026-01-07T00:00:00Z", "https://cdn.example.test/7.mp3", "https://example.test/7", [])
+        second = self.pipeline.select_candidates(reordered + [new_release], policy="next")
+        self.assertEqual("guid-7", second.selected[0].guid)
+        self.set_status(new_release, "complete")
+        resumed = self.pipeline.select_candidates(reordered + [new_release], policy="next")
+        self.assertEqual("guid-4", resumed.selected[0].guid)
+
+    def test_duplicate_guid_does_not_consume_eligible_batch_limit(self) -> None:
+        candidates = self.candidates()
+        duplicate = EpisodeCandidate("guid-6", 6, "Duplicate Episode 6", "2026-01-06T00:00:00Z", "https://cdn.example.test/duplicate.mp3", "https://example.test/duplicate", [])
+        report = self.pipeline.select_candidates([duplicate, *candidates], policy="backfill", limit=2)
+        self.assertEqual(7, report.feed_entries_scanned)
+        self.assertEqual(["guid-6", "guid-5"], [item.guid for item in report.selected])
+
+    def test_noop_does_not_call_expensive_adapters_or_rebuild_catalog(self) -> None:
+        candidate = self.candidates()[-1]
+        self.set_status(candidate, "complete")
+        self.settings.archive_dir.mkdir(parents=True)
+        index = self.settings.archive_dir / "index.json"
+        index.write_text('{"sentinel": true}\n', encoding="utf-8")
+        before_state = self.settings.state_file.read_text(encoding="utf-8")
+
+        class Feed:
+            def episodes(self): return [candidate]
+
+        class MustNotRun:
+            def __getattr__(self, name):
+                raise AssertionError(f"expensive adapter called: {name}")
+
+        pipeline = Pipeline(self.settings, Feed(), MustNotRun(), MustNotRun(), MustNotRun(), MustNotRun(), self.state)
+        self.assertEqual([], pipeline.run(selection_policy="next"))
+        self.assertEqual('{"sentinel": true}\n', index.read_text(encoding="utf-8"))
+        self.assertEqual(before_state, self.settings.state_file.read_text(encoding="utf-8"))
+
+    def test_live_batch_limits_reject_zero_negative_and_over_cap(self) -> None:
+        for invalid in (0, -1, self.settings.max_live_batch + 1):
+            with self.subTest(limit=invalid), self.assertRaises(ValueError):
+                self.pipeline.run(selection_policy="backfill", limit=invalid)
 
 
 if __name__ == "__main__":

@@ -8,7 +8,7 @@ GitHub Actions runs `.github/workflows/ffw.yml` daily at 10:17 UTC (06:17 EDT / 
 
 The production stages are feed discovery, durable queueing, streamed temporary download, ffmpeg normalization/splitting, OpenAI diarized transcription, Cards to Watch boundary detection, schema-constrained extraction, validation, bot commit, and Pages deployment.
 
-One concurrency group serializes all writers. Complete and needs-review records skip automatically. Failed live records retry only when explicitly requested. A runner crash after an external API response but before the next durable Git commit can cause a repeated API call; file-backed Git state cannot guarantee exactly-once external billing.
+One concurrency group serializes all writers. The daily `next` mode scans newest to oldest and processes at most one eligible episode. `complete` and `needs_review` records skip before download or provider calls, while failed records are skipped until a failed-only retry is explicitly requested. New releases therefore take priority and historical backfill resumes automatically afterward. A runner crash after an external API response but before the next durable Git commit can cause a repeated API call; file-backed Git state cannot guarantee exactly-once external billing.
 
 ## One-time GitHub setup
 
@@ -19,7 +19,7 @@ One concurrency group serializes all writers. Complete and needs-review records 
 
 ## Controlled live validation
 
-Manual live runs are intentionally capped. Use `backfill`, `episode_limit=1`, `retry_failed=true`, and `deploy=true` for Gemini validation until a single real episode succeeds. The workflow rejects zero, blank, negative, and over-cap limits so a manual run cannot accidentally process the full RSS feed.
+Manual live runs are intentionally capped. For the first historical episode, use `backfill`, `batch_size=1`, leave `force_guid` blank, and set `deploy=true`. The workflow rejects zero, blank, negative, and over-cap batch sizes so a manual run cannot accidentally process the full RSS feed. The limit counts eligible episodes after durable-state filtering, not the newest feed positions.
 
 The first Gemini validation attempt used `gemini-2.5-flash`, which returned `404 NOT_FOUND` for this key because that model was not available to new users. That run also demonstrated why provider-wide failures must stop the batch: the old `episode_limit=0` default meant "all episodes" and published roughly 500 failed live records. The archive/state cleanup commit removes those generated failure records and keeps the synthetic fixture archive only.
 
@@ -27,13 +27,12 @@ Provider-wide failures include missing or invalid keys, unavailable models, quot
 
 Never put the API key in `.env.example`, state, archive output, workflow inputs, issue text, or logs.
 
-## Initial three-episode backfill
+## Controlled historical backfill
 
 Open **Actions → FFW automated archive → Run workflow** and choose:
 
 - mode: `backfill`
-- episode_limit: `3`
-- retry_failed: enabled only when repeating a failed attempt
+- batch_size: `3`
 - force_guid: blank
 - deploy: enabled
 
@@ -41,11 +40,13 @@ The job attempts all three sequentially, validates the production-only catalog, 
 
 ## Recovery
 
-- Retry all failed feed entries: dispatch `normal`, set `retry_failed` to true, and optionally limit the newest feed entries.
-- Force one episode: dispatch `normal` and provide its exact RSS GUID in `force_guid`.
+- Process one next eligible episode: dispatch `next` with `batch_size=1`.
+- Process a controlled eligible batch: dispatch `backfill` with `batch_size` from 1 through 20.
+- Retry failed episodes only: dispatch `retry_failed` and choose a `batch_size` from 1 through 20.
+- Force one episode: choose any processing mode and provide its exact RSS GUID in `force_guid`; the override searches the full fetched feed and bypasses batch position limits.
 - Validate locally: set `FFW_MODE=live`, then run `python -m ffw validate`.
 - Rebuild production projections locally: set `FFW_MODE=live`, then run `python -m ffw render`.
-- Inspect workflow health: open **Actions → FFW automated archive**. The step summary shows pipeline result and whether durable outputs changed.
+- Inspect workflow health: open **Actions → FFW automated archive**. The publish summary reports selector counts, attempts, outcomes, and whether durable outputs changed. Deployment outcome is reported separately by the deployment job.
 
 ## Retention and cost
 

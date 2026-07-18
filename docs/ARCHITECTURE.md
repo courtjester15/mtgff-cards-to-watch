@@ -116,6 +116,8 @@ detected -> queued -> downloading -> downloaded -> preparing
 
 The production catalog builder excludes synthetic episode folders even though fixture outputs remain in the repository for tests. GitHub Actions serializes writers, runs the Python pipeline and validation, commits `state/` and `archive/` only when changed, then packages `web/` plus the production archive at a clean Pages root. `.ffw-work/` never enters the durable artifact.
 
+Before acquisition, one state-aware selector orders the full fetched feed newest to oldest and compares canonical GUIDs with durable state. Its `next`, `backfill`, `failed_only`, and `exact_guid` policies apply limits only after eligibility filtering. `complete` and `needs_review` are successful terminal states; `failed` is excluded from ordinary selection. Exact GUID selection searches the full feed. When selection is empty, orchestration returns without state transitions or catalog regeneration.
+
 ## Migration shape
 
 The first ManaIntel change should be an additive compatibility layer:

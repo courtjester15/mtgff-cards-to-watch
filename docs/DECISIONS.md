@@ -104,6 +104,12 @@
 
 **Reason:** Diarized segments provide the timestamps and speaker hints required for evidence, while a separate structured pass prevents whole-episode summarization and enforces null handling. Model names remain environment-configurable as availability and cost change.
 
+## ADR-018 — Durable state is the historical backfill cursor
+
+**Decision:** Select feed items newest to oldest using one state-aware selector. `complete` and `needs_review` are ineligible, failed records are eligible only under the failed-only policy, and live limits count selected eligible episodes rather than feed positions. Scheduled runs use `next` with an effective maximum of one. Exact GUID overrides search the full fetched feed.
+
+**Reason:** Feed positions change as episodes are published or reordered. Durable GUID-keyed outcomes already identify completed work, prioritize new releases naturally, and let historical backfill resume without a fragile numeric cursor. Filtering before acquisition prevents duplicate provider cost, while an empty selection avoids meaningless generated timestamp changes and commits.
+
 ## Known risks
 
 - The manual validator implements project invariants but does not execute the full JSON Schema vocabulary because no JSON Schema package was downloaded.
