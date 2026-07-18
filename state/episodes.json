@@ -1,7 +1,7 @@
 {
   "schema_version": "1.1.0",
   "pipeline_version": "0.2.0",
-  "updated_at": "2026-07-18T02:21:33Z",
+  "updated_at": "2026-07-18T11:24:26Z",
   "episodes": {
     "ffw-synthetic-episode-901": {
       "guid": "ffw-synthetic-episode-901",
@@ -678,6 +678,165 @@
         "tool_use_prompt_token_count": null,
         "tool_use_prompt_tokens_details": null,
         "total_token_count": 34556,
+        "traffic_type": null
+      },
+      "review_reason": "Section start found, but no explicit end marker was detected."
+    },
+    "tag:soundcloud,2010:tracks/2351008367": {
+      "guid": "tag:soundcloud,2010:tracks/2351008367",
+      "history": [
+        {
+          "status": "detected",
+          "timestamp": "2026-07-18T11:18:12Z"
+        },
+        {
+          "status": "queued",
+          "timestamp": "2026-07-18T11:18:12Z"
+        },
+        {
+          "status": "queued",
+          "timestamp": "2026-07-18T11:18:12Z"
+        },
+        {
+          "status": "downloading",
+          "timestamp": "2026-07-18T11:18:12Z"
+        },
+        {
+          "status": "downloaded",
+          "timestamp": "2026-07-18T11:18:12Z"
+        },
+        {
+          "status": "preparing",
+          "timestamp": "2026-07-18T11:18:12Z"
+        },
+        {
+          "status": "transcribing",
+          "timestamp": "2026-07-18T11:18:35Z"
+        },
+        {
+          "status": "transcribed",
+          "timestamp": "2026-07-18T11:23:24Z"
+        },
+        {
+          "status": "extracting",
+          "timestamp": "2026-07-18T11:23:24Z"
+        },
+        {
+          "status": "extracted",
+          "timestamp": "2026-07-18T11:24:26Z"
+        },
+        {
+          "status": "validating",
+          "timestamp": "2026-07-18T11:24:26Z"
+        },
+        {
+          "status": "publishing",
+          "timestamp": "2026-07-18T11:24:26Z"
+        },
+        {
+          "status": "needs_review",
+          "timestamp": "2026-07-18T11:24:26Z"
+        }
+      ],
+      "title": "MTGFastFinance Ep 528: Marvel x MTG Top 10",
+      "episode_number": 528,
+      "published_at": "2026-07-01T05:59:01Z",
+      "attempt_count": 1,
+      "pick_count": 4,
+      "error": null,
+      "status": "needs_review",
+      "updated_at": "2026-07-18T11:24:26Z",
+      "output_directory": "episodes/0528-mtgfastfinance-ep-528-marvel-x-mtg-top-10",
+      "transcription": {
+        "provider": "Gemini",
+        "model": "gemini-flash-latest",
+        "chunk_count": 3,
+        "duration_seconds": 3520,
+        "usage": [
+          {
+            "cache_tokens_details": null,
+            "cached_content_token_count": null,
+            "candidates_token_count": 11515,
+            "candidates_tokens_details": null,
+            "prompt_token_count": 30050,
+            "prompt_tokens_details": [
+              {
+                "modality": "TEXT",
+                "token_count": 51
+              },
+              {
+                "modality": "AUDIO",
+                "token_count": 29999
+              }
+            ],
+            "thoughts_token_count": 14895,
+            "tool_use_prompt_token_count": null,
+            "tool_use_prompt_tokens_details": null,
+            "total_token_count": 56460,
+            "traffic_type": null
+          },
+          {
+            "cache_tokens_details": null,
+            "cached_content_token_count": null,
+            "candidates_token_count": 11663,
+            "candidates_tokens_details": null,
+            "prompt_token_count": 30050,
+            "prompt_tokens_details": [
+              {
+                "modality": "TEXT",
+                "token_count": 51
+              },
+              {
+                "modality": "AUDIO",
+                "token_count": 29999
+              }
+            ],
+            "thoughts_token_count": 8835,
+            "tool_use_prompt_token_count": null,
+            "tool_use_prompt_tokens_details": null,
+            "total_token_count": 50548,
+            "traffic_type": null
+          },
+          {
+            "cache_tokens_details": null,
+            "cached_content_token_count": null,
+            "candidates_token_count": 11632,
+            "candidates_tokens_details": null,
+            "prompt_token_count": 28059,
+            "prompt_tokens_details": [
+              {
+                "modality": "AUDIO",
+                "token_count": 28008
+              },
+              {
+                "modality": "TEXT",
+                "token_count": 51
+              }
+            ],
+            "thoughts_token_count": 5627,
+            "tool_use_prompt_token_count": null,
+            "tool_use_prompt_tokens_details": null,
+            "total_token_count": 45318,
+            "traffic_type": null
+          }
+        ]
+      },
+      "extraction_usage": {
+        "cache_tokens_details": null,
+        "cached_content_token_count": null,
+        "candidates_token_count": 1552,
+        "candidates_tokens_details": null,
+        "prompt_token_count": 18796,
+        "prompt_tokens_details": [
+          {
+            "modality": "TEXT",
+            "token_count": 18796
+          }
+        ],
+        "thoughts_token_count": 9764,
+        "tool_use_prompt_token_count": null,
+        "tool_use_prompt_tokens_details": null,
+        "total_token_count": 30112,
         "traffic_type": null
       },
       "review_reason": "Section start found, but no explicit end marker was detected."

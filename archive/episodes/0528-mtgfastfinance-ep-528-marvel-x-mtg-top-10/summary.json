@@ -1,0 +1,346 @@
+{
+  "schema_version": "1.1.0",
+  "synthetic": false,
+  "notice": "Automated transcription and extraction; verify against the linked source audio.",
+  "episode": {
+    "guid": "tag:soundcloud,2010:tracks/2351008367",
+    "episode_number": 528,
+    "title": "MTGFastFinance Ep 528: Marvel x MTG Top 10",
+    "published_at": "2026-07-01T05:59:01Z",
+    "audio_url": "https://feeds.soundcloud.com/stream/2351008367-user-519789566-mtgfastfinance-ep-528-marvel-x.mp3",
+    "episode_url": "https://soundcloud.com/user-519789566/mtgfastfinance-ep-528-marvel-x",
+    "duration_seconds": 3520,
+    "hosts": [
+      "MTG Fast Finance"
+    ],
+    "description": "James and Cliff catch you up on all the Magic the Gathering card price action of the week, including meta updates, cards to watch and tackle their top main set marvel cards from preview season.\n\nIntro/Outro Music by Skylarka"
+  },
+  "processing": {
+    "status": "needs_review",
+    "review_state": "needs_review",
+    "review_reason": "Section start found, but no explicit end marker was detected.",
+    "pipeline_version": "0.2.0",
+    "schema_version": "1.1.0",
+    "transcription_model": "gemini-flash-latest",
+    "extraction_model": "gemini-flash-latest",
+    "prompt_version": "cards-to-watch-v2",
+    "processed_at": "2026-07-18T11:24:26Z",
+    "history": [
+      {
+        "status": "detected",
+        "timestamp": "2026-07-18T11:18:12Z"
+      },
+      {
+        "status": "queued",
+        "timestamp": "2026-07-18T11:18:12Z"
+      },
+      {
+        "status": "queued",
+        "timestamp": "2026-07-18T11:18:12Z"
+      },
+      {
+        "status": "downloading",
+        "timestamp": "2026-07-18T11:18:12Z"
+      },
+      {
+        "status": "downloaded",
+        "timestamp": "2026-07-18T11:18:12Z"
+      },
+      {
+        "status": "preparing",
+        "timestamp": "2026-07-18T11:18:12Z"
+      },
+      {
+        "status": "transcribing",
+        "timestamp": "2026-07-18T11:18:35Z"
+      },
+      {
+        "status": "transcribed",
+        "timestamp": "2026-07-18T11:23:24Z"
+      },
+      {
+        "status": "extracting",
+        "timestamp": "2026-07-18T11:23:24Z"
+      },
+      {
+        "status": "extracted",
+        "timestamp": "2026-07-18T11:24:26Z"
+      },
+      {
+        "status": "validating",
+        "timestamp": "2026-07-18T11:24:26Z"
+      },
+      {
+        "status": "publishing",
+        "timestamp": "2026-07-18T11:24:26Z"
+      },
+      {
+        "status": "needs_review",
+        "timestamp": "2026-07-18T11:24:26Z"
+      }
+    ],
+    "error": null,
+    "transcription": {
+      "provider": "Gemini",
+      "model": "gemini-flash-latest",
+      "chunk_count": 3,
+      "duration_seconds": 3520,
+      "usage": [
+        {
+          "cache_tokens_details": null,
+          "cached_content_token_count": null,
+          "candidates_token_count": 11515,
+          "candidates_tokens_details": null,
+          "prompt_token_count": 30050,
+          "prompt_tokens_details": [
+            {
+              "modality": "TEXT",
+              "token_count": 51
+            },
+            {
+              "modality": "AUDIO",
+              "token_count": 29999
+            }
+          ],
+          "thoughts_token_count": 14895,
+          "tool_use_prompt_token_count": null,
+          "tool_use_prompt_tokens_details": null,
+          "total_token_count": 56460,
+          "traffic_type": null
+        },
+        {
+          "cache_tokens_details": null,
+          "cached_content_token_count": null,
+          "candidates_token_count": 11663,
+          "candidates_tokens_details": null,
+          "prompt_token_count": 30050,
+          "prompt_tokens_details": [
+            {
+              "modality": "TEXT",
+              "token_count": 51
+            },
+            {
+              "modality": "AUDIO",
+              "token_count": 29999
+            }
+          ],
+          "thoughts_token_count": 8835,
+          "tool_use_prompt_token_count": null,
+          "tool_use_prompt_tokens_details": null,
+          "total_token_count": 50548,
+          "traffic_type": null
+        },
+        {
+          "cache_tokens_details": null,
+          "cached_content_token_count": null,
+          "candidates_token_count": 11632,
+          "candidates_tokens_details": null,
+          "prompt_token_count": 28059,
+          "prompt_tokens_details": [
+            {
+              "modality": "AUDIO",
+              "token_count": 28008
+            },
+            {
+              "modality": "TEXT",
+              "token_count": 51
+            }
+          ],
+          "thoughts_token_count": 5627,
+          "tool_use_prompt_token_count": null,
+          "tool_use_prompt_tokens_details": null,
+          "total_token_count": 45318,
+          "traffic_type": null
+        }
+      ]
+    },
+    "extraction_usage": {
+      "cache_tokens_details": null,
+      "cached_content_token_count": null,
+      "candidates_token_count": 1552,
+      "candidates_tokens_details": null,
+      "prompt_token_count": 18796,
+      "prompt_tokens_details": [
+        {
+          "modality": "TEXT",
+          "token_count": 18796
+        }
+      ],
+      "thoughts_token_count": 9764,
+      "tool_use_prompt_token_count": null,
+      "tool_use_prompt_tokens_details": null,
+      "total_token_count": 30112,
+      "traffic_type": null
+    }
+  },
+  "section": {
+    "located": true,
+    "start_seconds": 119,
+    "end_seconds": 4240,
+    "label": "Cards to Watch",
+    "confidence": "medium",
+    "review_reason": "Section start found, but no explicit end marker was detected."
+  },
+  "recommendations": [
+    {
+      "card": "Uthro's Titanic God-Hood",
+      "printing": "galaxy foil",
+      "printing_certainty": "confirmed",
+      "foil": true,
+      "hosts": [
+        "speaker_2"
+      ],
+      "recommendation": "buy",
+      "mentioned_price": "$45",
+      "entry_target": {
+        "raw": "about $45",
+        "currency": "USD",
+        "minimum": 45.0,
+        "maximum": 45.0
+      },
+      "hold": "year another year or two",
+      "exit_target": {
+        "raw": "90",
+        "currency": "USD",
+        "minimum": 90.0,
+        "maximum": 90.0
+      },
+      "reasoning": [
+        "Has gotten down to about $45, and is expected to double in price easily.",
+        "Could spike in 0 to 6 months if the Iron Man artifact synergy in the Marvel set gets people building."
+      ],
+      "caveats": [
+        "Otherwise acts as a bad comes into play tapped island."
+      ],
+      "confidence": null,
+      "start_seconds": 1245,
+      "end_seconds": 1459,
+      "evidence_excerpt": "Uthro's Titanic God-Hood has a galaxy foil that came out of Edge of Eternity. Those have gotten down to about $45. I can easily see them doubling up",
+      "review_status": "needs_review",
+      "review_reason": "Possible transcription error: 'Uthro's Titanic God-Hood' is likely 'Uthrø's Titanic Godhood'.",
+      "id": "pick-4f0aa4cb9415bb60",
+      "timestamp": "00:20:45",
+      "listen_url": "https://feeds.soundcloud.com/stream/2351008367-user-519789566-mtgfastfinance-ep-528-marvel-x.mp3#t=1245"
+    },
+    {
+      "card": "Collective Inferno",
+      "printing": "Fracture foil",
+      "printing_certainty": "confirmed",
+      "foil": true,
+      "hosts": [
+        "James"
+      ],
+      "recommendation": "buy",
+      "mentioned_price": "$65",
+      "entry_target": {
+        "raw": "around $65",
+        "currency": "USD",
+        "minimum": 65.0,
+        "maximum": 65.0
+      },
+      "hold": "12 plus months",
+      "exit_target": {
+        "raw": "$125",
+        "currency": "USD",
+        "minimum": 125.0,
+        "maximum": 125.0
+      },
+      "reasoning": [
+        "Insanely hard to pull, meaning listings are scarce.",
+        "Strong inclusion in any typal build that floods the board, like Goblins.",
+        "Bounced off its low point recently."
+      ],
+      "caveats": [
+        "Lorwyn Eclipse collector booster boxes are already expensive."
+      ],
+      "confidence": null,
+      "start_seconds": 1414,
+      "end_seconds": 1734,
+      "evidence_excerpt": "Collective Inferno Fracture foil from the Lorwyn Eclipse collector boosters... Currently available around $65... to go $65 to $125 in the next, say, 12 plus months",
+      "review_status": "needs_review",
+      "review_reason": "Possible transcription error: 'Collective Inferno' may refer to another card like 'Collective Resistance' from Modern Horizons 3.",
+      "id": "pick-57af3f1a9f9ca352",
+      "timestamp": "00:23:34",
+      "listen_url": "https://feeds.soundcloud.com/stream/2351008367-user-519789566-mtgfastfinance-ep-528-marvel-x.mp3#t=1414"
+    },
+    {
+      "card": "Throne of Eldraine",
+      "printing": "list reprint",
+      "printing_certainty": "confirmed",
+      "foil": false,
+      "hosts": [
+        "speaker_2"
+      ],
+      "recommendation": "buy",
+      "mentioned_price": "$28",
+      "entry_target": {
+        "raw": "$28",
+        "currency": "USD",
+        "minimum": 28.0,
+        "maximum": 28.0
+      },
+      "hold": "6 to 12 months",
+      "exit_target": {
+        "raw": "$50",
+        "currency": "USD",
+        "minimum": 50.0,
+        "maximum": 50.0
+      },
+      "reasoning": [
+        "Extremely powerful as a mana rock and card draw engine for monocolored Commander decks.",
+        "The List reprint is about $8 cheaper than the regular versions."
+      ],
+      "caveats": [
+        "Shares its name with the Throne of Eldraine expansion set, which makes searching more difficult.",
+        "Tcgplayer does not currently show an image for this specific List version."
+      ],
+      "confidence": null,
+      "start_seconds": 1502,
+      "end_seconds": 1714,
+      "evidence_excerpt": "My last pick is the list reprint of Throne of Eldraine... list reprint that you can get for $28... going to be a $50 card",
+      "review_status": "approved",
+      "review_reason": null,
+      "id": "pick-d87af29a2280f05b",
+      "timestamp": "00:25:02",
+      "listen_url": "https://feeds.soundcloud.com/stream/2351008367-user-519789566-mtgfastfinance-ep-528-marvel-x.mp3#t=1502"
+    },
+    {
+      "card": "Minamo, School at Water's Edge",
+      "printing": "borderless foil",
+      "printing_certainty": "confirmed",
+      "foil": true,
+      "hosts": [
+        "Cliff"
+      ],
+      "recommendation": "buy",
+      "mentioned_price": "18",
+      "entry_target": {
+        "raw": "18",
+        "currency": "USD",
+        "minimum": 18.0,
+        "maximum": 18.0
+      },
+      "hold": "6 to 12 months",
+      "exit_target": {
+        "raw": "40",
+        "currency": "USD",
+        "minimum": 40.0,
+        "maximum": 40.0
+      },
+      "reasoning": [
+        "Currently up to 18 and trending up.",
+        "In over 250,000 decks online because players hate having their spells countered."
+      ],
+      "caveats": [],
+      "confidence": null,
+      "start_seconds": 1734,
+      "end_seconds": 1830,
+      "evidence_excerpt": "Minamo, School at Water's Edge, the borderless foil... currently up to 18... next 6 to 12 months, it'll have a nice little double up... into 40",
+      "review_status": "approved",
+      "review_reason": null,
+      "id": "pick-40c46fdb7dbf2694",
+      "timestamp": "00:28:54",
+      "listen_url": "https://feeds.soundcloud.com/stream/2351008367-user-519789566-mtgfastfinance-ep-528-marvel-x.mp3#t=1734"
+    }
+  ]
+}

@@ -1,0 +1,181 @@
+{
+  "schema_version": "1.1.0",
+  "synthetic": false,
+  "notice": "Live automated pipeline metadata.",
+  "episode": {
+    "guid": "tag:soundcloud,2010:tracks/2351008367",
+    "episode_number": 528,
+    "title": "MTGFastFinance Ep 528: Marvel x MTG Top 10",
+    "published_at": "2026-07-01T05:59:01Z",
+    "audio_url": "https://feeds.soundcloud.com/stream/2351008367-user-519789566-mtgfastfinance-ep-528-marvel-x.mp3",
+    "episode_url": "https://soundcloud.com/user-519789566/mtgfastfinance-ep-528-marvel-x",
+    "duration_seconds": 3520,
+    "hosts": [
+      "MTG Fast Finance"
+    ],
+    "description": "James and Cliff catch you up on all the Magic the Gathering card price action of the week, including meta updates, cards to watch and tackle their top main set marvel cards from preview season.\n\nIntro/Outro Music by Skylarka"
+  },
+  "processing": {
+    "status": "needs_review",
+    "review_state": "needs_review",
+    "review_reason": "Section start found, but no explicit end marker was detected.",
+    "pipeline_version": "0.2.0",
+    "schema_version": "1.1.0",
+    "transcription_model": "gemini-flash-latest",
+    "extraction_model": "gemini-flash-latest",
+    "prompt_version": "cards-to-watch-v2",
+    "processed_at": "2026-07-18T11:24:26Z",
+    "history": [
+      {
+        "status": "detected",
+        "timestamp": "2026-07-18T11:18:12Z"
+      },
+      {
+        "status": "queued",
+        "timestamp": "2026-07-18T11:18:12Z"
+      },
+      {
+        "status": "queued",
+        "timestamp": "2026-07-18T11:18:12Z"
+      },
+      {
+        "status": "downloading",
+        "timestamp": "2026-07-18T11:18:12Z"
+      },
+      {
+        "status": "downloaded",
+        "timestamp": "2026-07-18T11:18:12Z"
+      },
+      {
+        "status": "preparing",
+        "timestamp": "2026-07-18T11:18:12Z"
+      },
+      {
+        "status": "transcribing",
+        "timestamp": "2026-07-18T11:18:35Z"
+      },
+      {
+        "status": "transcribed",
+        "timestamp": "2026-07-18T11:23:24Z"
+      },
+      {
+        "status": "extracting",
+        "timestamp": "2026-07-18T11:23:24Z"
+      },
+      {
+        "status": "extracted",
+        "timestamp": "2026-07-18T11:24:26Z"
+      },
+      {
+        "status": "validating",
+        "timestamp": "2026-07-18T11:24:26Z"
+      },
+      {
+        "status": "publishing",
+        "timestamp": "2026-07-18T11:24:26Z"
+      },
+      {
+        "status": "needs_review",
+        "timestamp": "2026-07-18T11:24:26Z"
+      }
+    ],
+    "error": null,
+    "transcription": {
+      "provider": "Gemini",
+      "model": "gemini-flash-latest",
+      "chunk_count": 3,
+      "duration_seconds": 3520,
+      "usage": [
+        {
+          "cache_tokens_details": null,
+          "cached_content_token_count": null,
+          "candidates_token_count": 11515,
+          "candidates_tokens_details": null,
+          "prompt_token_count": 30050,
+          "prompt_tokens_details": [
+            {
+              "modality": "TEXT",
+              "token_count": 51
+            },
+            {
+              "modality": "AUDIO",
+              "token_count": 29999
+            }
+          ],
+          "thoughts_token_count": 14895,
+          "tool_use_prompt_token_count": null,
+          "tool_use_prompt_tokens_details": null,
+          "total_token_count": 56460,
+          "traffic_type": null
+        },
+        {
+          "cache_tokens_details": null,
+          "cached_content_token_count": null,
+          "candidates_token_count": 11663,
+          "candidates_tokens_details": null,
+          "prompt_token_count": 30050,
+          "prompt_tokens_details": [
+            {
+              "modality": "TEXT",
+              "token_count": 51
+            },
+            {
+              "modality": "AUDIO",
+              "token_count": 29999
+            }
+          ],
+          "thoughts_token_count": 8835,
+          "tool_use_prompt_token_count": null,
+          "tool_use_prompt_tokens_details": null,
+          "total_token_count": 50548,
+          "traffic_type": null
+        },
+        {
+          "cache_tokens_details": null,
+          "cached_content_token_count": null,
+          "candidates_token_count": 11632,
+          "candidates_tokens_details": null,
+          "prompt_token_count": 28059,
+          "prompt_tokens_details": [
+            {
+              "modality": "AUDIO",
+              "token_count": 28008
+            },
+            {
+              "modality": "TEXT",
+              "token_count": 51
+            }
+          ],
+          "thoughts_token_count": 5627,
+          "tool_use_prompt_token_count": null,
+          "tool_use_prompt_tokens_details": null,
+          "total_token_count": 45318,
+          "traffic_type": null
+        }
+      ]
+    },
+    "extraction_usage": {
+      "cache_tokens_details": null,
+      "cached_content_token_count": null,
+      "candidates_token_count": 1552,
+      "candidates_tokens_details": null,
+      "prompt_token_count": 18796,
+      "prompt_tokens_details": [
+        {
+          "modality": "TEXT",
+          "token_count": 18796
+        }
+      ],
+      "thoughts_token_count": 9764,
+      "tool_use_prompt_token_count": null,
+      "tool_use_prompt_tokens_details": null,
+      "total_token_count": 30112,
+      "traffic_type": null
+    }
+  },
+  "outputs": {
+    "metadata": "episodes/0528-mtgfastfinance-ep-528-marvel-x-mtg-top-10/metadata.json",
+    "summary_json": "episodes/0528-mtgfastfinance-ep-528-marvel-x-mtg-top-10/summary.json",
+    "summary_markdown": "episodes/0528-mtgfastfinance-ep-528-marvel-x-mtg-top-10/summary.md"
+  }
+}

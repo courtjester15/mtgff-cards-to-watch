@@ -6,28 +6,28 @@
     "project": "FFW",
     "pipeline_version": "0.2.0",
     "schema_version": "1.1.0",
-    "generated_at": "2026-07-18T02:21:33Z",
-    "latest_successful_run_at": "2026-07-18T02:21:33Z",
+    "generated_at": "2026-07-18T11:24:26Z",
+    "latest_successful_run_at": "2026-07-18T11:24:26Z",
     "generated_from": "live-feed",
     "production_mode": true,
     "source": {
       "name": "MTG Fast Finance"
     },
-    "real_episode_count": 2,
-    "real_pick_count": 9,
+    "real_episode_count": 3,
+    "real_pick_count": 13,
     "last_discovered_episode_date": "2026-07-05T21:41:20Z",
     "repository_url": "https://github.com/courtjester15/mtgff-cards-to-watch",
     "workflow_url": "https://github.com/courtjester15/mtgff-cards-to-watch/actions/workflows/ffw.yml"
   },
   "counts": {
-    "episodes": 2,
-    "picks": 9,
-    "needs_review": 2,
+    "episodes": 3,
+    "picks": 13,
+    "needs_review": 3,
     "failed": 0,
     "completed": 0
   },
   "status_counts": {
-    "needs_review": 2
+    "needs_review": 3
   },
   "latest_episode": {
     "guid": "tag:soundcloud,2010:tracks/2353638380",
@@ -400,6 +400,32 @@
         "summary_markdown": "episodes/0529-much-more-marvel/summary.md"
       },
       "processed_at": "2026-07-18T02:21:33Z",
+      "error": null,
+      "synthetic": false
+    },
+    {
+      "guid": "tag:soundcloud,2010:tracks/2351008367",
+      "episode_number": 528,
+      "title": "MTGFastFinance Ep 528: Marvel x MTG Top 10",
+      "published_at": "2026-07-01T05:59:01Z",
+      "audio_url": "https://feeds.soundcloud.com/stream/2351008367-user-519789566-mtgfastfinance-ep-528-marvel-x.mp3",
+      "episode_url": "https://soundcloud.com/user-519789566/mtgfastfinance-ep-528-marvel-x",
+      "duration_seconds": 3520,
+      "hosts": [
+        "MTG Fast Finance"
+      ],
+      "description": "James and Cliff catch you up on all the Magic the Gathering card price action of the week, including meta updates, cards to watch and tackle their top main set marvel cards from preview season.\n\nIntro/Outro Music by Skylarka",
+      "processing_status": "needs_review",
+      "review_state": "needs_review",
+      "review_reason": "Section start found, but no explicit end marker was detected.",
+      "pick_count": 4,
+      "directory": "episodes/0528-mtgfastfinance-ep-528-marvel-x-mtg-top-10",
+      "outputs": {
+        "metadata": "episodes/0528-mtgfastfinance-ep-528-marvel-x-mtg-top-10/metadata.json",
+        "summary_json": "episodes/0528-mtgfastfinance-ep-528-marvel-x-mtg-top-10/summary.json",
+        "summary_markdown": "episodes/0528-mtgfastfinance-ep-528-marvel-x-mtg-top-10/summary.md"
+      },
+      "processed_at": "2026-07-18T11:24:26Z",
       "error": null,
       "synthetic": false
     }
