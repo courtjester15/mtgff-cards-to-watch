@@ -1,7 +1,7 @@
 {
   "schema_version": "1.1.0",
   "pipeline_version": "0.2.0",
-  "updated_at": "2026-07-17T03:52:44Z",
+  "updated_at": "2026-07-18T02:21:33Z",
   "episodes": {
     "ffw-synthetic-episode-901": {
       "guid": "ffw-synthetic-episode-901",
@@ -500,6 +500,187 @@
         "traffic_type": null
       },
       "review_reason": "Found highly ambiguous card and cycle names ('Turbulent Fens', 'five Fen cards') in the transcript, which are likely transcription errors and have been flagged for review. Other recommendations are clear and approved."
+    },
+    "tag:soundcloud,2010:tracks/2353622054": {
+      "guid": "tag:soundcloud,2010:tracks/2353622054",
+      "history": [
+        {
+          "status": "detected",
+          "timestamp": "2026-07-18T02:06:57Z"
+        },
+        {
+          "status": "queued",
+          "timestamp": "2026-07-18T02:06:57Z"
+        },
+        {
+          "status": "queued",
+          "timestamp": "2026-07-18T02:06:57Z"
+        },
+        {
+          "status": "downloading",
+          "timestamp": "2026-07-18T02:06:57Z"
+        },
+        {
+          "status": "downloaded",
+          "timestamp": "2026-07-18T02:06:57Z"
+        },
+        {
+          "status": "preparing",
+          "timestamp": "2026-07-18T02:06:57Z"
+        },
+        {
+          "status": "transcribing",
+          "timestamp": "2026-07-18T02:07:26Z"
+        },
+        {
+          "status": "transcribed",
+          "timestamp": "2026-07-18T02:20:56Z"
+        },
+        {
+          "status": "extracting",
+          "timestamp": "2026-07-18T02:20:56Z"
+        },
+        {
+          "status": "extracted",
+          "timestamp": "2026-07-18T02:21:33Z"
+        },
+        {
+          "status": "validating",
+          "timestamp": "2026-07-18T02:21:33Z"
+        },
+        {
+          "status": "publishing",
+          "timestamp": "2026-07-18T02:21:33Z"
+        },
+        {
+          "status": "needs_review",
+          "timestamp": "2026-07-18T02:21:33Z"
+        }
+      ],
+      "title": "MTG Fast Finance Ep 529: Much More Marvel",
+      "episode_number": 529,
+      "published_at": "2026-07-05T20:59:50Z",
+      "attempt_count": 1,
+      "pick_count": 4,
+      "error": null,
+      "status": "needs_review",
+      "updated_at": "2026-07-18T02:21:33Z",
+      "output_directory": "episodes/0529-much-more-marvel",
+      "transcription": {
+        "provider": "Gemini",
+        "model": "gemini-flash-latest",
+        "chunk_count": 4,
+        "duration_seconds": 4697,
+        "usage": [
+          {
+            "cache_tokens_details": null,
+            "cached_content_token_count": null,
+            "candidates_token_count": 11936,
+            "candidates_tokens_details": null,
+            "prompt_token_count": 30050,
+            "prompt_tokens_details": [
+              {
+                "modality": "AUDIO",
+                "token_count": 29999
+              },
+              {
+                "modality": "TEXT",
+                "token_count": 51
+              }
+            ],
+            "thoughts_token_count": 18007,
+            "tool_use_prompt_token_count": null,
+            "tool_use_prompt_tokens_details": null,
+            "total_token_count": 59993,
+            "traffic_type": null
+          },
+          {
+            "cache_tokens_details": null,
+            "cached_content_token_count": null,
+            "candidates_token_count": 14049,
+            "candidates_tokens_details": null,
+            "prompt_token_count": 30050,
+            "prompt_tokens_details": [
+              {
+                "modality": "AUDIO",
+                "token_count": 29999
+              },
+              {
+                "modality": "TEXT",
+                "token_count": 51
+              }
+            ],
+            "thoughts_token_count": 6697,
+            "tool_use_prompt_token_count": null,
+            "tool_use_prompt_tokens_details": null,
+            "total_token_count": 50796,
+            "traffic_type": null
+          },
+          {
+            "cache_tokens_details": null,
+            "cached_content_token_count": null,
+            "candidates_token_count": 1594,
+            "candidates_tokens_details": null,
+            "prompt_token_count": 30050,
+            "prompt_tokens_details": [
+              {
+                "modality": "AUDIO",
+                "token_count": 29999
+              },
+              {
+                "modality": "TEXT",
+                "token_count": 51
+              }
+            ],
+            "thoughts_token_count": 18616,
+            "tool_use_prompt_token_count": null,
+            "tool_use_prompt_tokens_details": null,
+            "total_token_count": 50260,
+            "traffic_type": null
+          },
+          {
+            "cache_tokens_details": null,
+            "cached_content_token_count": null,
+            "candidates_token_count": 18860,
+            "candidates_tokens_details": null,
+            "prompt_token_count": 27482,
+            "prompt_tokens_details": [
+              {
+                "modality": "TEXT",
+                "token_count": 51
+              },
+              {
+                "modality": "AUDIO",
+                "token_count": 27431
+              }
+            ],
+            "thoughts_token_count": 190,
+            "tool_use_prompt_token_count": null,
+            "tool_use_prompt_tokens_details": null,
+            "total_token_count": 46532,
+            "traffic_type": null
+          }
+        ]
+      },
+      "extraction_usage": {
+        "cache_tokens_details": null,
+        "cached_content_token_count": null,
+        "candidates_token_count": 1571,
+        "candidates_tokens_details": null,
+        "prompt_token_count": 27656,
+        "prompt_tokens_details": [
+          {
+            "modality": "TEXT",
+            "token_count": 27656
+          }
+        ],
+        "thoughts_token_count": 5329,
+        "tool_use_prompt_token_count": null,
+        "tool_use_prompt_tokens_details": null,
+        "total_token_count": 34556,
+        "traffic_type": null
+      },
+      "review_reason": "Section start found, but no explicit end marker was detected."
     }
   }
 }

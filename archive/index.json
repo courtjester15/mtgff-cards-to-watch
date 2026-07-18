@@ -6,28 +6,28 @@
     "project": "FFW",
     "pipeline_version": "0.2.0",
     "schema_version": "1.1.0",
-    "generated_at": "2026-07-17T11:40:10Z",
-    "latest_successful_run_at": "2026-07-17T03:52:44Z",
+    "generated_at": "2026-07-18T02:21:33Z",
+    "latest_successful_run_at": "2026-07-18T02:21:33Z",
     "generated_from": "live-feed",
     "production_mode": true,
     "source": {
       "name": "MTG Fast Finance"
     },
-    "real_episode_count": 1,
-    "real_pick_count": 5,
+    "real_episode_count": 2,
+    "real_pick_count": 9,
     "last_discovered_episode_date": "2026-07-05T21:41:20Z",
     "repository_url": "https://github.com/courtjester15/mtgff-cards-to-watch",
     "workflow_url": "https://github.com/courtjester15/mtgff-cards-to-watch/actions/workflows/ffw.yml"
   },
   "counts": {
-    "episodes": 1,
-    "picks": 5,
-    "needs_review": 1,
+    "episodes": 2,
+    "picks": 9,
+    "needs_review": 2,
     "failed": 0,
     "completed": 0
   },
   "status_counts": {
-    "needs_review": 1
+    "needs_review": 2
   },
   "latest_episode": {
     "guid": "tag:soundcloud,2010:tracks/2353638380",
@@ -297,6 +297,57 @@
         "audio_url": "https://feeds.soundcloud.com/stream/2353638380-user-519789566-mtg-fast-finance-ep-530-secret.mp3"
       },
       "processing_status": "needs_review"
+    },
+    {
+      "card": "Consult the Necrosages",
+      "printing": "foil extended art",
+      "printing_certainty": "confirmed",
+      "foil": true,
+      "hosts": [
+        "James",
+        "Cliff"
+      ],
+      "recommendation": "Buy foil extended art copies",
+      "mentioned_price": "sub-$10",
+      "entry_target": {
+        "raw": "sub-$10",
+        "currency": "USD",
+        "minimum": null,
+        "maximum": 10.0
+      },
+      "hold": "another year or so",
+      "exit_target": {
+        "raw": "20+",
+        "currency": "USD",
+        "minimum": 20.0,
+        "maximum": null
+      },
+      "reasoning": [
+        "In 40,000 decks on EDHREC",
+        "Four-of both in Standard and Modern Blue-White Control decks",
+        "Only 40 listings left with a steep ramp forming"
+      ],
+      "caveats": [
+        "Tournament players may prefer non-foil copies over foils"
+      ],
+      "confidence": "high",
+      "start_seconds": 1841,
+      "end_seconds": 2000,
+      "evidence_excerpt": "I'm willing to bet you that the sub-$10 copies that are left are going to be 20+ in another year or so.",
+      "review_status": "approved",
+      "review_reason": null,
+      "id": "pick-333f4f56470bf642",
+      "timestamp": "00:30:41",
+      "listen_url": "https://feeds.soundcloud.com/stream/2353622054-user-519789566-mtg-fast-finance-ep-529-much.mp3#t=1841",
+      "episode": {
+        "guid": "tag:soundcloud,2010:tracks/2353622054",
+        "episode_number": 529,
+        "title": "MTG Fast Finance Ep 529: Much More Marvel",
+        "published_at": "2026-07-05T20:59:50Z",
+        "episode_url": "https://soundcloud.com/user-519789566/mtg-fast-finance-ep-529-much",
+        "audio_url": "https://feeds.soundcloud.com/stream/2353622054-user-519789566-mtg-fast-finance-ep-529-much.mp3"
+      },
+      "processing_status": "needs_review"
     }
   ],
   "episodes": [
@@ -323,6 +374,32 @@
         "summary_markdown": "episodes/0530-secret-lair-cats-superdrop-results/summary.md"
       },
       "processed_at": "2026-07-17T03:52:44Z",
+      "error": null,
+      "synthetic": false
+    },
+    {
+      "guid": "tag:soundcloud,2010:tracks/2353622054",
+      "episode_number": 529,
+      "title": "MTG Fast Finance Ep 529: Much More Marvel",
+      "published_at": "2026-07-05T20:59:50Z",
+      "audio_url": "https://feeds.soundcloud.com/stream/2353622054-user-519789566-mtg-fast-finance-ep-529-much.mp3",
+      "episode_url": "https://soundcloud.com/user-519789566/mtg-fast-finance-ep-529-much",
+      "duration_seconds": 4697,
+      "hosts": [
+        "MTG Fast Finance"
+      ],
+      "description": "The world's best Magic Finance team gets you caught on all the Magic the Gathering card price action of the week, including meta updates, cards to watch and even more chatter on the best of the cards from the Marvel superset.",
+      "processing_status": "needs_review",
+      "review_state": "needs_review",
+      "review_reason": "Section start found, but no explicit end marker was detected.",
+      "pick_count": 4,
+      "directory": "episodes/0529-much-more-marvel",
+      "outputs": {
+        "metadata": "episodes/0529-much-more-marvel/metadata.json",
+        "summary_json": "episodes/0529-much-more-marvel/summary.json",
+        "summary_markdown": "episodes/0529-much-more-marvel/summary.md"
+      },
+      "processed_at": "2026-07-18T02:21:33Z",
       "error": null,
       "synthetic": false
     }

@@ -1,0 +1,376 @@
+{
+  "schema_version": "1.1.0",
+  "synthetic": false,
+  "notice": "Automated transcription and extraction; verify against the linked source audio.",
+  "episode": {
+    "guid": "tag:soundcloud,2010:tracks/2353622054",
+    "episode_number": 529,
+    "title": "MTG Fast Finance Ep 529: Much More Marvel",
+    "published_at": "2026-07-05T20:59:50Z",
+    "audio_url": "https://feeds.soundcloud.com/stream/2353622054-user-519789566-mtg-fast-finance-ep-529-much.mp3",
+    "episode_url": "https://soundcloud.com/user-519789566/mtg-fast-finance-ep-529-much",
+    "duration_seconds": 4697,
+    "hosts": [
+      "MTG Fast Finance"
+    ],
+    "description": "The world's best Magic Finance team gets you caught on all the Magic the Gathering card price action of the week, including meta updates, cards to watch and even more chatter on the best of the cards from the Marvel superset."
+  },
+  "processing": {
+    "status": "needs_review",
+    "review_state": "needs_review",
+    "review_reason": "Section start found, but no explicit end marker was detected.",
+    "pipeline_version": "0.2.0",
+    "schema_version": "1.1.0",
+    "transcription_model": "gemini-flash-latest",
+    "extraction_model": "gemini-flash-latest",
+    "prompt_version": "cards-to-watch-v2",
+    "processed_at": "2026-07-18T02:21:33Z",
+    "history": [
+      {
+        "status": "detected",
+        "timestamp": "2026-07-18T02:06:57Z"
+      },
+      {
+        "status": "queued",
+        "timestamp": "2026-07-18T02:06:57Z"
+      },
+      {
+        "status": "queued",
+        "timestamp": "2026-07-18T02:06:57Z"
+      },
+      {
+        "status": "downloading",
+        "timestamp": "2026-07-18T02:06:57Z"
+      },
+      {
+        "status": "downloaded",
+        "timestamp": "2026-07-18T02:06:57Z"
+      },
+      {
+        "status": "preparing",
+        "timestamp": "2026-07-18T02:06:57Z"
+      },
+      {
+        "status": "transcribing",
+        "timestamp": "2026-07-18T02:07:26Z"
+      },
+      {
+        "status": "transcribed",
+        "timestamp": "2026-07-18T02:20:56Z"
+      },
+      {
+        "status": "extracting",
+        "timestamp": "2026-07-18T02:20:56Z"
+      },
+      {
+        "status": "extracted",
+        "timestamp": "2026-07-18T02:21:33Z"
+      },
+      {
+        "status": "validating",
+        "timestamp": "2026-07-18T02:21:33Z"
+      },
+      {
+        "status": "publishing",
+        "timestamp": "2026-07-18T02:21:33Z"
+      },
+      {
+        "status": "needs_review",
+        "timestamp": "2026-07-18T02:21:33Z"
+      }
+    ],
+    "error": null,
+    "transcription": {
+      "provider": "Gemini",
+      "model": "gemini-flash-latest",
+      "chunk_count": 4,
+      "duration_seconds": 4697,
+      "usage": [
+        {
+          "cache_tokens_details": null,
+          "cached_content_token_count": null,
+          "candidates_token_count": 11936,
+          "candidates_tokens_details": null,
+          "prompt_token_count": 30050,
+          "prompt_tokens_details": [
+            {
+              "modality": "AUDIO",
+              "token_count": 29999
+            },
+            {
+              "modality": "TEXT",
+              "token_count": 51
+            }
+          ],
+          "thoughts_token_count": 18007,
+          "tool_use_prompt_token_count": null,
+          "tool_use_prompt_tokens_details": null,
+          "total_token_count": 59993,
+          "traffic_type": null
+        },
+        {
+          "cache_tokens_details": null,
+          "cached_content_token_count": null,
+          "candidates_token_count": 14049,
+          "candidates_tokens_details": null,
+          "prompt_token_count": 30050,
+          "prompt_tokens_details": [
+            {
+              "modality": "AUDIO",
+              "token_count": 29999
+            },
+            {
+              "modality": "TEXT",
+              "token_count": 51
+            }
+          ],
+          "thoughts_token_count": 6697,
+          "tool_use_prompt_token_count": null,
+          "tool_use_prompt_tokens_details": null,
+          "total_token_count": 50796,
+          "traffic_type": null
+        },
+        {
+          "cache_tokens_details": null,
+          "cached_content_token_count": null,
+          "candidates_token_count": 1594,
+          "candidates_tokens_details": null,
+          "prompt_token_count": 30050,
+          "prompt_tokens_details": [
+            {
+              "modality": "AUDIO",
+              "token_count": 29999
+            },
+            {
+              "modality": "TEXT",
+              "token_count": 51
+            }
+          ],
+          "thoughts_token_count": 18616,
+          "tool_use_prompt_token_count": null,
+          "tool_use_prompt_tokens_details": null,
+          "total_token_count": 50260,
+          "traffic_type": null
+        },
+        {
+          "cache_tokens_details": null,
+          "cached_content_token_count": null,
+          "candidates_token_count": 18860,
+          "candidates_tokens_details": null,
+          "prompt_token_count": 27482,
+          "prompt_tokens_details": [
+            {
+              "modality": "TEXT",
+              "token_count": 51
+            },
+            {
+              "modality": "AUDIO",
+              "token_count": 27431
+            }
+          ],
+          "thoughts_token_count": 190,
+          "tool_use_prompt_token_count": null,
+          "tool_use_prompt_tokens_details": null,
+          "total_token_count": 46532,
+          "traffic_type": null
+        }
+      ]
+    },
+    "extraction_usage": {
+      "cache_tokens_details": null,
+      "cached_content_token_count": null,
+      "candidates_token_count": 1571,
+      "candidates_tokens_details": null,
+      "prompt_token_count": 27656,
+      "prompt_tokens_details": [
+        {
+          "modality": "TEXT",
+          "token_count": 27656
+        }
+      ],
+      "thoughts_token_count": 5329,
+      "tool_use_prompt_token_count": null,
+      "tool_use_prompt_tokens_details": null,
+      "total_token_count": 34556,
+      "traffic_type": null
+    }
+  },
+  "section": {
+    "located": true,
+    "start_seconds": 119,
+    "end_seconds": 4814,
+    "label": "Cards to Watch",
+    "confidence": "medium",
+    "review_reason": "Section start found, but no explicit end marker was detected."
+  },
+  "recommendations": [
+    {
+      "card": "Endless Foot Assault",
+      "printing": "non-foil",
+      "printing_certainty": "confirmed",
+      "foil": false,
+      "hosts": [
+        "Speaker 1",
+        "Speaker 2"
+      ],
+      "recommendation": "Buy non-foil copies",
+      "mentioned_price": "$3 to $4",
+      "entry_target": {
+        "raw": "$3 to $4",
+        "currency": "USD",
+        "minimum": 3.0,
+        "maximum": 4.0
+      },
+      "hold": "12 months or so",
+      "exit_target": {
+        "raw": "$8 to $10",
+        "currency": "USD",
+        "minimum": 8.0,
+        "maximum": 10.0
+      },
+      "reasoning": [
+        "Only in the Commander decks",
+        "Extremely good in token strategies",
+        "Has squad mechanic which is incredibly abuseable"
+      ],
+      "caveats": [
+        "Surge foils are much more expensive and may limit growth on regular versions"
+      ],
+      "confidence": "medium",
+      "start_seconds": 1241,
+      "end_seconds": 1356,
+      "evidence_excerpt": "I'm definitely in on the, you know, $3 to $4 copies of this card to go up into the $8 to $10 range over the next 12 months or so.",
+      "review_status": "approved",
+      "review_reason": null,
+      "id": "pick-5ed353fd175300d9",
+      "timestamp": "00:20:41",
+      "listen_url": "https://feeds.soundcloud.com/stream/2353622054-user-519789566-mtg-fast-finance-ep-529-much.mp3#t=1241"
+    },
+    {
+      "card": "Fanatic of Rhonas",
+      "printing": "foil extended art",
+      "printing_certainty": "confirmed",
+      "foil": true,
+      "hosts": [
+        "James",
+        "Cliff"
+      ],
+      "recommendation": "Buy foil extended art copies",
+      "mentioned_price": "$15 to $18",
+      "entry_target": {
+        "raw": "$15 to $18",
+        "currency": "USD",
+        "minimum": 15.0,
+        "maximum": 18.0
+      },
+      "hold": "Within the next year or so",
+      "exit_target": {
+        "raw": "$30+",
+        "currency": "USD",
+        "minimum": 30.0,
+        "maximum": null
+      },
+      "reasoning": [
+        "Top 10 EDHREC card for MH3 with high inclusion rate",
+        "No reprints since release and this is the fanciest version",
+        "Highly stable with 6% inclusion rate in over 260,000 decks"
+      ],
+      "caveats": [
+        "Could eventually be reprinted in a Secret Lair or Commander Masters set"
+      ],
+      "confidence": "high",
+      "start_seconds": 1311,
+      "end_seconds": 1527,
+      "evidence_excerpt": "Within the next year or so, these should be going from the current $15 to $18 price point to $30+.",
+      "review_status": "approved",
+      "review_reason": null,
+      "id": "pick-4e629b6b3ec3a1b1",
+      "timestamp": "00:21:51",
+      "listen_url": "https://feeds.soundcloud.com/stream/2353622054-user-519789566-mtg-fast-finance-ep-529-much.mp3#t=1311"
+    },
+    {
+      "card": "Undergrowth Stadium",
+      "printing": "surge foil",
+      "printing_certainty": "ambiguous",
+      "foil": true,
+      "hosts": [
+        "James",
+        "Cliff"
+      ],
+      "recommendation": "Buy surge foil copies",
+      "mentioned_price": "$10.00, $10.50, maybe $11.00",
+      "entry_target": {
+        "raw": "$10.00, $10.50, maybe $11.00",
+        "currency": "USD",
+        "minimum": 10.0,
+        "maximum": 11.0
+      },
+      "hold": "another year",
+      "exit_target": {
+        "raw": "$20",
+        "currency": "USD",
+        "minimum": 20.0,
+        "maximum": 20.0
+      },
+      "reasoning": [
+        "Super stable series of multiplayer dual lands",
+        "From Teenage Mutant Ninja Turtles Commander decks which may have undersold",
+        "Hasbro CEO didn't highlight the set, indicating lower overall supply"
+      ],
+      "caveats": [
+        "Cliff notes that the deck might only contain non-foil versions, introducing pricing and version ambiguity"
+      ],
+      "confidence": "medium",
+      "start_seconds": 1529,
+      "end_seconds": 1839,
+      "evidence_excerpt": "My first pick this week is the surge foil Undergrowth Stadium... You can get them on TCGplayer for about $10.00, $10.50, maybe $11.00.",
+      "review_status": "needs_review",
+      "review_reason": "Confusion between surge foil and non-foil versions in the TMNT deck and which one corresponds to the $10 price point.",
+      "id": "pick-1aa42bbbb9259fb8",
+      "timestamp": "00:25:29",
+      "listen_url": "https://feeds.soundcloud.com/stream/2353622054-user-519789566-mtg-fast-finance-ep-529-much.mp3#t=1529"
+    },
+    {
+      "card": "Consult the Necrosages",
+      "printing": "foil extended art",
+      "printing_certainty": "confirmed",
+      "foil": true,
+      "hosts": [
+        "James",
+        "Cliff"
+      ],
+      "recommendation": "Buy foil extended art copies",
+      "mentioned_price": "sub-$10",
+      "entry_target": {
+        "raw": "sub-$10",
+        "currency": "USD",
+        "minimum": null,
+        "maximum": 10.0
+      },
+      "hold": "another year or so",
+      "exit_target": {
+        "raw": "20+",
+        "currency": "USD",
+        "minimum": 20.0,
+        "maximum": null
+      },
+      "reasoning": [
+        "In 40,000 decks on EDHREC",
+        "Four-of both in Standard and Modern Blue-White Control decks",
+        "Only 40 listings left with a steep ramp forming"
+      ],
+      "caveats": [
+        "Tournament players may prefer non-foil copies over foils"
+      ],
+      "confidence": "high",
+      "start_seconds": 1841,
+      "end_seconds": 2000,
+      "evidence_excerpt": "I'm willing to bet you that the sub-$10 copies that are left are going to be 20+ in another year or so.",
+      "review_status": "approved",
+      "review_reason": null,
+      "id": "pick-333f4f56470bf642",
+      "timestamp": "00:30:41",
+      "listen_url": "https://feeds.soundcloud.com/stream/2353622054-user-519789566-mtg-fast-finance-ep-529-much.mp3#t=1841"
+    }
+  ]
+}
