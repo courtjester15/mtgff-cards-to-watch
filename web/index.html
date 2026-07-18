@@ -4,44 +4,40 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Automated MTG Fast Finance Cards to Watch archive">
-    <title>FFW · Cards to Watch Archive</title>
-    <link rel="stylesheet" href="styles.css?v=0.2.3">
+    <title>ManaIntel · Cards to Watch Archive</title>
+    <link rel="stylesheet" href="styles.css?v=0.3.0">
   </head>
   <body>
-    <div class="shell">
-      <aside class="sidebar">
-        <a class="brand" href="#dashboard" aria-label="FFW dashboard">
-          <span class="brand-mark">FF</span>
-          <span><strong>FFW</strong><small>Cards to Watch</small></span>
-        </a>
-        <nav aria-label="Primary navigation">
-          <a href="#dashboard" data-route="dashboard"><span>◆</span> Dashboard</a>
-          <a href="#episodes" data-route="episodes"><span>▤</span> Episode Archive</a>
-          <a href="#picks" data-route="picks"><span>⌕</span> All Picks</a>
-          <a href="#status" data-route="status"><span>◉</span> Processing Status</a>
-          <a href="#about" data-route="about"><span>ⓘ</span> Settings / About</a>
-        </nav>
-        <div class="sidebar-foot">
-          <span class="live-dot"></span>
-          <span><strong>Automated archive</strong><small id="side-version">Loading…</small></span>
-        </div>
-      </aside>
-
-      <main>
-        <header class="topbar">
-          <div>
-            <p class="eyebrow">MTG Fast Finance · Personal Utility</p>
+    <div class="shell app-shell">
+      <main class="container">
+        <header class="app-header">
+          <a class="brand" href="#dashboard" aria-label="ManaIntel dashboard">
+            <span class="brand-mark">MI</span>
+            <span><strong>ManaIntel</strong><small>Cards to Watch</small></span>
+          </a>
+          <div class="app-title-block">
             <h1 id="page-title">Dashboard</h1>
+            <p class="app-subtitle">MTG Fast Finance archive · <span id="side-version">Loading...</span></p>
           </div>
           <div class="top-actions">
             <span id="mode-pill" class="fixture-pill">Automated</span>
-            <button id="refresh-button" class="icon-button" type="button" title="Reload archive data" aria-label="Reload archive data">↻</button>
+            <button id="refresh-button" class="icon-button" type="button" title="Reload archive data" aria-label="Reload archive data">Refresh</button>
           </div>
         </header>
 
+        <div class="workbar">
+          <nav aria-label="Primary navigation">
+            <a href="#dashboard" data-route="dashboard">Dashboard</a>
+            <a href="#episodes" data-route="episodes">Episodes</a>
+            <a href="#picks" data-route="picks">Picks</a>
+            <a href="#status" data-route="status">Status</a>
+            <a href="#about" data-route="about">About</a>
+          </nav>
+        </div>
+
         <div id="data-banner" class="banner" hidden></div>
         <div id="app" aria-live="polite">
-          <div class="loading"><span></span> Loading archive…</div>
+          <div class="loading"><span></span> Loading archive...</div>
         </div>
       </main>
     </div>
@@ -54,6 +50,6 @@
     <template id="empty-template">
       <div class="empty-state"><strong>No matching records</strong><p>Try changing the search or status filter.</p></div>
     </template>
-    <script src="app.js?v=0.2.3" defer></script>
+    <script src="app.js?v=0.3.0" defer></script>
   </body>
 </html>

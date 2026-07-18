@@ -86,7 +86,7 @@ function pickCard(episode, pick, index) {
       <section><h3>Reasoning</h3><ul>${sentenceList(pick.reasoning)}</ul></section>
       <section><h3>Caveats</h3><ul>${sentenceList(pick.caveats, "None stated")}</ul></section>
     </div>
-    <section class="detail-section"><h3>Evidence${time ? ` · ${escapeHtml(time)}` : ""}</h3><div class="evidence">${escapeHtml(pick.evidence_excerpt || "No evidence excerpt recorded.")}</div></section>
+    <details class="evidence-disclosure"><summary>Evidence${time ? ` · ${escapeHtml(time)}` : ""}</summary><div class="evidence">${escapeHtml(pick.evidence_excerpt || "No evidence excerpt recorded.")}</div></details>
     <div class="latest-actions"><a class="button" href="${listenUrl(episode, pick)}" target="_blank" rel="noreferrer">Listen at timestamp</a></div>
   </article>`;
 }

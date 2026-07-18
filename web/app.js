@@ -215,6 +215,52 @@ function renderAbout() {
   </section>`;
 }
 
+function renderDashboard() {
+  const { counts, latest_episode: latest, recent_picks: recent } = state.index;
+  return `
+    <section class="summary-strip" aria-label="Archive totals">
+      ${metric("Episodes", counts.episodes, state.index.synthetic ? "fixtures" : "live")}
+      ${metric("Picks", counts.picks, "records")}
+      ${metric("Review", counts.needs_review, "needs review")}
+      ${metric("Failed", counts.failed, "attention")}
+      ${metric("Latest", latest?.episode_number ? `#${latest.episode_number}` : "None", latest ? formatDate(latest.published_at) : "pending")}
+    </section>
+    <section class="dashboard-console">
+      <article class="panel dashboard-main">
+        <div class="panel-head"><h2>Recent episodes</h2><a href="#episodes">Open archive</a></div>
+        <div class="table-wrap"><table><thead><tr><th>Ep</th><th>Date</th><th>Title</th><th>Status</th><th>Picks</th><th>Review</th><th>Action</th></tr></thead><tbody>${dashboardEpisodeRows()}</tbody></table></div>
+      </article>
+      <aside class="dashboard-side">
+        <article class="panel">
+          <div class="panel-head"><h2>Latest</h2></div>
+          <div class="panel-body latest compact">${latest ? `
+            <div>${badge(latest.processing_status)} ${latest.review_state === "needs_review" ? badge("needs_review") : ""}</div>
+            <div><p class="eyebrow">Episode ${latest.episode_number} - ${formatDate(latest.published_at)}</p><h3>${escapeHtml(latest.title)}</h3></div>
+            <div class="latest-meta"><span>${latest.pick_count} picks</span><span>${escapeHtml(latest.hosts.join(" / "))}</span></div>
+            ${latest.error ? `<div class="failure-note">${failureReason(latest.error)}</div>` : ""}
+            <div class="latest-actions"><a class="button" href="${safeUrl(latest.audio_url)}" target="_blank" rel="noreferrer">Listen</a>${episodeAction(latest)}</div>
+          ` : `<div class="empty-state compact"><strong>No live episodes</strong><p>The first automated run is pending.</p></div>`}</div>
+        </article>
+        <article class="panel">
+          <div class="panel-head"><h2>Recent picks</h2><a href="#picks">All picks</a></div>
+          <div class="panel-body recommendation-list compact">
+            ${recent.slice(0, 6).map((pick) => `<div class="recommendation-row" data-pick-id="${escapeHtml(pick.id)}" role="button" tabindex="0"><div><strong>${escapeHtml(pick.card)}</strong><p>${escapeHtml(pick.recommendation)}</p></div><time>${escapeHtml(pick.timestamp)}</time></div>`).join("")}
+          </div>
+        </article>
+      </aside>
+    </section>`;
+}
+
+function metric(name, value, note) {
+  return `<article class="metric"><p>${escapeHtml(name)}</p><strong>${escapeHtml(value)}</strong><small>${escapeHtml(note)}</small></article>`;
+}
+
+function dashboardEpisodeRows() {
+  const episodes = state.index.episodes.slice(0, 10);
+  if (!episodes.length) return `<tr><td colspan="7">No episodes have been published yet.</td></tr>`;
+  return episodes.map((episode) => `<tr class="episode-row" data-episode-guid="${escapeHtml(episode.guid)}" role="button" tabindex="0"><td><strong>#${episode.episode_number || "?"}</strong></td><td>${formatDate(episode.published_at)}</td><td><strong>${escapeHtml(episode.title)}</strong><br><span class="muted">${escapeHtml(episode.hosts.join(", "))}</span></td><td>${badge(episode.processing_status)}</td><td>${episode.pick_count}</td><td>${escapeHtml(label(episode.review_state))}</td><td><button class="link-button" type="button" data-episode-guid="${escapeHtml(episode.guid)}">Details</button></td></tr>`).join("");
+}
+
 function bindPageEvents() {
   bindPickButtons();
   bindEpisodeButtons();
