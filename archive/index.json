@@ -6,28 +6,29 @@
     "project": "FFW",
     "pipeline_version": "0.2.0",
     "schema_version": "1.1.0",
-    "generated_at": "2026-07-18T11:24:26Z",
+    "generated_at": "2026-07-19T11:30:10Z",
     "latest_successful_run_at": "2026-07-18T11:24:26Z",
     "generated_from": "live-feed",
     "production_mode": true,
     "source": {
       "name": "MTG Fast Finance"
     },
-    "real_episode_count": 3,
+    "real_episode_count": 4,
     "real_pick_count": 13,
     "last_discovered_episode_date": "2026-07-05T21:41:20Z",
     "repository_url": "https://github.com/courtjester15/mtgff-cards-to-watch",
     "workflow_url": "https://github.com/courtjester15/mtgff-cards-to-watch/actions/workflows/ffw.yml"
   },
   "counts": {
-    "episodes": 3,
+    "episodes": 4,
     "picks": 13,
     "needs_review": 3,
-    "failed": 0,
+    "failed": 1,
     "completed": 0
   },
   "status_counts": {
-    "needs_review": 3
+    "needs_review": 3,
+    "failed": 1
   },
   "latest_episode": {
     "guid": "tag:soundcloud,2010:tracks/2353638380",
@@ -427,6 +428,37 @@
       },
       "processed_at": "2026-07-18T11:24:26Z",
       "error": null,
+      "synthetic": false
+    },
+    {
+      "guid": "tag:soundcloud,2010:tracks/2350923098",
+      "episode_number": 527,
+      "title": "MTGFastFinance Ep 527: Top 5 Overdue EDH Reprints",
+      "published_at": "2026-07-01T01:12:00Z",
+      "audio_url": "https://feeds.soundcloud.com/stream/2350923098-user-519789566-mtgfastfinance-ep-527-top-5.mp3",
+      "episode_url": "https://soundcloud.com/user-519789566/mtgfastfinance-ep-527-top-5",
+      "duration_seconds": 2612,
+      "hosts": [
+        "MTG Fast Finance"
+      ],
+      "description": "The boys take you through all the Magic the Gathering card price action of the week, including meta updates, cards to watch and their list of the Top 5 Needed EDH Reprints.\n\nIntro/Outro Music by Skylarka",
+      "processing_status": "failed",
+      "review_state": "not_applicable",
+      "review_reason": null,
+      "pick_count": 0,
+      "directory": "episodes/0527-mtgfastfinance-ep-527-top-5-overdue-edh-reprints",
+      "outputs": {
+        "metadata": "episodes/0527-mtgfastfinance-ep-527-top-5-overdue-edh-reprints/metadata.json",
+        "summary_json": null,
+        "summary_markdown": null
+      },
+      "processed_at": "2026-07-19T11:30:10Z",
+      "error": {
+        "stage": "transcribing",
+        "message": "Server disconnected without sending a response.",
+        "synthetic": false,
+        "retryable": true
+      },
       "synthetic": false
     }
   ]

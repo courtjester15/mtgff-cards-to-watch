@@ -1,7 +1,7 @@
 {
   "schema_version": "1.1.0",
   "pipeline_version": "0.2.0",
-  "updated_at": "2026-07-18T11:24:26Z",
+  "updated_at": "2026-07-19T11:30:10Z",
   "episodes": {
     "ffw-synthetic-episode-901": {
       "guid": "ffw-synthetic-episode-901",
@@ -840,6 +840,57 @@
         "traffic_type": null
       },
       "review_reason": "Section start found, but no explicit end marker was detected."
+    },
+    "tag:soundcloud,2010:tracks/2350923098": {
+      "guid": "tag:soundcloud,2010:tracks/2350923098",
+      "history": [
+        {
+          "status": "detected",
+          "timestamp": "2026-07-19T11:25:37Z"
+        },
+        {
+          "status": "queued",
+          "timestamp": "2026-07-19T11:25:37Z"
+        },
+        {
+          "status": "queued",
+          "timestamp": "2026-07-19T11:25:37Z"
+        },
+        {
+          "status": "downloading",
+          "timestamp": "2026-07-19T11:25:37Z"
+        },
+        {
+          "status": "downloaded",
+          "timestamp": "2026-07-19T11:25:39Z"
+        },
+        {
+          "status": "preparing",
+          "timestamp": "2026-07-19T11:25:39Z"
+        },
+        {
+          "status": "transcribing",
+          "timestamp": "2026-07-19T11:25:51Z"
+        },
+        {
+          "status": "failed",
+          "timestamp": "2026-07-19T11:30:10Z"
+        }
+      ],
+      "title": "MTGFastFinance Ep 527: Top 5 Overdue EDH Reprints",
+      "episode_number": 527,
+      "published_at": "2026-07-01T01:12:00Z",
+      "attempt_count": 1,
+      "pick_count": 0,
+      "error": {
+        "stage": "transcribing",
+        "message": "Server disconnected without sending a response.",
+        "synthetic": false,
+        "retryable": true
+      },
+      "status": "failed",
+      "updated_at": "2026-07-19T11:30:10Z",
+      "output_directory": "episodes/0527-mtgfastfinance-ep-527-top-5-overdue-edh-reprints"
     }
   }
 }
