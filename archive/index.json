@@ -6,29 +6,29 @@
     "project": "FFW",
     "pipeline_version": "0.2.0",
     "schema_version": "1.1.0",
-    "generated_at": "2026-07-19T11:30:10Z",
+    "generated_at": "2026-07-20T12:31:52Z",
     "latest_successful_run_at": "2026-07-18T11:24:26Z",
     "generated_from": "live-feed",
     "production_mode": true,
     "source": {
       "name": "MTG Fast Finance"
     },
-    "real_episode_count": 4,
+    "real_episode_count": 5,
     "real_pick_count": 13,
     "last_discovered_episode_date": "2026-07-05T21:41:20Z",
     "repository_url": "https://github.com/courtjester15/mtgff-cards-to-watch",
     "workflow_url": "https://github.com/courtjester15/mtgff-cards-to-watch/actions/workflows/ffw.yml"
   },
   "counts": {
-    "episodes": 4,
+    "episodes": 5,
     "picks": 13,
     "needs_review": 3,
-    "failed": 1,
+    "failed": 2,
     "completed": 0
   },
   "status_counts": {
     "needs_review": 3,
-    "failed": 1
+    "failed": 2
   },
   "latest_episode": {
     "guid": "tag:soundcloud,2010:tracks/2353638380",
@@ -456,6 +456,37 @@
       "error": {
         "stage": "transcribing",
         "message": "Server disconnected without sending a response.",
+        "synthetic": false,
+        "retryable": true
+      },
+      "synthetic": false
+    },
+    {
+      "guid": "tag:soundcloud,2010:tracks/2339352236",
+      "episode_number": 526,
+      "title": "MTG Fast Finance Ep 526: Goblin Decks Got Gone",
+      "published_at": "2026-06-14T22:34:19Z",
+      "audio_url": "https://feeds.soundcloud.com/stream/2339352236-user-519789566-mtg-fast-finance-ep-526-goblin.mp3",
+      "episode_url": "https://soundcloud.com/user-519789566/mtg-fast-finance-ep-526-goblin",
+      "duration_seconds": 2591,
+      "hosts": [
+        "MTG Fast Finance"
+      ],
+      "description": "James and Cliff get you caught up on all the Magic the Gathering card price action of the week, including meta updates, cards to watch and a break down of the recent Secret Lair Goblin Deck debacle and banned list updates.\nIntro/Outro Music by Skylarka",
+      "processing_status": "failed",
+      "review_state": "not_applicable",
+      "review_reason": null,
+      "pick_count": 0,
+      "directory": "episodes/0526-goblin-decks-got-gone",
+      "outputs": {
+        "metadata": "episodes/0526-goblin-decks-got-gone/metadata.json",
+        "summary_json": null,
+        "summary_markdown": null
+      },
+      "processed_at": "2026-07-20T12:31:52Z",
+      "error": {
+        "stage": "transcribing",
+        "message": "503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}",
         "synthetic": false,
         "retryable": true
       },

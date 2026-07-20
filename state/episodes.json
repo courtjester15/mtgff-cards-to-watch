@@ -1,7 +1,7 @@
 {
   "schema_version": "1.1.0",
   "pipeline_version": "0.2.0",
-  "updated_at": "2026-07-19T11:30:10Z",
+  "updated_at": "2026-07-20T12:31:52Z",
   "episodes": {
     "ffw-synthetic-episode-901": {
       "guid": "ffw-synthetic-episode-901",
@@ -891,6 +891,57 @@
       "status": "failed",
       "updated_at": "2026-07-19T11:30:10Z",
       "output_directory": "episodes/0527-mtgfastfinance-ep-527-top-5-overdue-edh-reprints"
+    },
+    "tag:soundcloud,2010:tracks/2339352236": {
+      "guid": "tag:soundcloud,2010:tracks/2339352236",
+      "history": [
+        {
+          "status": "detected",
+          "timestamp": "2026-07-20T12:26:34Z"
+        },
+        {
+          "status": "queued",
+          "timestamp": "2026-07-20T12:26:34Z"
+        },
+        {
+          "status": "queued",
+          "timestamp": "2026-07-20T12:26:34Z"
+        },
+        {
+          "status": "downloading",
+          "timestamp": "2026-07-20T12:26:34Z"
+        },
+        {
+          "status": "downloaded",
+          "timestamp": "2026-07-20T12:26:35Z"
+        },
+        {
+          "status": "preparing",
+          "timestamp": "2026-07-20T12:26:35Z"
+        },
+        {
+          "status": "transcribing",
+          "timestamp": "2026-07-20T12:26:49Z"
+        },
+        {
+          "status": "failed",
+          "timestamp": "2026-07-20T12:31:52Z"
+        }
+      ],
+      "title": "MTG Fast Finance Ep 526: Goblin Decks Got Gone",
+      "episode_number": 526,
+      "published_at": "2026-06-14T22:34:19Z",
+      "attempt_count": 1,
+      "pick_count": 0,
+      "error": {
+        "stage": "transcribing",
+        "message": "503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}",
+        "synthetic": false,
+        "retryable": true
+      },
+      "status": "failed",
+      "updated_at": "2026-07-20T12:31:52Z",
+      "output_directory": "episodes/0526-goblin-decks-got-gone"
     }
   }
 }

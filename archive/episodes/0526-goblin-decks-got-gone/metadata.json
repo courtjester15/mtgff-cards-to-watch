@@ -1,0 +1,76 @@
+{
+  "schema_version": "1.1.0",
+  "synthetic": false,
+  "notice": "Live automated pipeline metadata.",
+  "episode": {
+    "guid": "tag:soundcloud,2010:tracks/2339352236",
+    "episode_number": 526,
+    "title": "MTG Fast Finance Ep 526: Goblin Decks Got Gone",
+    "published_at": "2026-06-14T22:34:19Z",
+    "audio_url": "https://feeds.soundcloud.com/stream/2339352236-user-519789566-mtg-fast-finance-ep-526-goblin.mp3",
+    "episode_url": "https://soundcloud.com/user-519789566/mtg-fast-finance-ep-526-goblin",
+    "duration_seconds": 2591,
+    "hosts": [
+      "MTG Fast Finance"
+    ],
+    "description": "James and Cliff get you caught up on all the Magic the Gathering card price action of the week, including meta updates, cards to watch and a break down of the recent Secret Lair Goblin Deck debacle and banned list updates.\nIntro/Outro Music by Skylarka"
+  },
+  "processing": {
+    "status": "failed",
+    "review_state": "not_applicable",
+    "review_reason": null,
+    "pipeline_version": "0.2.0",
+    "schema_version": "1.1.0",
+    "transcription_model": "gemini-flash-latest",
+    "extraction_model": "gemini-flash-latest",
+    "prompt_version": "cards-to-watch-v2",
+    "processed_at": "2026-07-20T12:31:52Z",
+    "history": [
+      {
+        "status": "detected",
+        "timestamp": "2026-07-20T12:26:34Z"
+      },
+      {
+        "status": "queued",
+        "timestamp": "2026-07-20T12:26:34Z"
+      },
+      {
+        "status": "queued",
+        "timestamp": "2026-07-20T12:26:34Z"
+      },
+      {
+        "status": "downloading",
+        "timestamp": "2026-07-20T12:26:34Z"
+      },
+      {
+        "status": "downloaded",
+        "timestamp": "2026-07-20T12:26:35Z"
+      },
+      {
+        "status": "preparing",
+        "timestamp": "2026-07-20T12:26:35Z"
+      },
+      {
+        "status": "transcribing",
+        "timestamp": "2026-07-20T12:26:49Z"
+      },
+      {
+        "status": "failed",
+        "timestamp": "2026-07-20T12:31:52Z"
+      }
+    ],
+    "error": {
+      "stage": "transcribing",
+      "message": "503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}",
+      "synthetic": false,
+      "retryable": true
+    },
+    "transcription": null,
+    "extraction_usage": null
+  },
+  "outputs": {
+    "metadata": "episodes/0526-goblin-decks-got-gone/metadata.json",
+    "summary_json": null,
+    "summary_markdown": null
+  }
+}
