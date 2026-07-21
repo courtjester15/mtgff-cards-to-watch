@@ -1,0 +1,458 @@
+{
+  "schema_version": "1.1.0",
+  "synthetic": false,
+  "notice": "Automated transcription and extraction; verify against the linked source audio.",
+  "episode": {
+    "guid": "tag:soundcloud,2010:tracks/2350923098",
+    "episode_number": 527,
+    "title": "MTGFastFinance Ep 527: Top 5 Overdue EDH Reprints",
+    "published_at": "2026-07-01T01:12:00Z",
+    "audio_url": "https://feeds.soundcloud.com/stream/2350923098-user-519789566-mtgfastfinance-ep-527-top-5.mp3",
+    "episode_url": "https://soundcloud.com/user-519789566/mtgfastfinance-ep-527-top-5",
+    "duration_seconds": 2612,
+    "hosts": [
+      "MTG Fast Finance"
+    ],
+    "description": "The boys take you through all the Magic the Gathering card price action of the week, including meta updates, cards to watch and their list of the Top 5 Needed EDH Reprints.\n\nIntro/Outro Music by Skylarka"
+  },
+  "processing": {
+    "status": "needs_review",
+    "review_state": "needs_review",
+    "review_reason": "Section start found, but no explicit end marker was detected.",
+    "pipeline_version": "0.3.0",
+    "schema_version": "1.1.0",
+    "transcription_model": "gemini-3.5-flash",
+    "extraction_model": "gemini-3.5-flash",
+    "prompt_version": "cards-to-watch-v2",
+    "processed_at": "2026-07-21T21:40:09Z",
+    "history": [
+      {
+        "status": "detected",
+        "timestamp": "2026-07-19T11:25:37Z"
+      },
+      {
+        "status": "queued",
+        "timestamp": "2026-07-19T11:25:37Z"
+      },
+      {
+        "status": "queued",
+        "timestamp": "2026-07-19T11:25:37Z"
+      },
+      {
+        "status": "downloading",
+        "timestamp": "2026-07-19T11:25:37Z"
+      },
+      {
+        "status": "downloaded",
+        "timestamp": "2026-07-19T11:25:39Z"
+      },
+      {
+        "status": "preparing",
+        "timestamp": "2026-07-19T11:25:39Z"
+      },
+      {
+        "status": "transcribing",
+        "timestamp": "2026-07-19T11:25:51Z"
+      },
+      {
+        "status": "failed",
+        "timestamp": "2026-07-19T11:30:10Z"
+      },
+      {
+        "status": "queued",
+        "timestamp": "2026-07-21T21:33:21Z"
+      },
+      {
+        "status": "downloading",
+        "timestamp": "2026-07-21T21:33:21Z"
+      },
+      {
+        "status": "downloaded",
+        "timestamp": "2026-07-21T21:33:24Z"
+      },
+      {
+        "status": "preparing",
+        "timestamp": "2026-07-21T21:33:24Z"
+      },
+      {
+        "status": "transcribing",
+        "timestamp": "2026-07-21T21:33:35Z"
+      },
+      {
+        "status": "transcribed",
+        "timestamp": "2026-07-21T21:39:22Z"
+      },
+      {
+        "status": "extracting",
+        "timestamp": "2026-07-21T21:39:22Z"
+      },
+      {
+        "status": "extracted",
+        "timestamp": "2026-07-21T21:40:09Z"
+      },
+      {
+        "status": "validating",
+        "timestamp": "2026-07-21T21:40:09Z"
+      },
+      {
+        "status": "publishing",
+        "timestamp": "2026-07-21T21:40:09Z"
+      },
+      {
+        "status": "needs_review",
+        "timestamp": "2026-07-21T21:40:09Z"
+      }
+    ],
+    "error": null,
+    "transcription": {
+      "provider": "Gemini",
+      "model": "gemini-3.5-flash",
+      "chunk_count": 3,
+      "duration_seconds": 2612,
+      "usage": [
+        {
+          "chunk": 1,
+          "chunk_count": 3,
+          "audio_seconds": 1200,
+          "request_seconds": 209.918,
+          "provider_usage": {
+            "cache_tokens_details": null,
+            "cached_content_token_count": null,
+            "candidates_token_count": 36898,
+            "candidates_tokens_details": null,
+            "prompt_token_count": 30050,
+            "prompt_tokens_details": [
+              {
+                "modality": "TEXT",
+                "token_count": 51
+              },
+              {
+                "modality": "AUDIO",
+                "token_count": 29999
+              }
+            ],
+            "thoughts_token_count": 967,
+            "tool_use_prompt_token_count": null,
+            "tool_use_prompt_tokens_details": null,
+            "total_token_count": 67915,
+            "traffic_type": null
+          }
+        },
+        {
+          "chunk": 2,
+          "chunk_count": 3,
+          "audio_seconds": 1200,
+          "request_seconds": 80.829,
+          "provider_usage": {
+            "cache_tokens_details": null,
+            "cached_content_token_count": null,
+            "candidates_token_count": 12716,
+            "candidates_tokens_details": null,
+            "prompt_token_count": 30050,
+            "prompt_tokens_details": [
+              {
+                "modality": "TEXT",
+                "token_count": 51
+              },
+              {
+                "modality": "AUDIO",
+                "token_count": 29999
+              }
+            ],
+            "thoughts_token_count": 7205,
+            "tool_use_prompt_token_count": null,
+            "tool_use_prompt_tokens_details": null,
+            "total_token_count": 49971,
+            "traffic_type": null
+          }
+        },
+        {
+          "chunk": 3,
+          "chunk_count": 3,
+          "audio_seconds": 212,
+          "request_seconds": 55.703,
+          "provider_usage": {
+            "cache_tokens_details": null,
+            "cached_content_token_count": null,
+            "candidates_token_count": 2287,
+            "candidates_tokens_details": null,
+            "prompt_token_count": 5359,
+            "prompt_tokens_details": [
+              {
+                "modality": "AUDIO",
+                "token_count": 5308
+              },
+              {
+                "modality": "TEXT",
+                "token_count": 51
+              }
+            ],
+            "thoughts_token_count": 8144,
+            "tool_use_prompt_token_count": null,
+            "tool_use_prompt_tokens_details": null,
+            "total_token_count": 15790,
+            "traffic_type": null
+          }
+        }
+      ]
+    },
+    "extraction_usage": {
+      "cache_tokens_details": null,
+      "cached_content_token_count": null,
+      "candidates_token_count": 2249,
+      "candidates_tokens_details": null,
+      "prompt_token_count": 18698,
+      "prompt_tokens_details": [
+        {
+          "modality": "TEXT",
+          "token_count": 18698
+        }
+      ],
+      "thoughts_token_count": 10196,
+      "tool_use_prompt_token_count": null,
+      "tool_use_prompt_tokens_details": null,
+      "total_token_count": 31143,
+      "traffic_type": null
+    }
+  },
+  "section": {
+    "located": true,
+    "start_seconds": 20,
+    "end_seconds": 3200,
+    "label": "Cards to Watch",
+    "confidence": "medium",
+    "review_reason": "Section start found, but no explicit end marker was detected."
+  },
+  "recommendations": [
+    {
+      "card": "Krosan Grip",
+      "printing": "Japanese alt-art Mystical Archive",
+      "printing_certainty": "confirmed",
+      "foil": false,
+      "hosts": [
+        "Speaker 1"
+      ],
+      "recommendation": "Sell",
+      "mentioned_price": "3.50 to 5",
+      "entry_target": null,
+      "hold": null,
+      "exit_target": {
+        "raw": "$5 to $10",
+        "currency": "USD",
+        "minimum": 5.0,
+        "maximum": 10.0
+      },
+      "reasoning": [
+        "If you can flip these anywhere near $5 to $10, get on that Mystical Archive hype train and exit."
+      ],
+      "caveats": [],
+      "confidence": "medium",
+      "start_seconds": 20,
+      "end_seconds": 43,
+      "evidence_excerpt": "Krosan Grip Japanese alt-art ... going 3.50 to 5 ... if you can flip these anywhere near $5 to $10, that you just get on that MA hype train and exit",
+      "review_status": "approved",
+      "review_reason": null,
+      "id": "pick-a84018977be305e1",
+      "timestamp": "00:00:20",
+      "listen_url": "https://feeds.soundcloud.com/stream/2350923098-user-519789566-mtgfastfinance-ep-527-top-5.mp3#t=20"
+    },
+    {
+      "card": "Mana Tithe",
+      "printing": "Japanese alt-art Mystical Archive",
+      "printing_certainty": "confirmed",
+      "foil": false,
+      "hosts": [
+        "Speaker 1"
+      ],
+      "recommendation": "Sell",
+      "mentioned_price": "4 to 6",
+      "entry_target": null,
+      "hold": null,
+      "exit_target": {
+        "raw": "$5 to $10",
+        "currency": "USD",
+        "minimum": 5.0,
+        "maximum": 10.0
+      },
+      "reasoning": [
+        "If you can flip these anywhere near $5 to $10, get on that Mystical Archive hype train and exit."
+      ],
+      "caveats": [],
+      "confidence": "medium",
+      "start_seconds": 20,
+      "end_seconds": 43,
+      "evidence_excerpt": "Mana Tithe Japanese alt-art from Mystical Archive ... going 4 to 6 ... if you can flip these anywhere near $5 to $10, that you just get on that MA hype train and exit",
+      "review_status": "approved",
+      "review_reason": null,
+      "id": "pick-975af050a0fc3968",
+      "timestamp": "00:00:20",
+      "listen_url": "https://feeds.soundcloud.com/stream/2350923098-user-519789566-mtgfastfinance-ep-527-top-5.mp3#t=20"
+    },
+    {
+      "card": "The One Ring",
+      "printing": "Bundle promo",
+      "printing_certainty": "confirmed",
+      "foil": true,
+      "hosts": [
+        "Speaker 1",
+        "Speaker 2"
+      ],
+      "recommendation": "Buy",
+      "mentioned_price": "90",
+      "entry_target": {
+        "raw": "90",
+        "currency": "USD",
+        "minimum": 90.0,
+        "maximum": 90.0
+      },
+      "hold": null,
+      "exit_target": {
+        "raw": "150",
+        "currency": "USD",
+        "minimum": 150.0,
+        "maximum": 150.0
+      },
+      "reasoning": [
+        "This foil version has been doing nothing but go up since early April and is likely to hit 150.",
+        "It is the best-looking non-poster version of the card and sells a high volume of copies."
+      ],
+      "caveats": [
+        "People originally advised to steer clear of these because they were included in every bundle."
+      ],
+      "confidence": "high",
+      "start_seconds": 1200,
+      "end_seconds": 1441,
+      "evidence_excerpt": "the bundle version is the one that I think is a good pick right now. ... This foil is still available for around $90 ... I have a feeling these go 90 to 150.",
+      "review_status": "approved",
+      "review_reason": null,
+      "id": "pick-f3b7f9b23f9f83e7",
+      "timestamp": "00:20:00",
+      "listen_url": "https://feeds.soundcloud.com/stream/2350923098-user-519789566-mtgfastfinance-ep-527-top-5.mp3#t=1200"
+    },
+    {
+      "card": "Donnie's Bo / Shadowspear",
+      "printing": "borderless foil",
+      "printing_certainty": "confirmed",
+      "foil": true,
+      "hosts": [
+        "Speaker 2",
+        "Speaker 1"
+      ],
+      "recommendation": "Buy",
+      "mentioned_price": "20 to 25",
+      "entry_target": {
+        "raw": "20 to 25",
+        "currency": "USD",
+        "minimum": 20.0,
+        "maximum": 25.0
+      },
+      "hold": "the next year or so",
+      "exit_target": {
+        "raw": "45",
+        "currency": "USD",
+        "minimum": 45.0,
+        "maximum": 45.0
+      },
+      "reasoning": [
+        "It is by far the cheapest printing of Shadowspear currently available.",
+        "Shadowspear is a major staple, appearing in over 300,000 decks on EDHREC.",
+        "People will buy it simply because of the lower price point even if they do not care for the Teenage Mutant Ninja Turtles theme."
+      ],
+      "caveats": [
+        "The Teenage Mutant Ninja Turtles release has been highly divisive."
+      ],
+      "confidence": "high",
+      "start_seconds": 1448,
+      "end_seconds": 1643,
+      "evidence_excerpt": "Donnie's Bo / the / the Shadowspear, the borderless foils ... You can get this foil version for about 20 to 25. For that to catch up and get to 45",
+      "review_status": "approved",
+      "review_reason": null,
+      "id": "pick-c6bc50931785654c",
+      "timestamp": "00:24:08",
+      "listen_url": "https://feeds.soundcloud.com/stream/2350923098-user-519789566-mtgfastfinance-ep-527-top-5.mp3#t=1448"
+    },
+    {
+      "card": "Command Tower",
+      "printing": "Omen's of Chaos Strixhaven novel promo",
+      "printing_certainty": "confirmed",
+      "foil": true,
+      "hosts": [
+        "Speaker 2",
+        "Speaker 1"
+      ],
+      "recommendation": "Buy",
+      "mentioned_price": "40",
+      "entry_target": {
+        "raw": "40",
+        "currency": "USD",
+        "minimum": 40.0,
+        "maximum": 40.0
+      },
+      "hold": null,
+      "exit_target": {
+        "raw": "$100",
+        "currency": "USD",
+        "minimum": 100.0,
+        "maximum": 100.0
+      },
+      "reasoning": [
+        "This version is highly single sourced with no other avenues of supply.",
+        "Most players completely missed this first edition book release.",
+        "The print run for the first edition of the book was very small, likely only 5,000 to 10,000 copies."
+      ],
+      "caveats": [
+        "Many buyers accidentally ended up with second or third edition printings of the book, which do not contain the promo."
+      ],
+      "confidence": "medium",
+      "start_seconds": 1643,
+      "end_seconds": 1922,
+      "evidence_excerpt": "Omen's of Chaos Strixhaven version, near-mint foil ... lowest price is $43 ... the reason that it's worth looking at this one even at 40 to potentially double up",
+      "review_status": "approved",
+      "review_reason": null,
+      "id": "pick-a2417c5f643c072f",
+      "timestamp": "00:27:23",
+      "listen_url": "https://feeds.soundcloud.com/stream/2350923098-user-519789566-mtgfastfinance-ep-527-top-5.mp3#t=1643"
+    },
+    {
+      "card": "Swords to Plowshares",
+      "printing": "Thanos PSA promo",
+      "printing_certainty": "confirmed",
+      "foil": null,
+      "hosts": [
+        "Speaker 2",
+        "Speaker 1"
+      ],
+      "recommendation": "Buy",
+      "mentioned_price": "35",
+      "entry_target": {
+        "raw": "35",
+        "currency": "USD",
+        "minimum": 35.0,
+        "maximum": 35.0
+      },
+      "hold": "until we get the Marvel set more dedicated to Thanos and the Infinity Gauntlet",
+      "exit_target": {
+        "raw": "double up",
+        "currency": "USD",
+        "minimum": 70.0,
+        "maximum": 70.0
+      },
+      "reasoning": [
+        "This promo has similar price patterns to the Doctor Strange Counterspell promo, which dipped before spiking.",
+        "It is highly likely to double up once the dedicated Marvel sets launch."
+      ],
+      "caveats": [
+        "Some PSA magazine subscribers who do not care about Magic cards might throw them away, though others will sell them."
+      ],
+      "confidence": "medium",
+      "start_seconds": 1925,
+      "end_seconds": 2136,
+      "evidence_excerpt": "Thanos promo version of Swords to Plowshares ... TCG Player ... they're around $43, and we expect them to go a little bit lower. So I'm calling it out at 35",
+      "review_status": "approved",
+      "review_reason": null,
+      "id": "pick-0da5fe5d1c55ab41",
+      "timestamp": "00:32:05",
+      "listen_url": "https://feeds.soundcloud.com/stream/2350923098-user-519789566-mtgfastfinance-ep-527-top-5.mp3#t=1925"
+    }
+  ]
+}

@@ -16,15 +16,15 @@
     "description": "The boys take you through all the Magic the Gathering card price action of the week, including meta updates, cards to watch and their list of the Top 5 Needed EDH Reprints.\n\nIntro/Outro Music by Skylarka"
   },
   "processing": {
-    "status": "failed",
-    "review_state": "not_applicable",
-    "review_reason": null,
-    "pipeline_version": "0.2.0",
+    "status": "needs_review",
+    "review_state": "needs_review",
+    "review_reason": "Section start found, but no explicit end marker was detected.",
+    "pipeline_version": "0.3.0",
     "schema_version": "1.1.0",
-    "transcription_model": "gemini-flash-latest",
-    "extraction_model": "gemini-flash-latest",
+    "transcription_model": "gemini-3.5-flash",
+    "extraction_model": "gemini-3.5-flash",
     "prompt_version": "cards-to-watch-v2",
-    "processed_at": "2026-07-19T11:30:10Z",
+    "processed_at": "2026-07-21T21:40:09Z",
     "history": [
       {
         "status": "detected",
@@ -57,20 +57,167 @@
       {
         "status": "failed",
         "timestamp": "2026-07-19T11:30:10Z"
+      },
+      {
+        "status": "queued",
+        "timestamp": "2026-07-21T21:33:21Z"
+      },
+      {
+        "status": "downloading",
+        "timestamp": "2026-07-21T21:33:21Z"
+      },
+      {
+        "status": "downloaded",
+        "timestamp": "2026-07-21T21:33:24Z"
+      },
+      {
+        "status": "preparing",
+        "timestamp": "2026-07-21T21:33:24Z"
+      },
+      {
+        "status": "transcribing",
+        "timestamp": "2026-07-21T21:33:35Z"
+      },
+      {
+        "status": "transcribed",
+        "timestamp": "2026-07-21T21:39:22Z"
+      },
+      {
+        "status": "extracting",
+        "timestamp": "2026-07-21T21:39:22Z"
+      },
+      {
+        "status": "extracted",
+        "timestamp": "2026-07-21T21:40:09Z"
+      },
+      {
+        "status": "validating",
+        "timestamp": "2026-07-21T21:40:09Z"
+      },
+      {
+        "status": "publishing",
+        "timestamp": "2026-07-21T21:40:09Z"
+      },
+      {
+        "status": "needs_review",
+        "timestamp": "2026-07-21T21:40:09Z"
       }
     ],
-    "error": {
-      "stage": "transcribing",
-      "message": "Server disconnected without sending a response.",
-      "synthetic": false,
-      "retryable": true
+    "error": null,
+    "transcription": {
+      "provider": "Gemini",
+      "model": "gemini-3.5-flash",
+      "chunk_count": 3,
+      "duration_seconds": 2612,
+      "usage": [
+        {
+          "chunk": 1,
+          "chunk_count": 3,
+          "audio_seconds": 1200,
+          "request_seconds": 209.918,
+          "provider_usage": {
+            "cache_tokens_details": null,
+            "cached_content_token_count": null,
+            "candidates_token_count": 36898,
+            "candidates_tokens_details": null,
+            "prompt_token_count": 30050,
+            "prompt_tokens_details": [
+              {
+                "modality": "TEXT",
+                "token_count": 51
+              },
+              {
+                "modality": "AUDIO",
+                "token_count": 29999
+              }
+            ],
+            "thoughts_token_count": 967,
+            "tool_use_prompt_token_count": null,
+            "tool_use_prompt_tokens_details": null,
+            "total_token_count": 67915,
+            "traffic_type": null
+          }
+        },
+        {
+          "chunk": 2,
+          "chunk_count": 3,
+          "audio_seconds": 1200,
+          "request_seconds": 80.829,
+          "provider_usage": {
+            "cache_tokens_details": null,
+            "cached_content_token_count": null,
+            "candidates_token_count": 12716,
+            "candidates_tokens_details": null,
+            "prompt_token_count": 30050,
+            "prompt_tokens_details": [
+              {
+                "modality": "TEXT",
+                "token_count": 51
+              },
+              {
+                "modality": "AUDIO",
+                "token_count": 29999
+              }
+            ],
+            "thoughts_token_count": 7205,
+            "tool_use_prompt_token_count": null,
+            "tool_use_prompt_tokens_details": null,
+            "total_token_count": 49971,
+            "traffic_type": null
+          }
+        },
+        {
+          "chunk": 3,
+          "chunk_count": 3,
+          "audio_seconds": 212,
+          "request_seconds": 55.703,
+          "provider_usage": {
+            "cache_tokens_details": null,
+            "cached_content_token_count": null,
+            "candidates_token_count": 2287,
+            "candidates_tokens_details": null,
+            "prompt_token_count": 5359,
+            "prompt_tokens_details": [
+              {
+                "modality": "AUDIO",
+                "token_count": 5308
+              },
+              {
+                "modality": "TEXT",
+                "token_count": 51
+              }
+            ],
+            "thoughts_token_count": 8144,
+            "tool_use_prompt_token_count": null,
+            "tool_use_prompt_tokens_details": null,
+            "total_token_count": 15790,
+            "traffic_type": null
+          }
+        }
+      ]
     },
-    "transcription": null,
-    "extraction_usage": null
+    "extraction_usage": {
+      "cache_tokens_details": null,
+      "cached_content_token_count": null,
+      "candidates_token_count": 2249,
+      "candidates_tokens_details": null,
+      "prompt_token_count": 18698,
+      "prompt_tokens_details": [
+        {
+          "modality": "TEXT",
+          "token_count": 18698
+        }
+      ],
+      "thoughts_token_count": 10196,
+      "tool_use_prompt_token_count": null,
+      "tool_use_prompt_tokens_details": null,
+      "total_token_count": 31143,
+      "traffic_type": null
+    }
   },
   "outputs": {
     "metadata": "episodes/0527-mtgfastfinance-ep-527-top-5-overdue-edh-reprints/metadata.json",
-    "summary_json": null,
-    "summary_markdown": null
+    "summary_json": "episodes/0527-mtgfastfinance-ep-527-top-5-overdue-edh-reprints/summary.json",
+    "summary_markdown": "episodes/0527-mtgfastfinance-ep-527-top-5-overdue-edh-reprints/summary.md"
   }
 }

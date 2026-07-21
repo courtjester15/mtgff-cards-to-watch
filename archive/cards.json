@@ -2,7 +2,7 @@
   "schema_version": "1.1.0",
   "synthetic": false,
   "notice": "Automated extraction; verify against source audio.",
-  "count": 13,
+  "count": 19,
   "cards": [
     {
       "card": "five Fen cards",
@@ -643,6 +643,290 @@
         "published_at": "2026-07-01T05:59:01Z",
         "episode_url": "https://soundcloud.com/user-519789566/mtgfastfinance-ep-528-marvel-x",
         "audio_url": "https://feeds.soundcloud.com/stream/2351008367-user-519789566-mtgfastfinance-ep-528-marvel-x.mp3"
+      },
+      "processing_status": "needs_review"
+    },
+    {
+      "card": "Swords to Plowshares",
+      "printing": "Thanos PSA promo",
+      "printing_certainty": "confirmed",
+      "foil": null,
+      "hosts": [
+        "Speaker 2",
+        "Speaker 1"
+      ],
+      "recommendation": "Buy",
+      "mentioned_price": "35",
+      "entry_target": {
+        "raw": "35",
+        "currency": "USD",
+        "minimum": 35.0,
+        "maximum": 35.0
+      },
+      "hold": "until we get the Marvel set more dedicated to Thanos and the Infinity Gauntlet",
+      "exit_target": {
+        "raw": "double up",
+        "currency": "USD",
+        "minimum": 70.0,
+        "maximum": 70.0
+      },
+      "reasoning": [
+        "This promo has similar price patterns to the Doctor Strange Counterspell promo, which dipped before spiking.",
+        "It is highly likely to double up once the dedicated Marvel sets launch."
+      ],
+      "caveats": [
+        "Some PSA magazine subscribers who do not care about Magic cards might throw them away, though others will sell them."
+      ],
+      "confidence": "medium",
+      "start_seconds": 1925,
+      "end_seconds": 2136,
+      "evidence_excerpt": "Thanos promo version of Swords to Plowshares ... TCG Player ... they're around $43, and we expect them to go a little bit lower. So I'm calling it out at 35",
+      "review_status": "approved",
+      "review_reason": null,
+      "id": "pick-0da5fe5d1c55ab41",
+      "timestamp": "00:32:05",
+      "listen_url": "https://feeds.soundcloud.com/stream/2350923098-user-519789566-mtgfastfinance-ep-527-top-5.mp3#t=1925",
+      "episode": {
+        "guid": "tag:soundcloud,2010:tracks/2350923098",
+        "episode_number": 527,
+        "title": "MTGFastFinance Ep 527: Top 5 Overdue EDH Reprints",
+        "published_at": "2026-07-01T01:12:00Z",
+        "episode_url": "https://soundcloud.com/user-519789566/mtgfastfinance-ep-527-top-5",
+        "audio_url": "https://feeds.soundcloud.com/stream/2350923098-user-519789566-mtgfastfinance-ep-527-top-5.mp3"
+      },
+      "processing_status": "needs_review"
+    },
+    {
+      "card": "Command Tower",
+      "printing": "Omen's of Chaos Strixhaven novel promo",
+      "printing_certainty": "confirmed",
+      "foil": true,
+      "hosts": [
+        "Speaker 2",
+        "Speaker 1"
+      ],
+      "recommendation": "Buy",
+      "mentioned_price": "40",
+      "entry_target": {
+        "raw": "40",
+        "currency": "USD",
+        "minimum": 40.0,
+        "maximum": 40.0
+      },
+      "hold": null,
+      "exit_target": {
+        "raw": "$100",
+        "currency": "USD",
+        "minimum": 100.0,
+        "maximum": 100.0
+      },
+      "reasoning": [
+        "This version is highly single sourced with no other avenues of supply.",
+        "Most players completely missed this first edition book release.",
+        "The print run for the first edition of the book was very small, likely only 5,000 to 10,000 copies."
+      ],
+      "caveats": [
+        "Many buyers accidentally ended up with second or third edition printings of the book, which do not contain the promo."
+      ],
+      "confidence": "medium",
+      "start_seconds": 1643,
+      "end_seconds": 1922,
+      "evidence_excerpt": "Omen's of Chaos Strixhaven version, near-mint foil ... lowest price is $43 ... the reason that it's worth looking at this one even at 40 to potentially double up",
+      "review_status": "approved",
+      "review_reason": null,
+      "id": "pick-a2417c5f643c072f",
+      "timestamp": "00:27:23",
+      "listen_url": "https://feeds.soundcloud.com/stream/2350923098-user-519789566-mtgfastfinance-ep-527-top-5.mp3#t=1643",
+      "episode": {
+        "guid": "tag:soundcloud,2010:tracks/2350923098",
+        "episode_number": 527,
+        "title": "MTGFastFinance Ep 527: Top 5 Overdue EDH Reprints",
+        "published_at": "2026-07-01T01:12:00Z",
+        "episode_url": "https://soundcloud.com/user-519789566/mtgfastfinance-ep-527-top-5",
+        "audio_url": "https://feeds.soundcloud.com/stream/2350923098-user-519789566-mtgfastfinance-ep-527-top-5.mp3"
+      },
+      "processing_status": "needs_review"
+    },
+    {
+      "card": "Donnie's Bo / Shadowspear",
+      "printing": "borderless foil",
+      "printing_certainty": "confirmed",
+      "foil": true,
+      "hosts": [
+        "Speaker 2",
+        "Speaker 1"
+      ],
+      "recommendation": "Buy",
+      "mentioned_price": "20 to 25",
+      "entry_target": {
+        "raw": "20 to 25",
+        "currency": "USD",
+        "minimum": 20.0,
+        "maximum": 25.0
+      },
+      "hold": "the next year or so",
+      "exit_target": {
+        "raw": "45",
+        "currency": "USD",
+        "minimum": 45.0,
+        "maximum": 45.0
+      },
+      "reasoning": [
+        "It is by far the cheapest printing of Shadowspear currently available.",
+        "Shadowspear is a major staple, appearing in over 300,000 decks on EDHREC.",
+        "People will buy it simply because of the lower price point even if they do not care for the Teenage Mutant Ninja Turtles theme."
+      ],
+      "caveats": [
+        "The Teenage Mutant Ninja Turtles release has been highly divisive."
+      ],
+      "confidence": "high",
+      "start_seconds": 1448,
+      "end_seconds": 1643,
+      "evidence_excerpt": "Donnie's Bo / the / the Shadowspear, the borderless foils ... You can get this foil version for about 20 to 25. For that to catch up and get to 45",
+      "review_status": "approved",
+      "review_reason": null,
+      "id": "pick-c6bc50931785654c",
+      "timestamp": "00:24:08",
+      "listen_url": "https://feeds.soundcloud.com/stream/2350923098-user-519789566-mtgfastfinance-ep-527-top-5.mp3#t=1448",
+      "episode": {
+        "guid": "tag:soundcloud,2010:tracks/2350923098",
+        "episode_number": 527,
+        "title": "MTGFastFinance Ep 527: Top 5 Overdue EDH Reprints",
+        "published_at": "2026-07-01T01:12:00Z",
+        "episode_url": "https://soundcloud.com/user-519789566/mtgfastfinance-ep-527-top-5",
+        "audio_url": "https://feeds.soundcloud.com/stream/2350923098-user-519789566-mtgfastfinance-ep-527-top-5.mp3"
+      },
+      "processing_status": "needs_review"
+    },
+    {
+      "card": "The One Ring",
+      "printing": "Bundle promo",
+      "printing_certainty": "confirmed",
+      "foil": true,
+      "hosts": [
+        "Speaker 1",
+        "Speaker 2"
+      ],
+      "recommendation": "Buy",
+      "mentioned_price": "90",
+      "entry_target": {
+        "raw": "90",
+        "currency": "USD",
+        "minimum": 90.0,
+        "maximum": 90.0
+      },
+      "hold": null,
+      "exit_target": {
+        "raw": "150",
+        "currency": "USD",
+        "minimum": 150.0,
+        "maximum": 150.0
+      },
+      "reasoning": [
+        "This foil version has been doing nothing but go up since early April and is likely to hit 150.",
+        "It is the best-looking non-poster version of the card and sells a high volume of copies."
+      ],
+      "caveats": [
+        "People originally advised to steer clear of these because they were included in every bundle."
+      ],
+      "confidence": "high",
+      "start_seconds": 1200,
+      "end_seconds": 1441,
+      "evidence_excerpt": "the bundle version is the one that I think is a good pick right now. ... This foil is still available for around $90 ... I have a feeling these go 90 to 150.",
+      "review_status": "approved",
+      "review_reason": null,
+      "id": "pick-f3b7f9b23f9f83e7",
+      "timestamp": "00:20:00",
+      "listen_url": "https://feeds.soundcloud.com/stream/2350923098-user-519789566-mtgfastfinance-ep-527-top-5.mp3#t=1200",
+      "episode": {
+        "guid": "tag:soundcloud,2010:tracks/2350923098",
+        "episode_number": 527,
+        "title": "MTGFastFinance Ep 527: Top 5 Overdue EDH Reprints",
+        "published_at": "2026-07-01T01:12:00Z",
+        "episode_url": "https://soundcloud.com/user-519789566/mtgfastfinance-ep-527-top-5",
+        "audio_url": "https://feeds.soundcloud.com/stream/2350923098-user-519789566-mtgfastfinance-ep-527-top-5.mp3"
+      },
+      "processing_status": "needs_review"
+    },
+    {
+      "card": "Krosan Grip",
+      "printing": "Japanese alt-art Mystical Archive",
+      "printing_certainty": "confirmed",
+      "foil": false,
+      "hosts": [
+        "Speaker 1"
+      ],
+      "recommendation": "Sell",
+      "mentioned_price": "3.50 to 5",
+      "entry_target": null,
+      "hold": null,
+      "exit_target": {
+        "raw": "$5 to $10",
+        "currency": "USD",
+        "minimum": 5.0,
+        "maximum": 10.0
+      },
+      "reasoning": [
+        "If you can flip these anywhere near $5 to $10, get on that Mystical Archive hype train and exit."
+      ],
+      "caveats": [],
+      "confidence": "medium",
+      "start_seconds": 20,
+      "end_seconds": 43,
+      "evidence_excerpt": "Krosan Grip Japanese alt-art ... going 3.50 to 5 ... if you can flip these anywhere near $5 to $10, that you just get on that MA hype train and exit",
+      "review_status": "approved",
+      "review_reason": null,
+      "id": "pick-a84018977be305e1",
+      "timestamp": "00:00:20",
+      "listen_url": "https://feeds.soundcloud.com/stream/2350923098-user-519789566-mtgfastfinance-ep-527-top-5.mp3#t=20",
+      "episode": {
+        "guid": "tag:soundcloud,2010:tracks/2350923098",
+        "episode_number": 527,
+        "title": "MTGFastFinance Ep 527: Top 5 Overdue EDH Reprints",
+        "published_at": "2026-07-01T01:12:00Z",
+        "episode_url": "https://soundcloud.com/user-519789566/mtgfastfinance-ep-527-top-5",
+        "audio_url": "https://feeds.soundcloud.com/stream/2350923098-user-519789566-mtgfastfinance-ep-527-top-5.mp3"
+      },
+      "processing_status": "needs_review"
+    },
+    {
+      "card": "Mana Tithe",
+      "printing": "Japanese alt-art Mystical Archive",
+      "printing_certainty": "confirmed",
+      "foil": false,
+      "hosts": [
+        "Speaker 1"
+      ],
+      "recommendation": "Sell",
+      "mentioned_price": "4 to 6",
+      "entry_target": null,
+      "hold": null,
+      "exit_target": {
+        "raw": "$5 to $10",
+        "currency": "USD",
+        "minimum": 5.0,
+        "maximum": 10.0
+      },
+      "reasoning": [
+        "If you can flip these anywhere near $5 to $10, get on that Mystical Archive hype train and exit."
+      ],
+      "caveats": [],
+      "confidence": "medium",
+      "start_seconds": 20,
+      "end_seconds": 43,
+      "evidence_excerpt": "Mana Tithe Japanese alt-art from Mystical Archive ... going 4 to 6 ... if you can flip these anywhere near $5 to $10, that you just get on that MA hype train and exit",
+      "review_status": "approved",
+      "review_reason": null,
+      "id": "pick-975af050a0fc3968",
+      "timestamp": "00:00:20",
+      "listen_url": "https://feeds.soundcloud.com/stream/2350923098-user-519789566-mtgfastfinance-ep-527-top-5.mp3#t=20",
+      "episode": {
+        "guid": "tag:soundcloud,2010:tracks/2350923098",
+        "episode_number": 527,
+        "title": "MTGFastFinance Ep 527: Top 5 Overdue EDH Reprints",
+        "published_at": "2026-07-01T01:12:00Z",
+        "episode_url": "https://soundcloud.com/user-519789566/mtgfastfinance-ep-527-top-5",
+        "audio_url": "https://feeds.soundcloud.com/stream/2350923098-user-519789566-mtgfastfinance-ep-527-top-5.mp3"
       },
       "processing_status": "needs_review"
     }
