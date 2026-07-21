@@ -2,13 +2,46 @@
 
 ## Purpose
 
-ManaIntel aggregates recommendations from trusted MTG finance sources into a consistent searchable archive. The canonical user question is:
+ManaIntel is a small, maintenance-mode utility that extracts the Cards to Watch section from MTG Fast Finance into a readable, correctable archive. The canonical user question is:
 
 > Who recommended what, when, and why?
 
-The current FFW application proves this workflow for the Cards to Watch section of one podcast. It is the first ingestion implementation, not the final product boundary.
+The current FFW application is the supported product boundary. Earlier source-agnostic concepts remain design research; multi-source expansion is deferred indefinitely.
 
-## Product surfaces
+## Maintenance-mode constraint
+
+After one final functional pass of approximately five development hours, feature development stops. Future work is limited to production failures that prevent automatic processing, review/correction, readable summaries, or timestamp playback. ManaIntel must not compete with ManaSpec adoption or GalleyFlow development for ongoing roadmap capacity.
+
+## Final supported workflow
+
+1. A morning scheduled run selects the next untouched feed episode using durable state before applying its limit; a later bounded run retries at most one due transient failure.
+2. Successful episodes publish readable summaries; failed episodes publish understandable status without fabricated picks.
+3. Jason reviews an episode in the static UI and copies or downloads a correction JSON file.
+4. The correction file is stored as durable source data and applied over, never written into, the original extraction.
+5. A pick timestamp opens remote RSS audio and seeks near the referenced moment.
+6. Failed or exact episodes can be retried deliberately without processing unrelated work.
+
+### User-visible episode states
+
+The UI communicates `Unseen`, `Processing`, `Completed`, `Completed — Needs Review`, `Reviewed`, `Manually Corrected`, `Failed`, `Skipped`, and `Excluded`. These display states may be derived from simpler processing and review fields.
+
+### Review and correction
+
+The Review action supports editing, adding, confirming, and excluding picks; marking an episode reviewed; cancelling; and producing a JSON override for `data/reviews/<episode-id>.json`. Browser edits do not directly commit to GitHub. Rebuilds preserve the original extraction, the manual override, and the effective displayed result.
+
+### Timestamp playback
+
+Timestamp links carry a seconds value in the page URL and control an in-page HTML audio player using the RSS enclosure URL. The player seeks only after metadata loads, handles autoplay denial and media-host failures, and always offers the original episode page as a fallback. Podcast audio is not stored or proxied.
+
+### Backfill and retry expectations
+
+- Scheduled `next` runs prioritize new releases, then continue historical progress one eligible episode at a time.
+- `backfill` processes a bounded eligible batch in deterministic order and resumes from durable state.
+- `retry-failed` selects only due retryable failed records, respects cooldown, and stops selecting an episode after three total attempts.
+- Exact-GUID processing selects only the requested feed episode.
+- A no-op does not rewrite projections, create a commit, or deploy an unchanged site.
+
+## Historical source-agnostic product surfaces (deferred)
 
 ### Source ingestion
 
@@ -32,7 +65,7 @@ The MVP archive provides:
 - A link or reference back to the exact location in the source when possible.
 - Visible processing and review status; uncertain records are never silently presented as approved.
 
-## MVP functional requirements
+## Historical source-agnostic requirements (deferred)
 
 1. Each source, source item, and recommendation has a stable identity.
 2. Reprocessing a source item does not create duplicate recommendations.
@@ -47,7 +80,7 @@ The MVP archive provides:
 11. The archive supports deterministic rebuilds of derived catalogs and views.
 12. Export boundaries are versioned so future consumers such as ManaSpec do not import pipeline internals.
 
-## MVP entities
+## Historical source-agnostic entities (deferred)
 
 ```text
 Source -> Source item -> Recommendation -> Archive projections
@@ -69,7 +102,7 @@ See [Data Model](DATA_MODEL.md) for the target contract and the mapping from the
 - Treat all imported content and extracted output as untrusted input.
 - Clearly identify synthetic fixtures so they cannot be mistaken for real recommendations.
 
-## Explicit non-goals for the MVP
+## Explicit non-goals
 
 - Live card-price tracking or market data.
 - Price prediction, automated picks, or AI investment analysis.
@@ -78,6 +111,10 @@ See [Data Model](DATA_MODEL.md) for the target contract and the mapping from the
 - Recommendation alerts or trading automation.
 - Social features or user-generated investment advice.
 - Direct ManaSpec workflow integration.
+- Additional sources or a source-agnostic schema migration.
+- Authenticated editing from the static site.
+- A hosted backend or database.
+- Broad visual redesign or framework conversion.
 - Trend, agreement, disagreement, or reliability analytics.
 
 ## Current FFW acceptance criteria
@@ -92,12 +129,14 @@ Until the common contract is implemented, the proof of concept retains its exist
 - Every recommendation has a deterministic ID, timestamp, evidence excerpt, and review state.
 - The synthetic fixture set exercises repeats, missing values, ambiguous speech, multiple hosts, and failure handling.
 
-## MVP success measures
+## Final success measures
 
-- Users can answer the five questions in the [Vision](VISION.md) from the archive without inspecting raw pipeline data.
+- Jason can identify the episode, pick, recommendation, source time, processing status, and review status without inspecting raw pipeline data.
 - No duplicate source item or recommendation is published during normal reprocessing.
 - Card names, source attribution, prices, and references meet thresholds defined on representative evaluation fixtures.
 - Unsupported values are absent rather than inferred.
 - Ambiguous records route to review with an actionable reason.
 - A failed run can retry without corrupting or duplicating published data.
-- A second source type can be added without changing frontend recommendation logic.
+- Manual corrections survive deterministic rebuilds without changing original extraction.
+- Remote audio seeks near the selected timestamp or provides a clear source fallback.
+- Empty scheduled runs do not create archive, commit, or deployment churn.

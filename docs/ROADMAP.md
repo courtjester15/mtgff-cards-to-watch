@@ -1,68 +1,59 @@
 # ManaIntel Roadmap
 
-This roadmap describes sequencing, not dates. Each phase should preserve a usable archive and avoid building analytics before enough trustworthy history exists.
+ManaIntel is entering maintenance mode. After the final functional pass below, active product work moves to putting ManaSpec in users' hands and then to GalleyFlow. ManaIntel should receive further development only when a real production failure prevents its basic utility.
 
-## Phase 0 — FFW proof of concept
+## Current state
 
-Status: current foundation.
+The unattended production foundation is in place:
 
-- Validate the MTG Fast Finance RSS/audio/transcription/extraction pipeline.
-- Preserve evidence, uncertainty, durable state, deterministic output, and a static searchable archive.
-- Keep synthetic and live boundaries conspicuous.
+- Daily GitHub Actions processing and GitHub Pages publication.
+- Durable GUID-keyed state and eligibility-first selection.
+- Incremental historical backfill with limits applied after filtering.
+- Failed-only retry and exact-GUID processing.
+- Deterministic archive projections and a compact static UI.
+- Focused tests for selection, retry, and no-op pipeline behavior.
 
-Exit condition: representative live extraction can be evaluated and reviewed without duplicate or unsupported records.
+This is enough foundation. The remaining work is a bounded usability and correction pass, not a platform expansion.
 
-## Phase 1 — ManaIntel core contract
+## Final functional pass — maximum approximately five development hours
 
-- Introduce stable `source`, `source_item`, and source-agnostic `recommendation` records.
-- Add `source_type` and a generic source reference that supports timestamps, paragraphs, sections, and URLs.
-- Separate mentioned prices from entry and exit targets.
-- Separate source-stated confidence, extraction confidence, and review status.
-- Build an adapter that maps existing FFW episode output to the common contract.
-- Update archive projections and the frontend to use neutral source-item language.
-- Keep the v1 episode outputs readable during migration or provide a deterministic migration tool.
+Work in this order and stop when the budget is exhausted:
 
-Exit condition: the current podcast is fully represented through the common contract and the frontend has no MTG Fast Finance-specific logic.
+1. **Manual review overrides:** preserve extraction output, apply validated files from `data/reviews/`, and add a focused editor that copies or downloads correction JSON.
+2. **Timestamp playback:** add an in-page remote RSS audio player that seeks after metadata loads and supports a `t` URL parameter.
+3. **Readable status and failure detail:** expose attempts, last attempt, retryability, review state, and a small failure taxonomy without leading with raw exceptions.
+4. **Single-episode recovery:** retain exact-GUID backend processing and expose a copyable workflow input or command in the episode UI.
+5. **No-op publication guard:** ensure an empty scheduled selection does not commit generated churn or deploy an unchanged Pages artifact.
+6. **Small readability fixes:** omit empty pick fields, keep evidence/debug content collapsed, and make the card name, recommendation, and timestamp the scanning hierarchy.
 
-## Phase 2 — Prove source agnosticism
+Focused tests should cover override update/add/exclude behavior, override survival across rebuilds, invalid override rejection, timestamp parsing/seeking fallbacks, readable rendering, and the deployment-level no-op guard.
 
-- Add one permitted source of a materially different type, preferably written content or captioned video.
-- Implement source-specific acquisition and extraction behind the common adapter boundary.
-- Add cross-source filters and provenance-focused evaluation fixtures.
-- Document retention and evidence rules for each supported source.
+## Definition of done
 
-Exit condition: two source types publish into the same archive with no frontend schema branch.
+ManaIntel is done when:
 
-## Phase 3 — Operational MVP
+- Scheduled processing keeps advancing through eligible historical episodes.
+- Failed-only and exact-episode retry are deliberate and bounded.
+- Empty runs leave durable/generated files unchanged and do not redeploy.
+- Failed episodes are understandable from the site.
+- Picks are readable without inspecting extraction internals.
+- Manual corrections are separate, validated, and rebuild-safe.
+- Timestamp links seek remote podcast audio near the saved moment.
+- The runbook explains the normal, backfill, retry, review, and playback workflows.
 
-- Add scheduling, retry policy, observability, and a review queue.
-- Define source onboarding criteria and permissions checks.
-- Publish a stable versioned export for read-only consumers.
-- Add backup, recovery, and schema migration procedures if storage outgrows Git JSON.
+## Deferred indefinitely
 
-Exit condition: trusted sources update unattended, uncertain records are reviewable, and failures are recoverable.
+- Additional podcasts, video, written, or community sources.
+- A source-agnostic schema migration or cross-source UI.
+- Accounts, hosted databases, authenticated browser writes, or complex GitHub auth.
+- Analytics, price tracking, scoring, alerts, portfolio features, and ManaSpec integration.
+- Large UI redesigns, framework migrations, and broad test refactors.
 
-## Phase 4 — Historical projections
+The earlier source-agnostic design remains useful research, but it is not an active delivery commitment.
 
-Only after sufficient reviewed history exists:
+## Portfolio sequence after ManaIntel
 
-- Card recommendation timelines.
-- Repeated and independent-source mentions.
-- Mention frequency and source agreement/disagreement.
-- Aggregated stated entry and exit targets with currency and printing safeguards.
-
-These remain derived projections. Canonical source records must not be rewritten to fit an analytic result.
-
-## Phase 5 — Optional integrations
-
-- Provide ManaSpec with a versioned read-only feed or API.
-- Let ManaSpec create watchlists or decision records from a ManaIntel recommendation while retaining provenance.
-- Consider reliability analysis only after defining price data, comparison windows, reprints/printings, methodology, and clear limitations.
-
-## Guardrails for every phase
-
-- Prefer archive quality and provenance over feature count.
-- Do not add price tracking merely to make ingestion appear more analytical.
-- Do not let source-specific fields escape the adapter boundary.
-- Do not onboard content that cannot be accessed or excerpted appropriately.
-- Do not present extraction confidence as investment confidence.
+1. Complete only the bounded ManaIntel final pass.
+2. Put ManaSpec in users' hands and continue its adoption roadmap.
+3. Shift primary build attention to GalleyFlow.
+4. Return to ManaIntel only for production-breaking defects or very small maintenance fixes.

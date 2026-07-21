@@ -1,6 +1,45 @@
 # ManaIntel Data Model
 
-## Model boundary
+## Final-pass implemented boundary
+
+The authoritative extraction contract remains `schemas/cards-to-watch.schema.json`. The final pass extends behavior with separate review files and derived display states; it does not require the deferred source-agnostic migration described later in this document.
+
+### Review override
+
+Review files live at `data/reviews/<episode-id>.json` and are durable manual input.
+
+| Field | Type | Rule |
+|---|---|---|
+| `episode_id` | string | Required stable episode identity; must match the target extraction. |
+| `reviewed_at` | date-time | Required timestamp for the review event. |
+| `reviewed_by` | string | Required provenance; `manual` is sufficient for the single-user workflow. |
+| `status` | enum | `reviewed` or `corrected`. |
+| `pick_overrides` | array | Ordered update/add/exclude operations; may be empty for reviewed-without-changes. |
+
+Each override contains `action: update | add | exclude`, an optional/required `source_pick_id` according to the action, and `fields` for update/add. Editable fields are card name, printing/set, finish, host/speaker, recommendation, current price, target price, summary, timestamp seconds, notes, and inclusion. Fields are optional and unknowns remain absent/null.
+
+`update` and `exclude` require a valid original pick ID. `add` must receive a deterministic manual pick ID during application. The original extraction is never rewritten.
+
+### Effective rendering
+
+Projection generation loads the original episode summary, validates any matching review file, applies operations, and emits the effective picks. Review metadata is derived as:
+
+- no review file + uncertainty: `Needs Review`
+- no review file: `Unreviewed`
+- `status: reviewed` with no material changes: `Reviewed — No Changes`
+- `status: corrected` or material operations: `Manually Corrected`
+
+Excluded picks remain auditable in original extraction and review history but do not appear in normal effective projections.
+
+### Failure metadata
+
+Operational failure data exposes `category`, `message`, `stage`, `attempt`, `max_attempts`, `retryable`, `provider_wide`, `next_retry_at`, and `quarantined`. Current categories are `transient_provider`, `provider_configuration`, `episode_input`, and `unknown`. The transition history supplies attempt timestamps. Transcription error messages also identify the failed chunk and request duration; raw provider/stack detail remains secondary.
+
+### Display status derivation
+
+Processing state, review state, correction presence, and exclusions combine into user-facing labels. Display labels do not need to expand the internal pipeline enum. In particular, `complete + needs_review` displays `Completed — Needs Review`, a valid review file displays `Reviewed` or `Manually Corrected`, and a durable exclusion displays `Excluded`.
+
+## Deferred source-agnostic model boundary
 
 ManaIntel normalizes every source into four concepts:
 

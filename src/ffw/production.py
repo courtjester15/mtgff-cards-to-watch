@@ -6,6 +6,7 @@ import os
 import re
 import shutil
 import subprocess
+import time
 import urllib.request
 import xml.etree.ElementTree as ET
 from datetime import timezone
@@ -331,18 +332,35 @@ class GeminiTranscriber:
             "Keep card names and price phrases as spoken."
         )
         for index, path in enumerate(audio_files):
-            payload = _gemini_generate_json(
-                client,
-                types,
-                model=self.model_name,
-                contents=[
-                    prompt,
-                    types.Part.from_bytes(data=path.read_bytes(), mime_type="audio/mpeg"),
-                ],
-                schema=TRANSCRIPT_SCHEMA,
-            )
-            if payload.get("_usage"):
-                usage.append(payload.pop("_usage"))
+            started = time.monotonic()
+            try:
+                payload = _gemini_generate_json(
+                    client,
+                    types,
+                    model=self.model_name,
+                    contents=[
+                        prompt,
+                        types.Part.from_bytes(data=path.read_bytes(), mime_type="audio/mpeg"),
+                    ],
+                    schema=TRANSCRIPT_SCHEMA,
+                )
+            except Exception as exc:
+                elapsed = time.monotonic() - started
+                raise RuntimeError(
+                    f"Gemini transcription chunk {index + 1}/{len(audio_files)} failed "
+                    f"after {elapsed:.1f}s: {type(exc).__name__}: {exc}"
+                ) from exc
+            chunk_usage = payload.pop("_usage", None)
+            usage.append({
+                "chunk": index + 1,
+                "chunk_count": len(audio_files),
+                "audio_seconds": min(
+                    self.chunk_seconds,
+                    max(0, (episode.duration_seconds or len(audio_files) * self.chunk_seconds) - index * self.chunk_seconds),
+                ),
+                "request_seconds": round(time.monotonic() - started, 3),
+                "provider_usage": chunk_usage,
+            })
             offset = index * self.chunk_seconds
             texts.append(str(payload.get("text", "")))
             for segment in payload.get("segments", []):
@@ -361,7 +379,7 @@ class GeminiTranscriber:
             "segments": segments,
             "chunk_count": len(audio_files),
             "duration_seconds": episode.duration_seconds,
-            "usage": usage or None,
+            "usage": usage,
         }
 
 

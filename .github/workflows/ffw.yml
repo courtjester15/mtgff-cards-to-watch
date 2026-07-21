@@ -9,6 +9,7 @@ on:
       - "web/**"
   schedule:
     - cron: "17 10 * * *"
+    - cron: "17 20 * * *"
   workflow_dispatch:
     inputs:
       mode:
@@ -43,9 +44,11 @@ permissions:
 env:
   FFW_MODE: live
   FFW_AI_PROVIDER: gemini
-  FFW_TRANSCRIPTION_MODEL: gemini-flash-latest
-  FFW_EXTRACTION_MODEL: gemini-flash-latest
+  FFW_TRANSCRIPTION_MODEL: gemini-3.5-flash
+  FFW_EXTRACTION_MODEL: gemini-3.5-flash
   FFW_MAX_LIVE_BATCH: "20"
+  FFW_MAX_EPISODE_ATTEMPTS: "3"
+  FFW_RETRY_COOLDOWN_HOURS: "6"
   PYTHONUNBUFFERED: "1"
 
 jobs:
@@ -105,8 +108,13 @@ jobs:
           INPUT_MODE: ${{ inputs.mode || 'next' }}
           INPUT_LIMIT: ${{ inputs.batch_size || '1' }}
           INPUT_GUID: ${{ inputs.force_guid || '' }}
+          EVENT_SCHEDULE: ${{ github.event.schedule || '' }}
         shell: bash
         run: |
+          if [[ "$EVENT_SCHEDULE" == "17 20 * * *" ]]; then
+            INPUT_MODE="retry_failed"
+          fi
+          echo "mode=$INPUT_MODE" >> "$GITHUB_OUTPUT"
           if [[ "$INPUT_MODE" == "deploy_only" ]]; then
             echo "exit_code=0" >> "$GITHUB_OUTPUT"
             echo "Deploy-only mode selected; skipping live feed processing."
@@ -180,7 +188,7 @@ jobs:
         shell: bash
         run: |
           echo "## FFW production run" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Mode: ${{ inputs.mode || 'next' }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Mode: ${{ steps.pipeline.outputs.mode || inputs.mode || 'next' }}" >> "$GITHUB_STEP_SUMMARY"
           echo "- Pipeline exit: ${{ steps.pipeline.outputs.exit_code || 'not-run' }}" >> "$GITHUB_STEP_SUMMARY"
           echo "- Durable outputs changed: ${{ steps.persist.outputs.changed || 'unknown' }}" >> "$GITHUB_STEP_SUMMARY"
           if [[ -f "$FFW_REPORT_PATH" ]]; then
@@ -194,6 +202,8 @@ jobs:
               summary.write(f"- Feed entries scanned: {report['feed_entries_scanned']}\n")
               summary.write(f"- Completed skipped: {report['completed_skipped']}\n")
               summary.write(f"- Failed skipped: {report['failed_skipped']}\n")
+              summary.write(f"- Retry deferred: {report['retry_deferred']}\n")
+              summary.write(f"- Retry exhausted/quarantined: {report['retry_exhausted']}\n")
               summary.write(f"- Eligible found: {report['eligible_found']}\n")
               summary.write(f"- Selected: {report['selected_count']}\n")
               summary.write(f"- Attempted: {report['attempted']}\n")

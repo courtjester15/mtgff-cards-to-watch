@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from copy import deepcopy
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 import shutil
 import os
@@ -16,23 +17,65 @@ from .rendering import render_episode_markdown
 from .state import JsonStateStore
 from .utils import atomic_write_json, atomic_write_text, episode_slug, seconds_to_timestamp, stable_pick_id
 
-PROVIDER_WIDE_ERROR_PATTERNS = (
+PERMANENT_PROVIDER_ERROR_PATTERNS = (
     "401",
     "403",
-    "429",
     "api key",
     "invalid api",
     "invalid_argument",
     "not_found",
     "permission_denied",
-    "quota",
-    "rate limit",
-    "resource_exhausted",
     "response_json_schema",
     "response_schema",
     "unauthenticated",
     "unsupported model",
 )
+
+TRANSIENT_ERROR_PATTERNS = (
+    "408",
+    "429",
+    "500",
+    "502",
+    "503",
+    "504",
+    "connection reset",
+    "deadline_exceeded",
+    "rate limit",
+    "resource_exhausted",
+    "server disconnected",
+    "temporarily unavailable",
+    "timed out",
+    "timeout",
+)
+
+EPISODE_ERROR_PATTERNS = (
+    "audio exceeds",
+    "downloaded audio was empty",
+    "ffmpeg failed",
+    "unexpected audio content type",
+)
+
+
+def classify_failure(message: str) -> tuple[str, bool, bool]:
+    """Return (category, retryable, provider_wide) for durable scheduling state."""
+    normalized = message.lower()
+    if any(pattern in normalized for pattern in PERMANENT_PROVIDER_ERROR_PATTERNS):
+        return "provider_configuration", False, True
+    if any(pattern in normalized for pattern in EPISODE_ERROR_PATTERNS):
+        return "episode_input", False, False
+    if any(pattern in normalized for pattern in TRANSIENT_ERROR_PATTERNS):
+        return "transient_provider", True, True
+    # Unknown model/output failures receive bounded retries, then quarantine.
+    return "unknown", True, False
+
+
+def _parse_timestamp(value: str | None) -> datetime | None:
+    if not value:
+        return None
+    try:
+        return datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError:
+        return None
 
 
 class Pipeline:
@@ -107,7 +150,7 @@ class Pipeline:
                 retry_failed=policy == "failed_only",
             )
             results.append(result)
-            if self.settings.mode == "live" and result.status == "failed" and self._is_provider_wide_error(result.message):
+            if self.settings.mode == "live" and result.status == "failed" and classify_failure(result.message)[2]:
                 break
         if results:
             rebuild_catalog(
@@ -137,9 +180,10 @@ class Pipeline:
                 ordered.append(episode)
                 seen_guids.add(episode.guid)
         records = self.state.all()
-        report = SelectionReport(policy=policy, feed_entries_scanned=len(ordered_feed))
+        report = SelectionReport(policy=policy)
         eligible: list[EpisodeCandidate] = []
         for episode in ordered:
+            report.feed_entries_scanned += 1
             record = records.get(episode.guid)
             status = record.get("status") if record else None
             if policy == "exact_guid":
@@ -154,12 +198,25 @@ class Pipeline:
                 continue
             if policy == "failed_only":
                 if status == "failed":
+                    error = record.get("error") or {}
+                    if not error.get("retryable", False) or int(record.get("attempt_count", 0)) >= self.settings.max_episode_attempts:
+                        report.retry_exhausted += 1
+                        continue
+                    retry_at = _parse_timestamp(error.get("next_retry_at"))
+                    if retry_at and retry_at > datetime.now(timezone.utc):
+                        report.retry_deferred += 1
+                        continue
                     eligible.append(episode)
+                    if limit is not None and len(eligible) >= limit:
+                        break
                 continue
             if status == "failed":
                 report.failed_skipped += 1
                 continue
             eligible.append(episode)
+            desired = 1 if policy == "next" else limit
+            if desired is not None and len(eligible) >= desired:
+                break
         report.eligible_found = len(eligible)
         if policy == "next":
             report.selected = eligible[:1]
@@ -180,11 +237,6 @@ class Pipeline:
             raise ValueError("Live run --limit must be at least 1.")
         if limit > self.settings.max_live_batch:
             raise ValueError(f"Live run --limit cannot exceed {self.settings.max_live_batch}.")
-
-    @staticmethod
-    def _is_provider_wide_error(message: str) -> bool:
-        normalized = message.lower()
-        return any(pattern in normalized for pattern in PROVIDER_WIDE_ERROR_PATTERNS)
 
     def process_episode(self, episode: EpisodeCandidate, *, force: bool = False, retry_failed: bool = False) -> PipelineResult:
         existing = self.state.get(episode.guid)
@@ -268,13 +320,32 @@ class Pipeline:
         except Exception as exc:
             current = self.state.get(episode.guid) or {}
             failed_stage = current.get("status", "detected")
-            retryable = not episode.synthetic and not self._is_provider_wide_error(str(exc))
+            category, retryable, provider_wide = classify_failure(str(exc))
+            attempt_count = int(current.get("attempt_count", 0))
+            exhausted = attempt_count >= self.settings.max_episode_attempts
+            retryable = bool(not episode.synthetic and retryable and not exhausted)
+            next_retry_at = None
+            if retryable:
+                next_retry_at = (
+                    datetime.now(timezone.utc) + timedelta(hours=self.settings.retry_cooldown_hours)
+                ).replace(microsecond=0).isoformat().replace("+00:00", "Z")
             self.state.transition(
                 episode.guid,
                 "failed",
                 output_directory=relative_output,
                 pick_count=0,
-                error={"stage": failed_stage, "message": str(exc), "synthetic": episode.synthetic, "retryable": retryable},
+                error={
+                    "stage": failed_stage,
+                    "message": str(exc),
+                    "category": category,
+                    "synthetic": episode.synthetic,
+                    "retryable": retryable,
+                    "provider_wide": provider_wide,
+                    "attempt": attempt_count,
+                    "max_attempts": self.settings.max_episode_attempts,
+                    "next_retry_at": next_retry_at,
+                    "quarantined": bool(exhausted or (not retryable and not provider_wide)),
+                },
             )
             output_dir.mkdir(parents=True, exist_ok=True)
             metadata = self._build_metadata(episode, "failed", relative_output, None)

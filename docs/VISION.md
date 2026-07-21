@@ -1,8 +1,10 @@
 # ManaIntel Product Vision
 
+> **Maintenance-mode scope (2026-07-17):** The supported product is now the single-source MTG Fast Finance Cards to Watch utility. The broader multi-source vision below is retained as historical product thinking, not an active roadmap. After a bounded final functional pass, portfolio attention moves to ManaSpec adoption and GalleyFlow.
+
 ## Product definition
 
-ManaIntel is a lightweight Magic: The Gathering finance intelligence platform. It aggregates recommendations from trusted sources into one consistent, searchable archive.
+ManaIntel was conceived as a lightweight Magic: The Gathering finance intelligence platform aggregating recommendations from trusted sources into one consistent, searchable archive. Its shipped maintenance-mode form focuses on one trusted podcast source.
 
 Its primary job is to answer:
 

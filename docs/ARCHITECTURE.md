@@ -1,6 +1,59 @@
 # ManaIntel Architecture
 
-## Target system boundary
+## Maintenance-mode boundary
+
+The supported system is the existing single-podcast FFW pipeline and static archive. The source-agnostic target below is retained as historical design context, not an active implementation roadmap. The final pass adds correction and playback seams without introducing a backend, database, authentication layer, or additional adapter.
+
+```mermaid
+flowchart LR
+    A["RSS feed"] --> B["Eligibility-first selector"]
+    S["Durable episode state"] <--> B
+    B --> C["Podcast extraction pipeline"]
+    C --> O["Original extraction"]
+    R["Durable review overrides"] --> E["Effective-result builder"]
+    O --> E
+    E --> P["Generated archive projections"]
+    P --> U["Static Pages UI"]
+    U -->|"remote playback"| A2["RSS enclosure audio"]
+    U -->|"copy/download JSON"| R
+```
+
+The final arrow into review overrides is a manual repository step: the browser produces a file but cannot write to GitHub directly.
+
+## Eligibility-first selection
+
+Selection is a dedicated pre-acquisition layer:
+
+1. Fetch the complete available feed window.
+2. Load GUID-keyed durable state.
+3. Filter for the requested policy (`next`, `backfill`, `failed_only`, or exact GUID).
+4. Apply deterministic ordering.
+5. Apply the attempt limit.
+6. Acquire and process only the selected episodes.
+
+An empty selection exits before state transitions or catalog generation. The workflow must also use the resulting changed/no-change signal to avoid an unchanged Pages deployment.
+
+## Durable input and generated output boundary
+
+Durable source data includes episode state, configuration, exclusions, and `data/reviews/*.json`. Original extraction is retained as immutable machine output for audit. Review files are validated manual input and must not be deleted or rewritten by render, retry, cleanup, or backfill operations.
+
+Generated output includes Markdown summaries, effective episode JSON views, flattened card catalogs, indexes, and the Pages artifact. It is safe to rebuild only from original extraction plus durable manual inputs. Generation failure must not silently discard a correction or replace the last valid published archive.
+
+## Effective review rendering
+
+The effective-result builder applies override actions by stable pick ID:
+
+```text
+original extraction + update/add/exclude overrides = effective reviewed result
+```
+
+Override application occurs before Markdown and archive projection generation. It never mutates the original summary. Invalid schemas, missing update/exclude targets, duplicate operations, or invalid timestamps fail with a readable validation error.
+
+## Browser audio playback
+
+The static episode page reads an enclosure URL already present in archive data. A timestamp link adds `t=<seconds>` to the episode URL. The player waits for `loadedmetadata`, clamps the requested time to a valid duration, seeks, then attempts playback. Autoplay denial leaves the player ready for one click. Media errors show the original episode link; audio remains remote and disposable.
+
+## Historical source-agnostic target (deferred)
 
 ```mermaid
 flowchart LR
@@ -116,7 +169,7 @@ detected -> queued -> downloading -> downloaded -> preparing
 
 The production catalog builder excludes synthetic episode folders even though fixture outputs remain in the repository for tests. GitHub Actions serializes writers, runs the Python pipeline and validation, commits `state/` and `archive/` only when changed, then packages `web/` plus the production archive at a clean Pages root. `.ffw-work/` never enters the durable artifact.
 
-Before acquisition, one state-aware selector orders the full fetched feed newest to oldest and compares canonical GUIDs with durable state. Its `next`, `backfill`, `failed_only`, and `exact_guid` policies apply limits only after eligibility filtering. `complete` and `needs_review` are successful terminal states; `failed` is excluded from ordinary selection. Exact GUID selection searches the full feed. When selection is empty, orchestration returns without state transitions or catalog regeneration.
+Before acquisition, one state-aware selector orders the full fetched feed newest to oldest and compares canonical GUIDs with durable state. Its `next`, `backfill`, `failed_only`, and `exact_guid` policies apply limits only after eligibility filtering. `complete` and `needs_review` are successful terminal states; `failed` is excluded from ordinary selection. The morning `next` schedule therefore guarantees untouched backfill progress, while the later `failed_only` schedule selects at most one due retryable record. Retry eligibility includes cooldown and maximum-attempt checks. Exact GUID selection searches the full feed. When selection is empty, orchestration returns without state transitions or catalog regeneration.
 
 ## Migration shape
 

@@ -4,13 +4,15 @@ import os
 from dataclasses import dataclass
 from pathlib import Path
 
-VERSION = "0.2.0"
-PIPELINE_VERSION = "0.2.0"
+VERSION = "0.3.0"
+PIPELINE_VERSION = "0.3.0"
 SCHEMA_VERSION = "1.1.0"
 PROMPT_VERSION = "cards-to-watch-v2"
 MOCK_TRANSCRIPTION_MODEL = "mock-transcriber-v1"
 MOCK_EXTRACTION_MODEL = "mock-extractor-v1"
 MAX_LIVE_BATCH = 20
+MAX_EPISODE_ATTEMPTS = 3
+RETRY_COOLDOWN_HOURS = 6
 
 
 def project_root() -> Path:
@@ -33,6 +35,8 @@ class Settings:
     transcription_model: str = "gpt-4o-transcribe-diarize"
     extraction_model: str = "gpt-5.6-luna"
     max_live_batch: int = MAX_LIVE_BATCH
+    max_episode_attempts: int = MAX_EPISODE_ATTEMPTS
+    retry_cooldown_hours: int = RETRY_COOLDOWN_HOURS
     card_glossary: str = ""
     repository_url: str = "https://github.com/courtjester15/mtgff-cards-to-watch"
 
@@ -56,6 +60,8 @@ class Settings:
             transcription_model=os.getenv("FFW_TRANSCRIPTION_MODEL", "gpt-4o-transcribe-diarize"),
             extraction_model=os.getenv("FFW_EXTRACTION_MODEL", "gpt-5.6-luna"),
             max_live_batch=int(os.getenv("FFW_MAX_LIVE_BATCH", str(MAX_LIVE_BATCH))),
+            max_episode_attempts=int(os.getenv("FFW_MAX_EPISODE_ATTEMPTS", str(MAX_EPISODE_ATTEMPTS))),
+            retry_cooldown_hours=int(os.getenv("FFW_RETRY_COOLDOWN_HOURS", str(RETRY_COOLDOWN_HOURS))),
             card_glossary=os.getenv("FFW_CARD_GLOSSARY", ""),
             repository_url=os.getenv("FFW_REPOSITORY_URL", "https://github.com/courtjester15/mtgff-cards-to-watch"),
         )

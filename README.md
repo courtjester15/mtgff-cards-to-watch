@@ -2,7 +2,7 @@
 
 FFW automatically checks the MTG Fast Finance podcast, extracts Cards to Watch recommendations, and publishes them to a static archive.
 
-FFW is the working proof of concept for **ManaIntel**, a future source-agnostic archive of MTG finance recommendations. ManaIntel's goal is to show who recommended what, when, and why; it is not a price tracker, portfolio manager, or automated financial analyst.
+FFW is the working implementation of **ManaIntel**, a deliberately small archive for MTG Fast Finance Cards to Watch recommendations. ManaIntel's goal is to show who recommended what, when, and why; it is not a price tracker, portfolio manager, automated financial analyst, or active multi-source platform effort.
 
 The current implementation remains deliberately scoped to MTG Fast Finance and is composed of two decoupled parts:
 
@@ -13,7 +13,7 @@ Version 0.2 retains a fully runnable credential-free mock mode and adds live RSS
 
 ## Normal user workflow
 
-Open <https://courtjester15.github.io/mtgff-cards-to-watch/>. Every day at 10:17 UTC, the archive processes the newest eligible unprocessed episode. A new release takes priority automatically; otherwise the workflow continues backward through historical episodes one per day.
+Open <https://courtjester15.github.io/mtgff-cards-to-watch/>. Every day at 10:17 UTC, the archive processes the newest eligible untouched episode. A new release takes priority automatically; otherwise the workflow continues backward through historical episodes one per day. At 20:17 UTC, a separate bounded run retries at most one due transient failure without consuming the next day's fresh-backfill slot.
 
 The repository starts with synthetic fixtures. The deployed production catalog excludes those fixtures and shows only live records after the first successful backfill.
 
@@ -53,7 +53,7 @@ For development without installing the package, set `PYTHONPATH=src` before invo
 | `python -m ffw render` | Re-render Markdown from JSON and rebuild `index.json` and `cards.json`. |
 | `python -m ffw serve` | Serve the repository and local archive on port 8765. |
 
-Live batch and failed-only runs require a positive limit no greater than 20. Limits count eligible selected episodes, not RSS entries inspected. `complete` and `needs_review` records are skipped before download or provider calls; failed records are selected only by `retry-failed` or an exact GUID override. A no-op does not rewrite catalogs or state.
+Live batch and failed-only runs require a positive limit no greater than 20. Limits count eligible selected episodes, not RSS entries inspected. `complete` and `needs_review` records are skipped before download or provider calls; failed records are selected only by `retry-failed` or an exact GUID override. Automatic retries use a six-hour cooldown and stop after three total attempts. A no-op does not rewrite catalogs or state.
 
 Run the tests with:
 
@@ -104,10 +104,10 @@ Implemented foundation:
 - Versioned JSON Schema and pipeline metadata.
 - Opt-in live RSS, guarded audio download, `ffmpeg` preparation, Gemini/OpenAI transcription and extraction adapters, and a scheduled GitHub Actions/Pages workflow.
 
-Still intentionally outside the current product:
+Still intentionally outside the product:
 
 - Additional sources, generic source-item records, cross-source search, notifications, databases, price tracking, analytics, and ManaSpec integration.
 
-This repository does **not** yet implement ManaIntel's cross-source content model or adapters for video, written, or community sources. The next architectural step is to normalize the existing episode output into a source-agnostic recommendation contract without disrupting the working FFW pipeline.
+ManaIntel is entering maintenance mode after one bounded final functional pass of approximately five hours. That pass is limited to durable review overrides, in-page timestamp playback, clearer status/failure presentation, a copyable exact-episode retry path, and a deployment-level no-op guard. Multi-source normalization and expansion are deferred indefinitely. Afterward, portfolio attention moves to ManaSpec adoption and GalleyFlow; ManaIntel reopens only for production-breaking defects or very small maintenance fixes.
 
 See [ManaIntel Vision](docs/VISION.md), [Product Spec](docs/PRODUCT_SPEC.md), [Architecture](docs/ARCHITECTURE.md), [Data Model](docs/DATA_MODEL.md), [Roadmap](docs/ROADMAP.md), [Decisions](docs/DECISIONS.md), and [Production Runbook](docs/RUNBOOK.md).

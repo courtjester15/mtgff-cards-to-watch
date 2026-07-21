@@ -110,6 +110,48 @@
 
 **Reason:** Feed positions change as episodes are published or reordered. Durable GUID-keyed outcomes already identify completed work, prioritize new releases naturally, and let historical backfill resume without a fragile numeric cursor. Filtering before acquisition prevents duplicate provider cost, while an empty selection avoids meaningless generated timestamp changes and commits.
 
+## ADR-019 — ManaIntel enters maintenance mode after a bounded final pass
+
+**Decision:** Limit remaining feature development to approximately five hours focused on correction, playback, status clarity, exact recovery, and no-op behavior. Then stop unless a production failure prevents the utility from doing its basic job. This supersedes the active expansion implied by ADR-010 and ADR-015; their source-agnostic design remains historical context only.
+
+**Reason:** The single-source archive already proves the useful workflow. Additional abstraction and sources have lower portfolio value than getting ManaSpec into users' hands and moving primary development to GalleyFlow.
+
+## ADR-020 — Manual corrections are durable overrides
+
+**Decision:** Preserve original machine extraction and store reviews separately under `data/reviews/`. Generated views apply validated update/add/exclude operations to produce an effective result.
+
+**Reason:** Directly editing generated summaries destroys provenance and is vulnerable to rebuilds. A small override layer is auditable, reversible, compatible with static hosting, and sufficient for one reviewer.
+
+## ADR-021 — GitHub Pages remains static
+
+**Decision:** The review editor copies or downloads correction JSON. Do not add a hosted backend, user accounts, embedded GitHub token, or complex authenticated write flow.
+
+**Reason:** Static Pages is operationally cheap and already deployed. A manual repository step is acceptable for the expected correction volume and fits the final-pass time constraint.
+
+## ADR-022 — Podcast audio remains remote
+
+**Decision:** Play the RSS enclosure URL through an in-page HTML audio element and seek after metadata loads. Keep the original episode URL as fallback; do not store, proxy, or mirror audio.
+
+**Reason:** Remote playback enables useful timestamp verification without repository growth, copyright/retention expansion, or a new media service.
+
+## ADR-023 — No-op means no publish churn
+
+**Decision:** An empty selection must leave state and projections unchanged, create no commit, and skip an unchanged Pages deployment.
+
+**Reason:** Run timestamps and deployment churn are not product output. A true no-op makes scheduled behavior auditable and avoids misleading activity.
+
+## ADR-024 — Production provider is configurable; workflow default is Gemini
+
+**Decision:** Retain both Gemini and OpenAI adapters. The checked-in GitHub workflow pins stable `gemini-3.5-flash` for transcription and extraction; model/provider values remain environment configuration rather than product architecture.
+
+**Reason:** Provider availability and cost change. Operational documentation must describe the checked-in default without coupling the archive contract to it.
+
+## ADR-025 — Fresh backfill and failed recovery use separate bounded schedules
+
+**Decision:** Run `next` at 10:17 UTC and `retry_failed` at 20:17 UTC. The fresh run always selects one untouched episode and skips failed records. The retry run selects at most one due retryable failure after a six-hour cooldown. Each episode receives at most three total attempts before quarantine. Transient provider failures remain retryable even when they stop the current batch; permanent provider configuration failures and episode-specific bad input do not loop.
+
+**Reason:** A broken episode must not stall historical progress, but transient network, capacity, and quota failures should recover without manual dispatch. Separate schedules preserve a guaranteed fresh-work slot, spread free-tier requests across the day, and cap wasted provider calls when an episode is genuinely bad.
+
 ## Known risks
 
 - The manual validator implements project invariants but does not execute the full JSON Schema vocabulary because no JSON Schema package was downloaded.

@@ -13,7 +13,7 @@ from ffw.archive import rebuild_catalog
 from ffw.detection import locate_cards_to_watch
 from ffw.models import EpisodeCandidate
 from ffw.config import Settings
-from ffw.pipeline import Pipeline
+from ffw.pipeline import Pipeline, classify_failure
 from ffw.production import GeminiExtractor, GeminiTranscriber, OpenAIExtractor, OpenAITranscriber, StreamingDownloader, parse_episode_number, parse_rss, production_adapters
 from ffw.state import JsonStateStore
 from ffw.utils import atomic_write_json, load_json
@@ -163,7 +163,10 @@ class FrontendContractTests(unittest.TestCase):
         self.assertIn('default: "1"', workflow)
         self.assertIn("batch_size must be a positive integer", workflow)
         self.assertIn("exceeds the safety cap", workflow)
-        self.assertIn("gemini-flash-latest", workflow)
+        self.assertIn("gemini-3.5-flash", workflow)
+        self.assertIn('cron: "17 20 * * *"', workflow)
+        self.assertIn('INPUT_MODE="retry_failed"', workflow)
+        self.assertIn('FFW_MAX_EPISODE_ATTEMPTS: "3"', workflow)
         self.assertIn("deploy_only", workflow)
         self.assertIn("retry_failed", workflow)
         self.assertIn("process-next --live", workflow)
@@ -289,7 +292,10 @@ class ProductionPipelineTests(unittest.TestCase):
         pipeline = Pipeline(settings, Feed(), Downloader(), Audio(), Transcriber(), Extractor(), JsonStateStore(settings.state_file))
         results = pipeline.run(limit=2, selection_policy="backfill")
         self.assertEqual(["complete", "failed"], [item.status for item in results])
-        self.assertTrue(pipeline.state.get("guid-1")["error"]["retryable"])
+        error = pipeline.state.get("guid-1")["error"]
+        self.assertFalse(error["retryable"])
+        self.assertEqual("episode_input", error["category"])
+        self.assertTrue(error["quarantined"])
 
     def test_real_five_pick_publication_cleanup_and_idempotent_skip(self) -> None:
         root = workspace_temp()
@@ -367,7 +373,8 @@ class StateAwareSelectionTests(unittest.TestCase):
 
     def set_status(self, candidate: EpisodeCandidate, status: str) -> None:
         self.state.discover(candidate)
-        self.state.transition(candidate.guid, status)
+        updates = {"error": {"retryable": True, "next_retry_at": None}} if status == "failed" else {}
+        self.state.transition(candidate.guid, status, **updates)
 
     def test_next_selects_newest_unseen_after_completed_and_failed(self) -> None:
         candidates = self.candidates()
@@ -376,7 +383,12 @@ class StateAwareSelectionTests(unittest.TestCase):
         self.set_status(candidates[3], "failed")
         report = self.pipeline.select_candidates(candidates, policy="next")
         self.assertEqual(["guid-3"], [item.guid for item in report.selected])
-        self.assertEqual((2, 1, 3), (report.completed_skipped, report.failed_skipped, report.eligible_found))
+        self.assertEqual((2, 1, 1, 4), (
+            report.completed_skipped,
+            report.failed_skipped,
+            report.eligible_found,
+            report.feed_entries_scanned,
+        ))
 
     def test_backfill_limit_counts_eligible_not_feed_positions(self) -> None:
         candidates = self.candidates()
@@ -393,7 +405,8 @@ class StateAwareSelectionTests(unittest.TestCase):
         self.set_status(candidates[1], "failed")
         report = self.pipeline.select_candidates(candidates, policy="failed_only", limit=1)
         self.assertEqual(["guid-5"], [item.guid for item in report.selected])
-        self.assertEqual(2, report.eligible_found)
+        self.assertEqual(1, report.eligible_found)
+        self.assertEqual(2, report.feed_entries_scanned)
 
     def test_exact_guid_searches_full_feed_and_bypasses_position_limit(self) -> None:
         candidates = self.candidates()
@@ -420,8 +433,27 @@ class StateAwareSelectionTests(unittest.TestCase):
         candidates = self.candidates()
         duplicate = EpisodeCandidate("guid-6", 6, "Duplicate Episode 6", "2026-01-06T00:00:00Z", "https://cdn.example.test/duplicate.mp3", "https://example.test/duplicate", [])
         report = self.pipeline.select_candidates([duplicate, *candidates], policy="backfill", limit=2)
-        self.assertEqual(7, report.feed_entries_scanned)
+        self.assertEqual(2, report.feed_entries_scanned)
         self.assertEqual(["guid-6", "guid-5"], [item.guid for item in report.selected])
+
+    def test_failed_only_defers_cooldown_and_quarantines_exhausted_attempts(self) -> None:
+        candidates = self.candidates()
+        self.set_status(candidates[5], "failed")
+        self.state.transition(candidates[5].guid, "failed", error={
+            "retryable": True,
+            "next_retry_at": "2999-01-01T00:00:00Z",
+        })
+        self.set_status(candidates[4], "failed")
+        for _ in range(self.settings.max_episode_attempts):
+            self.state.transition(candidates[4].guid, "downloading")
+            self.state.transition(candidates[4].guid, "failed", error={"retryable": True, "next_retry_at": None})
+        self.set_status(candidates[3], "failed")
+
+        report = self.pipeline.select_candidates(candidates, policy="failed_only", limit=1)
+
+        self.assertEqual(["guid-4"], [item.guid for item in report.selected])
+        self.assertEqual(1, report.retry_deferred)
+        self.assertEqual(1, report.retry_exhausted)
 
     def test_noop_does_not_call_expensive_adapters_or_rebuild_catalog(self) -> None:
         candidate = self.candidates()[-1]
@@ -447,6 +479,16 @@ class StateAwareSelectionTests(unittest.TestCase):
         for invalid in (0, -1, self.settings.max_live_batch + 1):
             with self.subTest(limit=invalid), self.assertRaises(ValueError):
                 self.pipeline.run(selection_policy="backfill", limit=invalid)
+
+
+class FailureClassificationTests(unittest.TestCase):
+    def test_quota_and_disconnect_are_retryable_provider_failures(self) -> None:
+        self.assertEqual(("transient_provider", True, True), classify_failure("429 RESOURCE_EXHAUSTED"))
+        self.assertEqual(("transient_provider", True, True), classify_failure("Server disconnected without sending a response."))
+
+    def test_configuration_and_bad_audio_are_not_retried(self) -> None:
+        self.assertEqual(("provider_configuration", False, True), classify_failure("403 PERMISSION_DENIED invalid API key"))
+        self.assertEqual(("episode_input", False, False), classify_failure("Downloaded audio was empty."))
 
 
 if __name__ == "__main__":
