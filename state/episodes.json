@@ -1,7 +1,7 @@
 {
   "schema_version": "1.1.0",
-  "pipeline_version": "0.2.0",
-  "updated_at": "2026-07-20T12:31:52Z",
+  "pipeline_version": "0.3.0",
+  "updated_at": "2026-07-21T12:05:17Z",
   "episodes": {
     "ffw-synthetic-episode-901": {
       "guid": "ffw-synthetic-episode-901",
@@ -942,6 +942,63 @@
       "status": "failed",
       "updated_at": "2026-07-20T12:31:52Z",
       "output_directory": "episodes/0526-goblin-decks-got-gone"
+    },
+    "tag:soundcloud,2010:tracks/2337537158": {
+      "guid": "tag:soundcloud,2010:tracks/2337537158",
+      "history": [
+        {
+          "status": "detected",
+          "timestamp": "2026-07-21T11:59:54Z"
+        },
+        {
+          "status": "queued",
+          "timestamp": "2026-07-21T11:59:54Z"
+        },
+        {
+          "status": "queued",
+          "timestamp": "2026-07-21T11:59:54Z"
+        },
+        {
+          "status": "downloading",
+          "timestamp": "2026-07-21T11:59:54Z"
+        },
+        {
+          "status": "downloaded",
+          "timestamp": "2026-07-21T11:59:55Z"
+        },
+        {
+          "status": "preparing",
+          "timestamp": "2026-07-21T11:59:55Z"
+        },
+        {
+          "status": "transcribing",
+          "timestamp": "2026-07-21T12:00:10Z"
+        },
+        {
+          "status": "failed",
+          "timestamp": "2026-07-21T12:05:17Z"
+        }
+      ],
+      "title": "MTG Fast Finance Ep 525: Secret Lair Chaos Vault Experiments",
+      "episode_number": 525,
+      "published_at": "2026-06-11T17:20:24Z",
+      "attempt_count": 1,
+      "pick_count": 0,
+      "error": {
+        "stage": "transcribing",
+        "message": "Gemini transcription chunk 2/3 failed after 106.5s: ServerError: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}",
+        "category": "transient_provider",
+        "synthetic": false,
+        "retryable": true,
+        "provider_wide": true,
+        "attempt": 1,
+        "max_attempts": 3,
+        "next_retry_at": "2026-07-21T18:05:17Z",
+        "quarantined": false
+      },
+      "status": "failed",
+      "updated_at": "2026-07-21T12:05:17Z",
+      "output_directory": "episodes/0525-secret-lair-chaos-vault-experiments"
     }
   }
 }

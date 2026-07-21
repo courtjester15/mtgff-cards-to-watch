@@ -4,31 +4,31 @@
   "notice": "Automated transcription and extraction may contain errors. Verify against source audio.",
   "metadata": {
     "project": "FFW",
-    "pipeline_version": "0.2.0",
+    "pipeline_version": "0.3.0",
     "schema_version": "1.1.0",
-    "generated_at": "2026-07-20T12:31:52Z",
+    "generated_at": "2026-07-21T12:05:17Z",
     "latest_successful_run_at": "2026-07-18T11:24:26Z",
     "generated_from": "live-feed",
     "production_mode": true,
     "source": {
       "name": "MTG Fast Finance"
     },
-    "real_episode_count": 5,
+    "real_episode_count": 6,
     "real_pick_count": 13,
     "last_discovered_episode_date": "2026-07-05T21:41:20Z",
     "repository_url": "https://github.com/courtjester15/mtgff-cards-to-watch",
     "workflow_url": "https://github.com/courtjester15/mtgff-cards-to-watch/actions/workflows/ffw.yml"
   },
   "counts": {
-    "episodes": 5,
+    "episodes": 6,
     "picks": 13,
     "needs_review": 3,
-    "failed": 2,
+    "failed": 3,
     "completed": 0
   },
   "status_counts": {
     "needs_review": 3,
-    "failed": 2
+    "failed": 3
   },
   "latest_episode": {
     "guid": "tag:soundcloud,2010:tracks/2353638380",
@@ -489,6 +489,43 @@
         "message": "503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}",
         "synthetic": false,
         "retryable": true
+      },
+      "synthetic": false
+    },
+    {
+      "guid": "tag:soundcloud,2010:tracks/2337537158",
+      "episode_number": 525,
+      "title": "MTG Fast Finance Ep 525: Secret Lair Chaos Vault Experiments",
+      "published_at": "2026-06-11T17:20:24Z",
+      "audio_url": "https://feeds.soundcloud.com/stream/2337537158-user-519789566-mtg-fast-finance-ep-525-secret.mp3",
+      "episode_url": "https://soundcloud.com/user-519789566/mtg-fast-finance-ep-525-secret",
+      "duration_seconds": 2741,
+      "hosts": [
+        "MTG Fast Finance"
+      ],
+      "description": "The boys catch you up on all the Magic the Gathering card price action of the week, including meta updates, cards to watch and handle the debrief on the recent Chaos Vault alternate sales experiment on the Secret Lair site.\n\nIntro/Outro Music by Skylarka",
+      "processing_status": "failed",
+      "review_state": "not_applicable",
+      "review_reason": null,
+      "pick_count": 0,
+      "directory": "episodes/0525-secret-lair-chaos-vault-experiments",
+      "outputs": {
+        "metadata": "episodes/0525-secret-lair-chaos-vault-experiments/metadata.json",
+        "summary_json": null,
+        "summary_markdown": null
+      },
+      "processed_at": "2026-07-21T12:05:17Z",
+      "error": {
+        "stage": "transcribing",
+        "message": "Gemini transcription chunk 2/3 failed after 106.5s: ServerError: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}",
+        "category": "transient_provider",
+        "synthetic": false,
+        "retryable": true,
+        "provider_wide": true,
+        "attempt": 1,
+        "max_attempts": 3,
+        "next_retry_at": "2026-07-21T18:05:17Z",
+        "quarantined": false
       },
       "synthetic": false
     }
