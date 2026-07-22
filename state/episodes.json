@@ -1,7 +1,7 @@
 {
   "schema_version": "1.1.0",
   "pipeline_version": "0.3.0",
-  "updated_at": "2026-07-22T12:12:59Z",
+  "updated_at": "2026-07-22T21:30:17Z",
   "episodes": {
     "ffw-synthetic-episode-901": {
       "guid": "ffw-synthetic-episode-901",
@@ -1076,22 +1076,172 @@
         {
           "status": "failed",
           "timestamp": "2026-07-20T12:31:52Z"
+        },
+        {
+          "status": "queued",
+          "timestamp": "2026-07-22T21:22:30Z"
+        },
+        {
+          "status": "downloading",
+          "timestamp": "2026-07-22T21:22:30Z"
+        },
+        {
+          "status": "downloaded",
+          "timestamp": "2026-07-22T21:22:31Z"
+        },
+        {
+          "status": "preparing",
+          "timestamp": "2026-07-22T21:22:31Z"
+        },
+        {
+          "status": "transcribing",
+          "timestamp": "2026-07-22T21:22:47Z"
+        },
+        {
+          "status": "transcribed",
+          "timestamp": "2026-07-22T21:29:53Z"
+        },
+        {
+          "status": "extracting",
+          "timestamp": "2026-07-22T21:29:53Z"
+        },
+        {
+          "status": "extracted",
+          "timestamp": "2026-07-22T21:30:17Z"
+        },
+        {
+          "status": "validating",
+          "timestamp": "2026-07-22T21:30:17Z"
+        },
+        {
+          "status": "publishing",
+          "timestamp": "2026-07-22T21:30:17Z"
+        },
+        {
+          "status": "needs_review",
+          "timestamp": "2026-07-22T21:30:17Z"
         }
       ],
       "title": "MTG Fast Finance Ep 526: Goblin Decks Got Gone",
       "episode_number": 526,
       "published_at": "2026-06-14T22:34:19Z",
-      "attempt_count": 1,
-      "pick_count": 0,
-      "error": {
-        "stage": "transcribing",
-        "message": "503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}",
-        "synthetic": false,
-        "retryable": true
+      "attempt_count": 2,
+      "pick_count": 4,
+      "error": null,
+      "status": "needs_review",
+      "updated_at": "2026-07-22T21:30:17Z",
+      "output_directory": "episodes/0526-goblin-decks-got-gone",
+      "transcription": {
+        "provider": "Gemini",
+        "model": "gemini-3.5-flash",
+        "chunk_count": 3,
+        "duration_seconds": 2591,
+        "usage": [
+          {
+            "chunk": 1,
+            "chunk_count": 3,
+            "audio_seconds": 1200,
+            "request_seconds": 225.444,
+            "provider_usage": {
+              "cache_tokens_details": null,
+              "cached_content_token_count": null,
+              "candidates_token_count": 25754,
+              "candidates_tokens_details": null,
+              "prompt_token_count": 30050,
+              "prompt_tokens_details": [
+                {
+                  "modality": "TEXT",
+                  "token_count": 51
+                },
+                {
+                  "modality": "AUDIO",
+                  "token_count": 29999
+                }
+              ],
+              "thoughts_token_count": 1121,
+              "tool_use_prompt_token_count": null,
+              "tool_use_prompt_tokens_details": null,
+              "total_token_count": 56925,
+              "traffic_type": null
+            }
+          },
+          {
+            "chunk": 2,
+            "chunk_count": 3,
+            "audio_seconds": 1200,
+            "request_seconds": 158.891,
+            "provider_usage": {
+              "cache_tokens_details": null,
+              "cached_content_token_count": null,
+              "candidates_token_count": 15959,
+              "candidates_tokens_details": null,
+              "prompt_token_count": 30050,
+              "prompt_tokens_details": [
+                {
+                  "modality": "AUDIO",
+                  "token_count": 29999
+                },
+                {
+                  "modality": "TEXT",
+                  "token_count": 51
+                }
+              ],
+              "thoughts_token_count": 19299,
+              "tool_use_prompt_token_count": null,
+              "tool_use_prompt_tokens_details": null,
+              "total_token_count": 65308,
+              "traffic_type": null
+            }
+          },
+          {
+            "chunk": 3,
+            "chunk_count": 3,
+            "audio_seconds": 191,
+            "request_seconds": 40.375,
+            "provider_usage": {
+              "cache_tokens_details": null,
+              "cached_content_token_count": null,
+              "candidates_token_count": 2243,
+              "candidates_tokens_details": null,
+              "prompt_token_count": 4834,
+              "prompt_tokens_details": [
+                {
+                  "modality": "TEXT",
+                  "token_count": 51
+                },
+                {
+                  "modality": "AUDIO",
+                  "token_count": 4783
+                }
+              ],
+              "thoughts_token_count": 5395,
+              "tool_use_prompt_token_count": null,
+              "tool_use_prompt_tokens_details": null,
+              "total_token_count": 12472,
+              "traffic_type": null
+            }
+          }
+        ]
       },
-      "status": "failed",
-      "updated_at": "2026-07-20T12:31:52Z",
-      "output_directory": "episodes/0526-goblin-decks-got-gone"
+      "extraction_usage": {
+        "cache_tokens_details": null,
+        "cached_content_token_count": null,
+        "candidates_token_count": 1530,
+        "candidates_tokens_details": null,
+        "prompt_token_count": 25691,
+        "prompt_tokens_details": [
+          {
+            "modality": "TEXT",
+            "token_count": 25691
+          }
+        ],
+        "thoughts_token_count": 3799,
+        "tool_use_prompt_token_count": null,
+        "tool_use_prompt_tokens_details": null,
+        "total_token_count": 31020,
+        "traffic_type": null
+      },
+      "review_reason": "Section start found, but no explicit end marker was detected."
     },
     "tag:soundcloud,2010:tracks/2337537158": {
       "guid": "tag:soundcloud,2010:tracks/2337537158",

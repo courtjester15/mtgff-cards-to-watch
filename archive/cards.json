@@ -2,7 +2,7 @@
   "schema_version": "1.1.0",
   "synthetic": false,
   "notice": "Automated extraction; verify against source audio.",
-  "count": 24,
+  "count": 28,
   "cards": [
     {
       "card": "five Fen cards",
@@ -927,6 +927,207 @@
         "published_at": "2026-07-01T01:12:00Z",
         "episode_url": "https://soundcloud.com/user-519789566/mtgfastfinance-ep-527-top-5",
         "audio_url": "https://feeds.soundcloud.com/stream/2350923098-user-519789566-mtgfastfinance-ep-527-top-5.mp3"
+      },
+      "processing_status": "needs_review"
+    },
+    {
+      "card": "Zirilan of the Claw",
+      "printing": "Mirage",
+      "printing_certainty": "confirmed",
+      "foil": false,
+      "hosts": [
+        "Cliff",
+        "James"
+      ],
+      "recommendation": "Buy",
+      "mentioned_price": "about 10 or 11 dollars",
+      "entry_target": {
+        "raw": "about 10 or 11 dollars",
+        "currency": "USD",
+        "minimum": 10.0,
+        "maximum": 11.0
+      },
+      "hold": null,
+      "exit_target": {
+        "raw": "25",
+        "currency": "USD",
+        "minimum": 25.0,
+        "maximum": 25.0
+      },
+      "reasoning": [
+        "Mirage legend on the Reserve List.",
+        "One of the upcoming October decks is a mono-red Dragons deck featuring Lathliss on the cover, which usually causes a spike in Zirilan of the Claw.",
+        "Only 52 vendors selling near-mint copies.",
+        "Has reached $30 in the past and has room to grow again."
+      ],
+      "caveats": [],
+      "confidence": "medium",
+      "start_seconds": 1808,
+      "end_seconds": 2005,
+      "evidence_excerpt": "Zirilan of the Claw, the Mirage legend, on the reserve list... You can get yours for about 10 or 11 dollars, and it's pretty easy for this to hit 25",
+      "review_status": "approved",
+      "review_reason": null,
+      "id": "pick-ddc9e11c654e8b4d",
+      "timestamp": "00:30:08",
+      "listen_url": "https://feeds.soundcloud.com/stream/2339352236-user-519789566-mtg-fast-finance-ep-526-goblin.mp3#t=1808",
+      "episode": {
+        "guid": "tag:soundcloud,2010:tracks/2339352236",
+        "episode_number": 526,
+        "title": "MTG Fast Finance Ep 526: Goblin Decks Got Gone",
+        "published_at": "2026-06-14T22:34:19Z",
+        "episode_url": "https://soundcloud.com/user-519789566/mtg-fast-finance-ep-526-goblin",
+        "audio_url": "https://feeds.soundcloud.com/stream/2339352236-user-519789566-mtg-fast-finance-ep-526-goblin.mp3"
+      },
+      "processing_status": "needs_review"
+    },
+    {
+      "card": "Southwind Avatar",
+      "printing": "Teenage Mutant Ninja Turtles",
+      "printing_certainty": "confirmed",
+      "foil": true,
+      "hosts": [
+        "James",
+        "Cliff"
+      ],
+      "recommendation": "Buy",
+      "mentioned_price": "$2.75 to $3.85",
+      "entry_target": {
+        "raw": "$2.75 to $3.85",
+        "currency": "USD",
+        "minimum": 2.75,
+        "maximum": 3.85
+      },
+      "hold": null,
+      "exit_target": {
+        "raw": "$10",
+        "currency": "USD",
+        "minimum": 10.0,
+        "maximum": 10.0
+      },
+      "reasoning": [
+        "Top 10 card from the set on EDHREC.",
+        "Good in life gain/loss and high toughness Commander builds.",
+        "Universes Beyond card that is highly unlikely to be reprinted under the same name.",
+        "Set was not opened very broadly for singles."
+      ],
+      "caveats": [],
+      "confidence": "medium",
+      "start_seconds": 1433,
+      "end_seconds": 1804,
+      "evidence_excerpt": "Southwind Avatar out of the Teenage Mutant Ninja Turtles set... uptick from $2.75 to $3.85... think that this will eventually be a $10 card.",
+      "review_status": "approved",
+      "review_reason": null,
+      "id": "pick-a6a2b5c156f6688f",
+      "timestamp": "00:23:53",
+      "listen_url": "https://feeds.soundcloud.com/stream/2339352236-user-519789566-mtg-fast-finance-ep-526-goblin.mp3#t=1433",
+      "episode": {
+        "guid": "tag:soundcloud,2010:tracks/2339352236",
+        "episode_number": 526,
+        "title": "MTG Fast Finance Ep 526: Goblin Decks Got Gone",
+        "published_at": "2026-06-14T22:34:19Z",
+        "episode_url": "https://soundcloud.com/user-519789566/mtg-fast-finance-ep-526-goblin",
+        "audio_url": "https://feeds.soundcloud.com/stream/2339352236-user-519789566-mtg-fast-finance-ep-526-goblin.mp3"
+      },
+      "processing_status": "needs_review"
+    },
+    {
+      "card": "500 Year Diary",
+      "printing": "Doctor Who",
+      "printing_certainty": "confirmed",
+      "foil": true,
+      "hosts": [
+        "Cliff",
+        "James"
+      ],
+      "recommendation": "Buy",
+      "mentioned_price": "around $5 shipped",
+      "entry_target": {
+        "raw": "around $5 shipped",
+        "currency": "USD",
+        "minimum": 5.0,
+        "maximum": 5.0
+      },
+      "hold": null,
+      "exit_target": {
+        "raw": "$15",
+        "currency": "USD",
+        "minimum": 15.0,
+        "maximum": 15.0
+      },
+      "reasoning": [
+        "Speculative bet on the Reality Fracture deck in October being themed around tokens and clues.",
+        "Not a lot of copies available, only 59 vendors.",
+        "Universes Beyond property which makes it harder to reprint."
+      ],
+      "caveats": [
+        "Placing a fully speculative bet on Clues being in the upcoming deck."
+      ],
+      "confidence": "medium",
+      "start_seconds": 1314,
+      "end_seconds": 1433,
+      "evidence_excerpt": "I found this card, 500 Year Diary from the Doctor Who set... available in surge foil, extended art, and you can get it for around $5 shipped.",
+      "review_status": "approved",
+      "review_reason": null,
+      "id": "pick-839422dbd8cd3fec",
+      "timestamp": "00:21:54",
+      "listen_url": "https://feeds.soundcloud.com/stream/2339352236-user-519789566-mtg-fast-finance-ep-526-goblin.mp3#t=1314",
+      "episode": {
+        "guid": "tag:soundcloud,2010:tracks/2339352236",
+        "episode_number": 526,
+        "title": "MTG Fast Finance Ep 526: Goblin Decks Got Gone",
+        "published_at": "2026-06-14T22:34:19Z",
+        "episode_url": "https://soundcloud.com/user-519789566/mtg-fast-finance-ep-526-goblin",
+        "audio_url": "https://feeds.soundcloud.com/stream/2339352236-user-519789566-mtg-fast-finance-ep-526-goblin.mp3"
+      },
+      "processing_status": "needs_review"
+    },
+    {
+      "card": "Living End",
+      "printing": "Mystical Archive",
+      "printing_certainty": "confirmed",
+      "foil": true,
+      "hosts": [
+        "James",
+        "Cliff"
+      ],
+      "recommendation": "Buy",
+      "mentioned_price": "60 or 70",
+      "entry_target": {
+        "raw": "60 or 70",
+        "currency": "USD",
+        "minimum": 60.0,
+        "maximum": 70.0
+      },
+      "hold": null,
+      "exit_target": {
+        "raw": "150",
+        "currency": "USD",
+        "minimum": 150.0,
+        "maximum": 150.0
+      },
+      "reasoning": [
+        "Violent Outburst being unbanned in Modern is what's going to drive this.",
+        "It is some of the best Living End art that collectors are going to want.",
+        "They are very hard pulls in silver scroll version.",
+        "Very few listings remain on TCGplayer and eBay."
+      ],
+      "caveats": [],
+      "confidence": "medium",
+      "start_seconds": 1121,
+      "end_seconds": 1248,
+      "evidence_excerpt": "Living End silver scroll foils to go 70 to 150 seems like it has a pretty good shot here... very hard pulls in silver scroll version.",
+      "review_status": "approved",
+      "review_reason": null,
+      "id": "pick-4ca6cbfe5d967570",
+      "timestamp": "00:18:41",
+      "listen_url": "https://feeds.soundcloud.com/stream/2339352236-user-519789566-mtg-fast-finance-ep-526-goblin.mp3#t=1121",
+      "episode": {
+        "guid": "tag:soundcloud,2010:tracks/2339352236",
+        "episode_number": 526,
+        "title": "MTG Fast Finance Ep 526: Goblin Decks Got Gone",
+        "published_at": "2026-06-14T22:34:19Z",
+        "episode_url": "https://soundcloud.com/user-519789566/mtg-fast-finance-ep-526-goblin",
+        "audio_url": "https://feeds.soundcloud.com/stream/2339352236-user-519789566-mtg-fast-finance-ep-526-goblin.mp3"
       },
       "processing_status": "needs_review"
     },
