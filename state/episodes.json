@@ -1,7 +1,7 @@
 {
   "schema_version": "1.1.0",
   "pipeline_version": "0.3.0",
-  "updated_at": "2026-07-21T21:40:09Z",
+  "updated_at": "2026-07-22T12:12:59Z",
   "episodes": {
     "ffw-synthetic-episode-901": {
       "guid": "ffw-synthetic-episode-901",
@@ -1149,6 +1149,239 @@
       "status": "failed",
       "updated_at": "2026-07-21T12:05:17Z",
       "output_directory": "episodes/0525-secret-lair-chaos-vault-experiments"
+    },
+    "tag:soundcloud,2010:tracks/2337004664": {
+      "guid": "tag:soundcloud,2010:tracks/2337004664",
+      "history": [
+        {
+          "status": "detected",
+          "timestamp": "2026-07-22T12:03:24Z"
+        },
+        {
+          "status": "queued",
+          "timestamp": "2026-07-22T12:03:24Z"
+        },
+        {
+          "status": "queued",
+          "timestamp": "2026-07-22T12:03:24Z"
+        },
+        {
+          "status": "downloading",
+          "timestamp": "2026-07-22T12:03:24Z"
+        },
+        {
+          "status": "downloaded",
+          "timestamp": "2026-07-22T12:03:27Z"
+        },
+        {
+          "status": "preparing",
+          "timestamp": "2026-07-22T12:03:27Z"
+        },
+        {
+          "status": "transcribing",
+          "timestamp": "2026-07-22T12:03:57Z"
+        },
+        {
+          "status": "transcribed",
+          "timestamp": "2026-07-22T12:12:25Z"
+        },
+        {
+          "status": "extracting",
+          "timestamp": "2026-07-22T12:12:25Z"
+        },
+        {
+          "status": "extracted",
+          "timestamp": "2026-07-22T12:12:59Z"
+        },
+        {
+          "status": "validating",
+          "timestamp": "2026-07-22T12:12:59Z"
+        },
+        {
+          "status": "publishing",
+          "timestamp": "2026-07-22T12:12:59Z"
+        },
+        {
+          "status": "needs_review",
+          "timestamp": "2026-07-22T12:12:59Z"
+        }
+      ],
+      "title": "MTG Fast Finance Ep 524: Marvel & Hobbit Previews",
+      "episode_number": 524,
+      "published_at": "2026-06-10T23:27:01Z",
+      "attempt_count": 1,
+      "pick_count": 5,
+      "error": null,
+      "status": "needs_review",
+      "updated_at": "2026-07-22T12:12:59Z",
+      "output_directory": "episodes/0524-marvel-hobbit-previews",
+      "transcription": {
+        "provider": "Gemini",
+        "model": "gemini-3.5-flash",
+        "chunk_count": 5,
+        "duration_seconds": 5132,
+        "usage": [
+          {
+            "chunk": 1,
+            "chunk_count": 5,
+            "audio_seconds": 1200,
+            "request_seconds": 89.846,
+            "provider_usage": {
+              "cache_tokens_details": null,
+              "cached_content_token_count": null,
+              "candidates_token_count": 12163,
+              "candidates_tokens_details": null,
+              "prompt_token_count": 30050,
+              "prompt_tokens_details": [
+                {
+                  "modality": "TEXT",
+                  "token_count": 51
+                },
+                {
+                  "modality": "AUDIO",
+                  "token_count": 29999
+                }
+              ],
+              "thoughts_token_count": 8882,
+              "tool_use_prompt_token_count": null,
+              "tool_use_prompt_tokens_details": null,
+              "total_token_count": 51095,
+              "traffic_type": null
+            }
+          },
+          {
+            "chunk": 2,
+            "chunk_count": 5,
+            "audio_seconds": 1200,
+            "request_seconds": 89.562,
+            "provider_usage": {
+              "cache_tokens_details": null,
+              "cached_content_token_count": null,
+              "candidates_token_count": 15342,
+              "candidates_tokens_details": null,
+              "prompt_token_count": 30050,
+              "prompt_tokens_details": [
+                {
+                  "modality": "TEXT",
+                  "token_count": 51
+                },
+                {
+                  "modality": "AUDIO",
+                  "token_count": 29999
+                }
+              ],
+              "thoughts_token_count": 6070,
+              "tool_use_prompt_token_count": null,
+              "tool_use_prompt_tokens_details": null,
+              "total_token_count": 51462,
+              "traffic_type": null
+            }
+          },
+          {
+            "chunk": 3,
+            "chunk_count": 5,
+            "audio_seconds": 1200,
+            "request_seconds": 98.137,
+            "provider_usage": {
+              "cache_tokens_details": null,
+              "cached_content_token_count": null,
+              "candidates_token_count": 15823,
+              "candidates_tokens_details": null,
+              "prompt_token_count": 30050,
+              "prompt_tokens_details": [
+                {
+                  "modality": "AUDIO",
+                  "token_count": 29999
+                },
+                {
+                  "modality": "TEXT",
+                  "token_count": 51
+                }
+              ],
+              "thoughts_token_count": 7387,
+              "tool_use_prompt_token_count": null,
+              "tool_use_prompt_tokens_details": null,
+              "total_token_count": 53260,
+              "traffic_type": null
+            }
+          },
+          {
+            "chunk": 4,
+            "chunk_count": 5,
+            "audio_seconds": 1200,
+            "request_seconds": 180.664,
+            "provider_usage": {
+              "cache_tokens_details": null,
+              "cached_content_token_count": null,
+              "candidates_token_count": 23559,
+              "candidates_tokens_details": null,
+              "prompt_token_count": 30051,
+              "prompt_tokens_details": [
+                {
+                  "modality": "TEXT",
+                  "token_count": 51
+                },
+                {
+                  "modality": "AUDIO",
+                  "token_count": 30000
+                }
+              ],
+              "thoughts_token_count": 18666,
+              "tool_use_prompt_token_count": null,
+              "tool_use_prompt_tokens_details": null,
+              "total_token_count": 72276,
+              "traffic_type": null
+            }
+          },
+          {
+            "chunk": 5,
+            "chunk_count": 5,
+            "audio_seconds": 332,
+            "request_seconds": 49.399,
+            "provider_usage": {
+              "cache_tokens_details": null,
+              "cached_content_token_count": null,
+              "candidates_token_count": 3476,
+              "candidates_tokens_details": null,
+              "prompt_token_count": 8349,
+              "prompt_tokens_details": [
+                {
+                  "modality": "TEXT",
+                  "token_count": 51
+                },
+                {
+                  "modality": "AUDIO",
+                  "token_count": 8298
+                }
+              ],
+              "thoughts_token_count": 7001,
+              "tool_use_prompt_token_count": null,
+              "tool_use_prompt_tokens_details": null,
+              "total_token_count": 18826,
+              "traffic_type": null
+            }
+          }
+        ]
+      },
+      "extraction_usage": {
+        "cache_tokens_details": null,
+        "cached_content_token_count": null,
+        "candidates_token_count": 1789,
+        "candidates_tokens_details": null,
+        "prompt_token_count": 41550,
+        "prompt_tokens_details": [
+          {
+            "modality": "TEXT",
+            "token_count": 41550
+          }
+        ],
+        "thoughts_token_count": 6663,
+        "tool_use_prompt_token_count": null,
+        "tool_use_prompt_tokens_details": null,
+        "total_token_count": 50002,
+        "traffic_type": null
+      },
+      "review_reason": "Section start found, but no explicit end marker was detected."
     }
   }
 }

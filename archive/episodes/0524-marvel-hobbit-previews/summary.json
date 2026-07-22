@@ -1,0 +1,457 @@
+{
+  "schema_version": "1.1.0",
+  "synthetic": false,
+  "notice": "Automated transcription and extraction; verify against the linked source audio.",
+  "episode": {
+    "guid": "tag:soundcloud,2010:tracks/2337004664",
+    "episode_number": 524,
+    "title": "MTG Fast Finance Ep 524: Marvel & Hobbit Previews",
+    "published_at": "2026-06-10T23:27:01Z",
+    "audio_url": "https://feeds.soundcloud.com/stream/2337004664-user-519789566-mtg-fast-finance-ep-524-marvel.mp3",
+    "episode_url": "https://soundcloud.com/user-519789566/mtg-fast-finance-ep-524-marvel",
+    "duration_seconds": 5132,
+    "hosts": [
+      "MTG Fast Finance"
+    ],
+    "description": "Your favorite cardboard finance team gets you caught on all the Magic the Gathering card price action of the week, including meta updates, cards to watch and detailed chatter about the recent Pro Tour results and the early Marvel/Hobbit previews.\n\nIntro/Outro Music by Skylarka"
+  },
+  "processing": {
+    "status": "needs_review",
+    "review_state": "needs_review",
+    "review_reason": "Section start found, but no explicit end marker was detected.",
+    "pipeline_version": "0.3.0",
+    "schema_version": "1.1.0",
+    "transcription_model": "gemini-3.5-flash",
+    "extraction_model": "gemini-3.5-flash",
+    "prompt_version": "cards-to-watch-v2",
+    "processed_at": "2026-07-22T12:12:59Z",
+    "history": [
+      {
+        "status": "detected",
+        "timestamp": "2026-07-22T12:03:24Z"
+      },
+      {
+        "status": "queued",
+        "timestamp": "2026-07-22T12:03:24Z"
+      },
+      {
+        "status": "queued",
+        "timestamp": "2026-07-22T12:03:24Z"
+      },
+      {
+        "status": "downloading",
+        "timestamp": "2026-07-22T12:03:24Z"
+      },
+      {
+        "status": "downloaded",
+        "timestamp": "2026-07-22T12:03:27Z"
+      },
+      {
+        "status": "preparing",
+        "timestamp": "2026-07-22T12:03:27Z"
+      },
+      {
+        "status": "transcribing",
+        "timestamp": "2026-07-22T12:03:57Z"
+      },
+      {
+        "status": "transcribed",
+        "timestamp": "2026-07-22T12:12:25Z"
+      },
+      {
+        "status": "extracting",
+        "timestamp": "2026-07-22T12:12:25Z"
+      },
+      {
+        "status": "extracted",
+        "timestamp": "2026-07-22T12:12:59Z"
+      },
+      {
+        "status": "validating",
+        "timestamp": "2026-07-22T12:12:59Z"
+      },
+      {
+        "status": "publishing",
+        "timestamp": "2026-07-22T12:12:59Z"
+      },
+      {
+        "status": "needs_review",
+        "timestamp": "2026-07-22T12:12:59Z"
+      }
+    ],
+    "error": null,
+    "transcription": {
+      "provider": "Gemini",
+      "model": "gemini-3.5-flash",
+      "chunk_count": 5,
+      "duration_seconds": 5132,
+      "usage": [
+        {
+          "chunk": 1,
+          "chunk_count": 5,
+          "audio_seconds": 1200,
+          "request_seconds": 89.846,
+          "provider_usage": {
+            "cache_tokens_details": null,
+            "cached_content_token_count": null,
+            "candidates_token_count": 12163,
+            "candidates_tokens_details": null,
+            "prompt_token_count": 30050,
+            "prompt_tokens_details": [
+              {
+                "modality": "TEXT",
+                "token_count": 51
+              },
+              {
+                "modality": "AUDIO",
+                "token_count": 29999
+              }
+            ],
+            "thoughts_token_count": 8882,
+            "tool_use_prompt_token_count": null,
+            "tool_use_prompt_tokens_details": null,
+            "total_token_count": 51095,
+            "traffic_type": null
+          }
+        },
+        {
+          "chunk": 2,
+          "chunk_count": 5,
+          "audio_seconds": 1200,
+          "request_seconds": 89.562,
+          "provider_usage": {
+            "cache_tokens_details": null,
+            "cached_content_token_count": null,
+            "candidates_token_count": 15342,
+            "candidates_tokens_details": null,
+            "prompt_token_count": 30050,
+            "prompt_tokens_details": [
+              {
+                "modality": "TEXT",
+                "token_count": 51
+              },
+              {
+                "modality": "AUDIO",
+                "token_count": 29999
+              }
+            ],
+            "thoughts_token_count": 6070,
+            "tool_use_prompt_token_count": null,
+            "tool_use_prompt_tokens_details": null,
+            "total_token_count": 51462,
+            "traffic_type": null
+          }
+        },
+        {
+          "chunk": 3,
+          "chunk_count": 5,
+          "audio_seconds": 1200,
+          "request_seconds": 98.137,
+          "provider_usage": {
+            "cache_tokens_details": null,
+            "cached_content_token_count": null,
+            "candidates_token_count": 15823,
+            "candidates_tokens_details": null,
+            "prompt_token_count": 30050,
+            "prompt_tokens_details": [
+              {
+                "modality": "AUDIO",
+                "token_count": 29999
+              },
+              {
+                "modality": "TEXT",
+                "token_count": 51
+              }
+            ],
+            "thoughts_token_count": 7387,
+            "tool_use_prompt_token_count": null,
+            "tool_use_prompt_tokens_details": null,
+            "total_token_count": 53260,
+            "traffic_type": null
+          }
+        },
+        {
+          "chunk": 4,
+          "chunk_count": 5,
+          "audio_seconds": 1200,
+          "request_seconds": 180.664,
+          "provider_usage": {
+            "cache_tokens_details": null,
+            "cached_content_token_count": null,
+            "candidates_token_count": 23559,
+            "candidates_tokens_details": null,
+            "prompt_token_count": 30051,
+            "prompt_tokens_details": [
+              {
+                "modality": "TEXT",
+                "token_count": 51
+              },
+              {
+                "modality": "AUDIO",
+                "token_count": 30000
+              }
+            ],
+            "thoughts_token_count": 18666,
+            "tool_use_prompt_token_count": null,
+            "tool_use_prompt_tokens_details": null,
+            "total_token_count": 72276,
+            "traffic_type": null
+          }
+        },
+        {
+          "chunk": 5,
+          "chunk_count": 5,
+          "audio_seconds": 332,
+          "request_seconds": 49.399,
+          "provider_usage": {
+            "cache_tokens_details": null,
+            "cached_content_token_count": null,
+            "candidates_token_count": 3476,
+            "candidates_tokens_details": null,
+            "prompt_token_count": 8349,
+            "prompt_tokens_details": [
+              {
+                "modality": "TEXT",
+                "token_count": 51
+              },
+              {
+                "modality": "AUDIO",
+                "token_count": 8298
+              }
+            ],
+            "thoughts_token_count": 7001,
+            "tool_use_prompt_token_count": null,
+            "tool_use_prompt_tokens_details": null,
+            "total_token_count": 18826,
+            "traffic_type": null
+          }
+        }
+      ]
+    },
+    "extraction_usage": {
+      "cache_tokens_details": null,
+      "cached_content_token_count": null,
+      "candidates_token_count": 1789,
+      "candidates_tokens_details": null,
+      "prompt_token_count": 41550,
+      "prompt_tokens_details": [
+        {
+          "modality": "TEXT",
+          "token_count": 41550
+        }
+      ],
+      "thoughts_token_count": 6663,
+      "tool_use_prompt_token_count": null,
+      "tool_use_prompt_tokens_details": null,
+      "total_token_count": 50002,
+      "traffic_type": null
+    }
+  },
+  "section": {
+    "located": true,
+    "start_seconds": 81,
+    "end_seconds": 5312,
+    "label": "Cards to Watch",
+    "confidence": "medium",
+    "review_reason": "Section start found, but no explicit end marker was detected."
+  },
+  "recommendations": [
+    {
+      "card": "Cyclonic Rift",
+      "printing": "Silver Scroll foil",
+      "printing_certainty": "confirmed",
+      "foil": true,
+      "hosts": [
+        "James"
+      ],
+      "recommendation": "buy",
+      "mentioned_price": "400",
+      "entry_target": {
+        "raw": "400",
+        "currency": "USD",
+        "minimum": 400.0,
+        "maximum": 400.0
+      },
+      "hold": "within the year",
+      "exit_target": {
+        "raw": "700",
+        "currency": "USD",
+        "minimum": 700.0,
+        "maximum": 700.0
+      },
+      "reasoning": [
+        "Silver Scroll foils are extremely nice in person",
+        "Past inventory peak and heading towards a higher plateau",
+        "Most important staples in EDH history"
+      ],
+      "caveats": [],
+      "confidence": "high",
+      "start_seconds": 955,
+      "end_seconds": 1380,
+      "evidence_excerpt": "Cyclonic Rift Silver Scroll foils at 400 ... I'm just going to be a little, uh, a little more conservative and say 400 to 700 here within the year",
+      "review_status": "approved",
+      "review_reason": null,
+      "id": "pick-8a5c6ddfd23da378",
+      "timestamp": "00:15:55",
+      "listen_url": "https://feeds.soundcloud.com/stream/2337004664-user-519789566-mtg-fast-finance-ep-524-marvel.mp3#t=955"
+    },
+    {
+      "card": "Cyclonic Rift",
+      "printing": "Japanese alt-art non-foil",
+      "printing_certainty": "confirmed",
+      "foil": false,
+      "hosts": [
+        "James"
+      ],
+      "recommendation": "buy",
+      "mentioned_price": "100 to 115",
+      "entry_target": {
+        "raw": "100 to 115",
+        "currency": "USD",
+        "minimum": 100.0,
+        "maximum": 115.0
+      },
+      "hold": null,
+      "exit_target": {
+        "raw": "150",
+        "currency": "USD",
+        "minimum": 150.0,
+        "maximum": 150.0
+      },
+      "reasoning": [
+        "No traditional foil exists for this art, so non-foils are draining out",
+        "Very unique looking with the cat art",
+        "People who cannot get the Silver Scroll will settle for this version"
+      ],
+      "caveats": [],
+      "confidence": "high",
+      "start_seconds": 1388,
+      "end_seconds": 1553,
+      "evidence_excerpt": "non-foils are also draining out ... sitting in and around at $100 plus, somewhere between 100 and 115 ... go over 150 given this existing situation",
+      "review_status": "approved",
+      "review_reason": null,
+      "id": "pick-fc0ceb507d22e1fb",
+      "timestamp": "00:23:08",
+      "listen_url": "https://feeds.soundcloud.com/stream/2337004664-user-519789566-mtg-fast-finance-ep-524-marvel.mp3#t=1388"
+    },
+    {
+      "card": "Shamanic Revelation",
+      "printing": "Silver Scroll foil",
+      "printing_certainty": "confirmed",
+      "foil": true,
+      "hosts": [
+        "Cliff"
+      ],
+      "recommendation": "buy",
+      "mentioned_price": "$15",
+      "entry_target": {
+        "raw": "$15",
+        "currency": "USD",
+        "minimum": 15.0,
+        "maximum": 15.0
+      },
+      "hold": "next 12 months",
+      "exit_target": {
+        "raw": "$40 range",
+        "currency": "USD",
+        "minimum": 40.0,
+        "maximum": 40.0
+      },
+      "reasoning": [
+        "One of the cheapest rares of the Silver Scroll set",
+        "Requires approximately 350 collector packs to open, making it very rare",
+        "Has solid play numbers in a major format"
+      ],
+      "caveats": [
+        "It is a win-more card that is worthless if you have no creatures in play"
+      ],
+      "confidence": "high",
+      "start_seconds": 1561,
+      "end_seconds": 1751,
+      "evidence_excerpt": "is definitely worth picking up, and that is Shamanic Revelation uh in the Silver Scroll foil. It's $15. ... easily go from the $15 or so ... up into the $40 range",
+      "review_status": "approved",
+      "review_reason": null,
+      "id": "pick-93ca9c066aa99373",
+      "timestamp": "00:26:01",
+      "listen_url": "https://feeds.soundcloud.com/stream/2337004664-user-519789566-mtg-fast-finance-ep-524-marvel.mp3#t=1561"
+    },
+    {
+      "card": "Akroma's Will",
+      "printing": "Silver Scroll foil",
+      "printing_certainty": "confirmed",
+      "foil": true,
+      "hosts": [
+        "James"
+      ],
+      "recommendation": "buy",
+      "mentioned_price": "130",
+      "entry_target": {
+        "raw": "130",
+        "currency": "USD",
+        "minimum": 130.0,
+        "maximum": 130.0
+      },
+      "hold": null,
+      "exit_target": {
+        "raw": "200",
+        "currency": "USD",
+        "minimum": 200.0,
+        "maximum": 200.0
+      },
+      "reasoning": [
+        "Massive S-tier super staple in white decks",
+        "Mythics are hard to pull",
+        "One of the top five targets for the set"
+      ],
+      "caveats": [],
+      "confidence": "high",
+      "start_seconds": 1751,
+      "end_seconds": 1911,
+      "evidence_excerpt": "Akroma's Will is is underestimated. ... put it here at a buy target of 130 ... call it 130 to go to 200",
+      "review_status": "approved",
+      "review_reason": null,
+      "id": "pick-69117bfaac98ac5f",
+      "timestamp": "00:29:11",
+      "listen_url": "https://feeds.soundcloud.com/stream/2337004664-user-519789566-mtg-fast-finance-ep-524-marvel.mp3#t=1751"
+    },
+    {
+      "card": "Mystic Sanctuary",
+      "printing": "DanDan Lair foil",
+      "printing_certainty": "confirmed",
+      "foil": true,
+      "hosts": [
+        "Cliff"
+      ],
+      "recommendation": "buy",
+      "mentioned_price": "$20",
+      "entry_target": {
+        "raw": "$20",
+        "currency": "USD",
+        "minimum": 20.0,
+        "maximum": 20.0
+      },
+      "hold": "down the line",
+      "exit_target": {
+        "raw": "45",
+        "currency": "USD",
+        "minimum": 45.0,
+        "maximum": 45.0
+      },
+      "reasoning": [
+        "Features very pretty art",
+        "Only competition is the extremely hard to hit Time Spiral Remastered foil in the $150 range",
+        "No more copies are coming once the DanDan Lair sells out"
+      ],
+      "caveats": [],
+      "confidence": "high",
+      "start_seconds": 1915,
+      "end_seconds": 2020,
+      "evidence_excerpt": "one of the ones that I'm really looking at is the Mystic Sanctuary ... foil for about $20. And these seem like a stone lock to go up to ... 45",
+      "review_status": "approved",
+      "review_reason": null,
+      "id": "pick-0d6ecc187ea852c1",
+      "timestamp": "00:31:55",
+      "listen_url": "https://feeds.soundcloud.com/stream/2337004664-user-519789566-mtg-fast-finance-ep-524-marvel.mp3#t=1915"
+    }
+  ]
+}
