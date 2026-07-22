@@ -189,17 +189,42 @@ function episodeRows() {
 function renderPicks() {
   return `
     <div class="toolbar"><label class="search"><input id="pick-search" type="search" placeholder="Search card, printing, host, recommendation…" value="${escapeHtml(state.query)}"></label><select id="pick-status" aria-label="Filter by review status"><option value="all">All review states</option>${["approved", "pending", "needs_review"].map((value) => `<option value="${value}" ${state.status === value ? "selected" : ""}>${label(value)}</option>`).join("")}</select></div>
-    <div id="pick-rows" class="pick-grid">${pickRows()}</div>`;
+    <div id="pick-table" aria-label="Cards to Watch recommendations"></div>`;
 }
 
-function pickRows() {
+function filteredPicks() {
   const query = state.query.toLowerCase();
-  const picks = state.cards.filter((pick) => {
+  return state.cards.filter((pick) => {
     const haystack = `${pick.card} ${pick.printing ?? ""} ${pick.hosts.join(" ")} ${pick.recommendation} ${pick.episode.title}`.toLowerCase();
     return haystack.includes(query) && (state.status === "all" || pick.review_status === state.status);
   });
-  if (!picks.length) return `<div class="empty-state"><strong>No matching picks</strong><p>Try a different card, host, or review filter.</p></div>`;
-  return picks.map((pick) => pickCard(pick)).join("");
+}
+
+function renderPickTable() {
+  const container = document.querySelector("#pick-table");
+  if (!container) return;
+
+  renderStandardTable(container, {
+    tableClass: "ms-table--picks",
+    rows: filteredPicks(),
+    emptyText: "No matching picks. Try a different card, host, or review filter.",
+    getRowId: (pick) => pick.id,
+    getRowLabel: (pick) => `Open details for ${pick.card}`,
+    columns: [
+      { label: "Card", value: (pick) => pick.card },
+      { label: "Printing", value: (pick) => pick.printing || "—", title: (pick) => pick.printing_certainty ? `${label(pick.printing_certainty)} printing` : "Printing not stated" },
+      { label: "Entry", align: "money", value: (pick) => pick.entry_target?.raw || "—" },
+      { label: "Exit", align: "money", value: (pick) => pick.exit_target?.raw || "—" },
+      { label: "Hold", align: "center", value: (pick) => pick.hold || "—" },
+      { label: "Episode", align: "center", value: (pick) => pick.episode.episode_number ? `#${pick.episode.episode_number}` : "—", title: (pick) => pick.episode.title },
+      { label: "Date", align: "center", value: (pick) => formatDate(pick.episode.published_at) },
+      { label: "Review", align: "center", html: (pick) => badge(pick.review_status) },
+      { label: "Listen", align: "center", type: "anchor", href: (pick) => pick.listen_url, value: (pick) => pick.timestamp || "Listen" },
+      { label: "Details", align: "actions", type: "action", action: "details", value: () => "Details" },
+    ],
+    onRowClick: (pick) => showPick(pick.id),
+    onAction: (action, pick) => { if (action === "details") showPick(pick.id); },
+  });
 }
 
 function renderStatus() {
@@ -264,14 +289,15 @@ function dashboardEpisodeRows() {
 function bindPageEvents() {
   bindPickButtons();
   bindEpisodeButtons();
+  renderPickTable();
   const episodeSearch = document.querySelector("#episode-search");
   const episodeStatus = document.querySelector("#episode-status");
   if (episodeSearch) episodeSearch.addEventListener("input", () => { state.query = episodeSearch.value; document.querySelector("#episode-rows").innerHTML = episodeRows(); bindEpisodeButtons(); });
   if (episodeStatus) episodeStatus.addEventListener("change", () => { state.status = episodeStatus.value; document.querySelector("#episode-rows").innerHTML = episodeRows(); bindEpisodeButtons(); });
   const pickSearch = document.querySelector("#pick-search");
   const pickStatus = document.querySelector("#pick-status");
-  if (pickSearch) pickSearch.addEventListener("input", () => { state.query = pickSearch.value; document.querySelector("#pick-rows").innerHTML = pickRows(); bindPickButtons(); });
-  if (pickStatus) pickStatus.addEventListener("change", () => { state.status = pickStatus.value; document.querySelector("#pick-rows").innerHTML = pickRows(); bindPickButtons(); });
+  if (pickSearch) pickSearch.addEventListener("input", () => { state.query = pickSearch.value; renderPickTable(); });
+  if (pickStatus) pickStatus.addEventListener("change", () => { state.status = pickStatus.value; renderPickTable(); });
 }
 
 function bindPickButtons() {

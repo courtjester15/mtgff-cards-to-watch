@@ -148,11 +148,13 @@ class FrontendContractTests(unittest.TestCase):
     def test_pages_paths_and_failure_copy(self) -> None:
         root = Path(__file__).parents[1]
         app = (root / "web/app.js").read_text(encoding="utf-8")
+        workflow = (root / ".github/workflows/ffw.yml").read_text(encoding="utf-8")
         self.assertIn("fetch(`archive/index.json", app)
         self.assertNotIn("../archive", app)
         self.assertIn("automated pipeline may be updating", app)
         self.assertNotIn("python -m ffw", app)
         self.assertIn("data-episode-guid", app)
+        self.assertIn("web/table.js", workflow)
         self.assertIn("function showEpisode", app)
         self.assertIn("View failure details", app)
         self.assertNotIn("Unavailable", app)
