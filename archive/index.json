@@ -6,7 +6,7 @@
     "project": "FFW",
     "pipeline_version": "0.3.0",
     "schema_version": "1.1.0",
-    "generated_at": "2026-07-23T12:05:01Z",
+    "generated_at": "2026-07-23T21:22:03Z",
     "latest_successful_run_at": "2026-07-22T21:30:17Z",
     "generated_from": "live-feed",
     "production_mode": true,
@@ -504,17 +504,17 @@
         "summary_json": null,
         "summary_markdown": null
       },
-      "processed_at": "2026-07-21T12:05:17Z",
+      "processed_at": "2026-07-23T21:22:03Z",
       "error": {
         "stage": "transcribing",
-        "message": "Gemini transcription chunk 2/3 failed after 106.5s: ServerError: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}",
+        "message": "Gemini transcription chunk 1/3 failed after 4.8s: ServerError: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}",
         "category": "transient_provider",
         "synthetic": false,
         "retryable": true,
         "provider_wide": true,
-        "attempt": 1,
+        "attempt": 2,
         "max_attempts": 3,
-        "next_retry_at": "2026-07-21T18:05:17Z",
+        "next_retry_at": "2026-07-24T03:22:03Z",
         "quarantined": false
       },
       "synthetic": false
