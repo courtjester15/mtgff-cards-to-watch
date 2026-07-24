@@ -1,7 +1,7 @@
 {
   "schema_version": "1.1.0",
   "pipeline_version": "0.3.0",
-  "updated_at": "2026-07-23T21:22:03Z",
+  "updated_at": "2026-07-24T12:00:37Z",
   "episodes": {
     "ffw-synthetic-episode-901": {
       "guid": "ffw-synthetic-episode-901",
@@ -1613,6 +1613,63 @@
       "status": "failed",
       "updated_at": "2026-07-23T12:05:01Z",
       "output_directory": "episodes/0523-top-sos-commanders"
+    },
+    "tag:soundcloud,2010:tracks/2324598305": {
+      "guid": "tag:soundcloud,2010:tracks/2324598305",
+      "history": [
+        {
+          "status": "detected",
+          "timestamp": "2026-07-24T11:56:20Z"
+        },
+        {
+          "status": "queued",
+          "timestamp": "2026-07-24T11:56:21Z"
+        },
+        {
+          "status": "queued",
+          "timestamp": "2026-07-24T11:56:21Z"
+        },
+        {
+          "status": "downloading",
+          "timestamp": "2026-07-24T11:56:21Z"
+        },
+        {
+          "status": "downloaded",
+          "timestamp": "2026-07-24T11:56:24Z"
+        },
+        {
+          "status": "preparing",
+          "timestamp": "2026-07-24T11:56:24Z"
+        },
+        {
+          "status": "transcribing",
+          "timestamp": "2026-07-24T11:56:51Z"
+        },
+        {
+          "status": "failed",
+          "timestamp": "2026-07-24T12:00:37Z"
+        }
+      ],
+      "title": "MTG Fast Finance Ep 522: SOS Brick Targets",
+      "episode_number": 522,
+      "published_at": "2026-05-21T01:37:13Z",
+      "attempt_count": 1,
+      "pick_count": 0,
+      "error": {
+        "stage": "transcribing",
+        "message": "Gemini transcription chunk 1/4 failed after 225.0s: ServerError: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}",
+        "category": "transient_provider",
+        "synthetic": false,
+        "retryable": true,
+        "provider_wide": true,
+        "attempt": 1,
+        "max_attempts": 3,
+        "next_retry_at": "2026-07-24T18:00:37Z",
+        "quarantined": false
+      },
+      "status": "failed",
+      "updated_at": "2026-07-24T12:00:37Z",
+      "output_directory": "episodes/0522-sos-brick-targets"
     }
   }
 }
